@@ -9,6 +9,9 @@ namespace PlanToPlate.Models
     public class Taste : Rating
     {
         public int TasteScore { get; set; }
-        public string TasteComment { get; set;
+        public string TasteComment
+        {
+            get; set;
+        }
     }
 }
