@@ -4,9 +4,20 @@
              x:Class="PlanToPlate.Views.HomePage"
              Title="HomePage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to the Home Page!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label Text="Home Page"/>
+        <Grid HeightRequest="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="recipesButton" Grid.Column="0" Text="Recipes" Clicked="recipesButton_Clicked" />
+            <Button x:Name="shoppingListButton" Grid.Column="1" Text="Shopping List" Clicked="shoppingListButton_Clicked" />
+            <Button x:Name="homeButton" Grid.Column="2" Text="Home" Clicked="homeButton_Clicked" />
+            <Button x:Name="scheduleMealsButton" Grid.Column="3" Text="Schedule Meals" Clicked="scheduleMealsButton_Clicked" />
+            <Button x:Name="settingsButton" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

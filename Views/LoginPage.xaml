@@ -9,5 +9,6 @@
         <Entry x:Name="emailEntry" />
         <Label x:Name="passwordLabel" Text="Password:" />
         <Entry x:Name="passwordEntry" />
+        <Button x:Name="LoginButton" Text="Login" Clicked="LoginButton_Clicked" />
     </VerticalStackLayout>
 </ContentPage>
