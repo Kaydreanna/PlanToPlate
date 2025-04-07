@@ -5,9 +5,7 @@
              Title="SettingsPage">
     <VerticalStackLayout>
         <Label 
-            Text="Settings"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Settings" VerticalOptions="Center" />
         <Grid HeightRequest="60" BackgroundColor="{StaticResource Primary}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -20,7 +18,7 @@
             <Button x:Name="shoppingListButton" Grid.Column="1" Text="Shopping List" Clicked="shoppingListButton_Clicked" />
             <Button x:Name="homeButton" Grid.Column="2" Text="Home" Clicked="homeButton_Clicked" />
             <Button x:Name="scheduleMealsButton" Grid.Column="3" Text="Schedule Meals" Clicked="scheduleMealsButton_Clicked" />
-            <Button x:Name="settingsButton" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
+            <Button x:Name="settingsButton" BackgroundColor="{StaticResource PrimaryDark}" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
         </Grid>
     </VerticalStackLayout>
 </ContentPage>
