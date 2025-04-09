@@ -41,4 +41,34 @@ public partial class HomePage : ContentPage
         Navigation.RemovePage(this);
     }
     #endregion
+
+    private void breakfastButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lunchButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void dinnerButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void previousDatesButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void futureDatesButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void scheduledRecipeButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

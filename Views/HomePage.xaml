@@ -3,9 +3,80 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanToPlate.Views.HomePage"
              Title="HomePage">
-    <VerticalStackLayout>
-        <Label Text="Home Page" VerticalOptions="Center"/>
-        <Grid HeightRequest="60"  BackgroundColor="{StaticResource Primary}">
+    <Grid>
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout>
+                <Grid x:Name="todaysMealPlan">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="dateLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Today's Date" FontSize="20" HorizontalOptions="Center"/>
+                    <Label x:Name="breakfastLabel" Grid.Row="1" Grid.Column="0" Text="Breakfast:" HorizontalOptions="End" VerticalOptions="Center"/>
+                    <Button x:Name="breakfastButton" Grid.Row="1" Grid.Column="1" Text="Breakfast Meal" TextColor="{StaticResource Tertiary}" Padding="5, 0, 0, 0" HorizontalOptions="Start" BackgroundColor="Transparent" Clicked="breakfastButton_Clicked"/>
+                    <Label x:Name="lunchLabel" Grid.Row="2" Grid.Column="0" Text="Lunch:" HorizontalOptions="End" VerticalOptions="Center"/>
+                    <Button x:Name="lunchButton" Grid.Row="2" Grid.Column="1" Text="Lunch Meal" TextColor="{StaticResource Tertiary}" Padding="5, 0, 0, 0" HorizontalOptions="Start" BackgroundColor="Transparent" Clicked="lunchButton_Clicked"/>
+                    <Label x:Name="dinnerLabel" Grid.Row="3" Grid.Column="0" Text="Dinner:" HorizontalOptions="End" VerticalOptions="Center"/>
+                    <Button x:Name="dinnerButton" Grid.Row="3" Grid.Column="1" Text="Dinner Meal" TextColor="{StaticResource Tertiary}" Padding="5, 0, 0, 0" HorizontalOptions="Start" BackgroundColor="Transparent" Clicked="dinnerButton_Clicked"/>
+                </Grid>
+
+                <Grid x:Name="mealPlanCalendar" Padding="0, 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="dayOneLabel" Grid.Row="0" Grid.Column="0" Text="Day 1" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="dayTwoLabel" Grid.Row="0" Grid.Column="1" Text="Day 2" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="dayThreeLabel" Grid.Row="0" Grid.Column="2" Text="Day 3" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="dayFourLabel" Grid.Row="0" Grid.Column="3" Text="Day 4" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="dayFiveLabel" Grid.Row="0" Grid.Column="4" Text="Day 5" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="daySixLabel" Grid.Row="0" Grid.Column="5" Text="Day 6" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Label x:Name="daySevenLabel" Grid.Row="0" Grid.Column="6" Text="Day 7" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
+                    <Button x:Name="DayOneBreakfastButton" Grid.Row="1" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayTwoBreakfastButton" Grid.Row="1" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayThreeBreakfastButton" Grid.Row="1" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFourBreakfastButton" Grid.Row="1" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFiveBreakfastButton" Grid.Row="1" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySixBreakfastButton" Grid.Row="1" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySevenBreakfastButton" Grid.Row="1" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayOneLunchButton" Grid.Row="2" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayTwoLunchButton" Grid.Row="2" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayThreeLunchButton" Grid.Row="2" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFourLunchButton" Grid.Row="2" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFiveLunchButton" Grid.Row="2" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySixLunchButton" Grid.Row="2" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySevenLunchButton" Grid.Row="2" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayOneDinnerButton" Grid.Row="3" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayTwoDinnerButton" Grid.Row="3" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayThreeDinnerButton" Grid.Row="3" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFourDinnerButton" Grid.Row="3" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DayFiveDinnerButton" Grid.Row="3" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySixDinnerButton" Grid.Row="3" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <Button x:Name="DaySevenDinnerButton" Grid.Row="3" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
+                    <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="2" Source="backarrow.png" Aspect="AspectFit" HeightRequest="1" Margin="0, 20" BackgroundColor="Transparent" Clicked="previousDatesButton_Clicked"/>
+                    <ImageButton x:Name="nextDateImageButton" Grid.Row="4" Grid.Column="4" Source="nextarrow.png" Aspect="AspectFit" HeightRequest="1" Margin="0, 20" BackgroundColor="Transparent" Clicked="futureDatesButton_Clicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="1" x:Name="navBar" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -13,11 +84,20 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="recipesButton" Grid.Column="0" Text="Recipes" Clicked="recipesButton_Clicked" />
-            <Button x:Name="shoppingListButton" Grid.Column="1" Text="Shopping List" Clicked="shoppingListButton_Clicked" />
-            <Button x:Name="homeButton" BackgroundColor="{StaticResource PrimaryDark}" Grid.Column="2" Text="Home" Clicked="homeButton_Clicked" />
-            <Button x:Name="scheduleMealsButton" Grid.Column="3" Text="Schedule Meals" Clicked="scheduleMealsButton_Clicked" />
-            <Button x:Name="settingsButton" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <ImageButton x:Name="recipesImageButton" Grid.Row="0" Grid.Column="0" Source="recipes.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="recipesButton_Clicked"/>
+            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="recipesButton_Clicked" />
+            <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" Source="shoppinglist.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="shoppingListButton_Clicked"/>
+            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="shoppingListButton_Clicked" />
+            <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" Source="home.png" Aspect="AspectFit" BackgroundColor="{StaticResource PrimaryDark}" Clicked="homeButton_Clicked"/>
+            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="homeButton_Clicked" />
+            <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" Source="schedulemeals.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked"/>
+            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="scheduleMealsButton_Clicked" />
+            <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" Source="settings.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="settingsButton_Clicked"/>
+            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="settingsButton_Clicked" />
         </Grid>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
