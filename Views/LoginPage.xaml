@@ -3,12 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanToPlate.Views.LoginPage"
              Title="LoginPage">
-    <VerticalStackLayout>
-        <Label x:Name="loginLabel" Text="Log In" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Label x:Name="emailLabel" Text="Email:" />
-        <Entry x:Name="emailEntry" />
-        <Label x:Name="passwordLabel" Text="Password:" />
-        <Entry x:Name="passwordEntry" />
-        <Button x:Name="LoginButton" Text="Login" Clicked="LoginButton_Clicked" />
+    <VerticalStackLayout BackgroundColor="{StaticResource Primary}">
+        <Image Source="logo.png" HeightRequest="150" Margin="10"/>
+        <Label x:Name="loginLabel" Text="Log In" FontSize="40" TextColor="{StaticResource PrimaryLightText}" VerticalOptions="Center" HorizontalOptions="Center" />
+        <Label x:Name="emailLabel" Text="Email:" Margin="10, 0"/>
+        <Entry x:Name="emailEntry" BackgroundColor="White" Margin="10, 0"/>
+        <Label x:Name="usernamelLabel" Text="Username:" Margin="10, 0"/>
+        <Entry x:Name="usernameEntry" BackgroundColor="White" Margin="10, 0"/>
+        <Label x:Name="passwordLabel" Text="Password:" Margin="10, 0"/>
+        <Entry x:Name="passwordEntry" BackgroundColor="White" Margin="10, 0"/>
+        <Label x:Name="confirmPasswordLabel" Text="Confirm Password:" Margin="10, 0"/>
+        <Entry x:Name="confirmPasswordEntry" BackgroundColor="White" Margin="10, 0"/>
+        <Button x:Name="LoginButton" Text="Login" BackgroundColor="White" TextColor="{StaticResource PrimaryDarkText}" Padding="30, 0" Margin="10" HorizontalOptions="Center" Clicked="LoginButton_Clicked" />
+        <Button x:Name="createAccountButton" Text="Create Account" BackgroundColor="Transparent"/>
     </VerticalStackLayout>
 </ContentPage>
