@@ -39,4 +39,9 @@ public partial class ScheduleMealsPage : ContentPage
         Navigation.RemovePage(this);
     }
     #endregion
+
+    private void showDatesButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
