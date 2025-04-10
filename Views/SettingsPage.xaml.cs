@@ -39,4 +39,24 @@ public partial class SettingsPage : ContentPage
         Navigation.RemovePage(this);
     }
     #endregion
+
+    private void saveChangeUsernameButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void saveChangePasswordButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void logoutButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void deleteAccountButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

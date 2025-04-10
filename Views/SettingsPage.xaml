@@ -3,10 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanToPlate.Views.SettingsPage"
              Title="SettingsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Settings" VerticalOptions="Center" />
-        <Grid HeightRequest="60" BackgroundColor="{StaticResource Primary}">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="0, 0, 0, 80">
+                <Label x:Name="changeUsernameLabel" Text="Change Username" FontSize="30" BackgroundColor="{StaticResource Secondary}" />
+                <Label x:Name="currentUsernameLabel" Text="Enter Current Username:" />
+                <Entry x:Name="currentUsernameEntry" />
+                <Label x:Name="newUsernameLabel" Text="Enter New Username:" />
+                <Entry x:Name="newUsernameEntry" />
+                <Label x:Name="changeUsernamePasswordLabel" Text="Enter Password:" />
+                <Entry x:Name="changeUsernamePasswordEntry" />
+                <Button x:Name="saveChangeUsernameButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="20" HorizontalOptions="Center" Clicked="saveChangeUsernameButton_Clicked"/>
+                
+                <Label x:Name="changePasswordLabel" Text="Change Password" FontSize="30" BackgroundColor="{StaticResource Secondary}" />
+                <Label x:Name="currentPasswordLabel" Text="Enter Current Password:" />
+                <Entry x:Name="currentPasswordEntry" />
+                <Label x:Name="newPasswordLabel" Text="Enter New Password:" />
+                <Entry x:Name="newPasswordEntry" />
+                <Label x:Name="confirmPasswordLabel" Text="Confirm Password:" />
+                <Entry x:Name="confirmPasswordEntry" />
+                <Button x:Name="saveChangePasswordButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="20" HorizontalOptions="Center" Clicked="saveChangePasswordButton_Clicked"/>
+                
+                <Grid x:Name="logoutGrid" BackgroundColor="{StaticResource Secondary}" Margin="0, 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ImageButton x:Name="logoutImageButton" Grid.Column="0" Source="logout.png" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="logoutButton_Clicked"/>
+                    <Button x:Name="logoutButton" Grid.Column="1" Text="Log Out" TextColor="{StaticResource Tertiary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="logoutButton_Clicked"/>
+                </Grid>
+                <Grid x:Name="deleteAccountGrid" BackgroundColor="{StaticResource Tertiary}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ImageButton x:Name="deleteAccountImageButton" Grid.Column="0" Source="whitedelete.png" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="deleteAccountButton_Clicked"/>
+                    <Button x:Name="deleteAccountButton" Grid.Column="1" Text="Delete Account" TextColor="{StaticResource Secondary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="deleteAccountButton_Clicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="1" x:Name="navBar" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -14,11 +50,20 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="recipesButton" Grid.Column="0" Text="Recipes" Clicked="recipesButton_Clicked" />
-            <Button x:Name="shoppingListButton" Grid.Column="1" Text="Shopping List" Clicked="shoppingListButton_Clicked" />
-            <Button x:Name="homeButton" Grid.Column="2" Text="Home" Clicked="homeButton_Clicked" />
-            <Button x:Name="scheduleMealsButton" Grid.Column="3" Text="Schedule Meals" Clicked="scheduleMealsButton_Clicked" />
-            <Button x:Name="settingsButton" BackgroundColor="{StaticResource PrimaryDark}" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <ImageButton x:Name="recipesImageButton" Grid.Row="0" Grid.Column="0" Source="recipes.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="recipesButton_Clicked"/>
+            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="recipesButton_Clicked" />
+            <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" Source="shoppinglist.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="shoppingListButton_Clicked"/>
+            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="shoppingListButton_Clicked" />
+            <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" Source="home.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="homeButton_Clicked"/>
+            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="homeButton_Clicked" />
+            <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" Source="schedulemeals.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked"/>
+            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="scheduleMealsButton_Clicked" />
+            <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" Source="settings.png" Aspect="AspectFit" BackgroundColor="{StaticResource PrimaryDark}" Clicked="settingsButton_Clicked"/>
+            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="settingsButton_Clicked" />
         </Grid>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
