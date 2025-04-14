@@ -3,9 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanToPlate.Views.RecipesPage"
              Title="RecipesPage">
-    <VerticalStackLayout>
-        <Label Text="Recipes" VerticalOptions="Center"/>
-        <Grid HeightRequest="60" BackgroundColor="{StaticResource Primary}">
+    <Grid>
+        <ScrollView Grid.Row="0" x:Name="mainContent">
+            <VerticalStackLayout>
+                <Button x:Name="addRecipeButton" HorizontalOptions="Center" Text="Add New Recipe" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="addRecipeButton_Clicked"/>
+                <HorizontalStackLayout x:Name="searchfunction" HorizontalOptions="Center" Margin="0, 20">
+                    <Entry x:Name="searchRecipesEntry" WidthRequest="200" Margin="10, 0"/>
+                    <Button x:Name="searchButton" Text="Search" FontSize="20" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Clicked="searchButton_Clicked"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout x:Name="firstRowFilters" HorizontalOptions="Center">
+                    <Label x:Name="filterByLabel" VerticalOptions="Center" Text="Filter by:" Margin="5, 0, 25, 0" FontSize="18"/>
+                    <Picker x:Name="ratingPicker" WidthRequest="125" Margin="5"/>
+                    <Picker x:Name="devicePicker" WidthRequest="125" Margin="5"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout x:Name="secondRowFilters" HorizontalOptions="Center">
+                    <Picker x:Name="typePicker" WidthRequest="125" Margin="5"/>
+                    <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5"/>
+                    <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
+                </HorizontalStackLayout>
+                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
+                        <Label x:Name="nameLabel" HorizontalOptions="Center" Text="Name" FontSize="18"/>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
+                        <Label x:Name="ratingLabel" HorizontalOptions="Center" Text="Rating" FontSize="18"/>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
+                        <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="18"/>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
+                        <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="18"/>
+                    </Border>
+                </Grid>
+                <Grid x:Name="reacipesGridContent"></Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid x:Name="navBar" Grid.Row="1" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -13,11 +52,20 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="recipesButton" BackgroundColor="{StaticResource PrimaryDark}" Grid.Column="0" Text="Recipes" Clicked="recipesButton_Clicked" />
-            <Button x:Name="shoppingListButton" Grid.Column="1" Text="Shopping List" Clicked="shoppingListButton_Clicked" />
-            <Button x:Name="homeButton" Grid.Column="2" Text="Home" Clicked="homeButton_Clicked" />
-            <Button x:Name="scheduleMealsButton" Grid.Column="3" Text="Schedule Meals" Clicked="scheduleMealsButton_Clicked" />
-            <Button x:Name="settingsButton" Grid.Column="4" Text="Settings" Clicked="settingsButton_Clicked" />
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <ImageButton x:Name="recipesImageButton" Grid.Row="0" Grid.Column="0" Source="recipes.png" Aspect="AspectFit" BackgroundColor="{StaticResource PrimaryDark}" Clicked="recipesButton_Clicked"/>
+            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="recipesButton_Clicked" />
+            <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" Source="shoppinglist.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="shoppingListButton_Clicked"/>
+            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="shoppingListButton_Clicked" />
+            <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" Source="home.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="homeButton_Clicked"/>
+            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="homeButton_Clicked" />
+            <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" Source="schedulemeals.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked"/>
+            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="scheduleMealsButton_Clicked" />
+            <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" Source="settings.png" Aspect="AspectFit" BackgroundColor="{StaticResource Primary}" Clicked="settingsButton_Clicked"/>
+            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="settingsButton_Clicked" />
         </Grid>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

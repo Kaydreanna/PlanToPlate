@@ -39,4 +39,19 @@ public partial class RecipesPage : ContentPage
         Navigation.RemovePage(this);
     }
     #endregion
+
+    private void clearButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void searchButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void addRecipeButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
