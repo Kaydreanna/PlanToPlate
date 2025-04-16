@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace PlanToPlate.Views;
 
 public partial class RecipesPage : ContentPage
@@ -6,7 +8,25 @@ public partial class RecipesPage : ContentPage
 	{
 		InitializeComponent();
 	}
+    private async void addRecipeButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new AddRecipePage());
+    }
 
+    private void clearButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void searchButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void viewRecipeButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new ViewRecipePage());
+    }
 
     #region Nav Bar
     private void recipesButton_Clicked(object sender, EventArgs e)
@@ -40,18 +60,4 @@ public partial class RecipesPage : ContentPage
     }
     #endregion
 
-    private void clearButton_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void searchButton_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void addRecipeButton_Clicked(object sender, EventArgs e)
-    {
-
-    }
 }

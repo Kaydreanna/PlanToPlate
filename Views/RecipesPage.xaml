@@ -21,7 +21,8 @@
                     <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5"/>
                     <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
                 </HorizontalStackLayout>
-                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0">
+                <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
+                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0" IsVisible="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -41,6 +42,8 @@
                         <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="18"/>
                     </Border>
                 </Grid>
+                <!-- REMOVE THE FOLLOWING TESTING BUTTON -->
+                <Button x:Name="viewRecipeButton" HorizontalOptions="Center" Text="View Recipe Page" Margin="20" Clicked="viewRecipeButton_Clicked"/>
                 <Grid x:Name="reacipesGridContent"></Grid>
             </VerticalStackLayout>
         </ScrollView>
