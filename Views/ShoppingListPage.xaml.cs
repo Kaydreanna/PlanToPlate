@@ -39,4 +39,9 @@ public partial class ShoppingListPage : ContentPage
         Navigation.RemovePage(this);
     }
     #endregion
+
+    private async void createShoppingListButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new EditShoppingListPage());
+    }
 }

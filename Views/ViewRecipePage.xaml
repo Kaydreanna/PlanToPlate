@@ -57,8 +57,9 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
                     <Label x:Name="instructionNumber" Grid.Row="1" Grid.Column="1" HorizontalOptions="End" Text="1." Margin="0, 5, 5, 0"/>
-                    <Label x:Name="ingredients" Grid.Row="1" Grid.Column="2" Text="Example Instructions. Random stuff to fill the paragraph." Margin="0, 5"/>
+                    <Label x:Name="instructions" Grid.Row="1" Grid.Column="2" Text="Example Instructions. Random stuff to fill the paragraph." Margin="0, 5"/>
                 </Grid>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40"/>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

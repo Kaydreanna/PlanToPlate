@@ -3,10 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlanToPlate.Views.EditShoppingListPage"
              Title="EditShoppingListPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" VerticalOptions="Center" BackgroundColor="{StaticResource Primary}" Padding="0, 0, 10, 0">
+            <Label x:Name="shoppingListDatesLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="30" Text="[List Dates]" />
+            <Button x:Name="closeButton" HorizontalOptions="End" Text="X" BackgroundColor="Transparent" FontSize="30" TextColor="{StaticResource PrimaryDarkText}" Padding="5, 0, 0, 5" Clicked="closeButton_Clicked"/>
+        </Grid>
+        <ScrollView x:Name="noMealsFoundMessage" Grid.Row="1" VerticalOptions="Start" IsVisible="False">
+            <Grid RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+                <Label x:Name="noMealsFoundLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="There were no meals found in the selected date range. Tap ‘Add Meals’ to fill your calendar or adjust your date range to see planned meals." Margin="20"/>
+                <Button x:Name="addMealsButton" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Meals" Margin="0, 15, 0, 30"/>
+                <Label x:Name="startDateLabel" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" Text="Start Date:"/>
+                <DatePicker x:Name="startDatePicker" Grid.Row="2" Grid.Column="2" />
+                <Label x:Name="endDateLabel" Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" Text="End Date:"/>
+                <DatePicker x:Name="endDatePicker" Grid.Row="3" Grid.Column="2"/>
+                <Button x:Name="adjustDatesButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="Center" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Adjust Dates" Margin="20"/>
+            </Grid>
+        </ScrollView>
+        <ScrollView x:Name="mainContent" Grid.Row="1" VerticalOptions="Start" IsVisible="False">
+            <VerticalStackLayout>
+                <Label x:Name="shoppingListInstructions" Text="The following is a list of ingredients needed for the planned meals. Please select which ingredients need added to the shopping list." Margin="20"/>
+                <Grid x:Name="shoppingListIngredientsGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
+                </Grid>
+                <HorizontalStackLayout x:Name="saveOrCancelButtons" HorizontalOptions="Center" Margin="0, 30">
+                    <Button x:Name="saveButton" Text="Save" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Margin="5, 0" Clicked="saveButton_Clicked"/>
+                    <Button x:Name="cancelButton" Text="Cancel" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Margin="5, 0" Clicked="cancelButton_Clicked"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

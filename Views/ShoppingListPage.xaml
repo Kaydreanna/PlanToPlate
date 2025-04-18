@@ -15,7 +15,7 @@
                     <Label x:Name="endDateLabel" VerticalOptions="Center" Text="End Date:" Margin="15, 0"/>
                     <DatePicker x:Name="endDatePicker" />
                 </HorizontalStackLayout>
-                <Button x:Name="createShoppingListButton" HorizontalOptions="Center" Text="Create" BorderWidth="1" BorderColor="Black" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="10"/>
+                <Button x:Name="createShoppingListButton" HorizontalOptions="Center" Text="Create" BorderWidth="1" BorderColor="Black" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="10" Clicked="createShoppingListButton_Clicked"/>
                 
                 <Label x:Name="viewShoppingListsLabel" Text="View Past Shopping List" FontSize="30" BackgroundColor="{StaticResource Secondary}" Padding="5, 0" Margin="0, 20"/>
                 <VerticalStackLayout x:Name="pastShoppingLists">
