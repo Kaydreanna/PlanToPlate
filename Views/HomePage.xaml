@@ -102,31 +102,31 @@
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=FolderOpen}" Color="{StaticResource IconLight}"/>
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="recipesButton_Clicked" />
+            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" VerticalOptions="End" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="recipesButton_Clicked" />
             <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource Primary}" Clicked="shoppingListButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=Clipboard}" Color="{StaticResource IconLight}"/>
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="shoppingListButton_Clicked" />
+            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="shoppingListButton_Clicked" />
             <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource PrimaryDark}" Clicked="homeButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=House}" Color="{StaticResource IconLight}"/>
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="homeButton_Clicked" />
+            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="homeButton_Clicked" />
             <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=CalendarDays}" Color="{StaticResource IconLight}"/>
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="scheduleMealsButton_Clicked" />
+            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="scheduleMealsButton_Clicked" />
             <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" BackgroundColor="{StaticResource Primary}" Clicked="settingsButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Gear}" Color="{StaticResource IconLight}"/>
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" CornerRadius="0" Padding="0, -20, 0, 0" Clicked="settingsButton_Clicked" />
+            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="settingsButton_Clicked" />
         </Grid>
     </Grid>
 </ContentPage>
