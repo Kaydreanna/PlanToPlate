@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using MauiIcons.FontAwesome;
+using MauiIcons.FontAwesome.Solid;
 
 namespace PlanToPlate
 {
@@ -13,6 +15,8 @@ namespace PlanToPlate
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseLocalNotification()
+                .UseFontAwesomeMauiIcons()
+                .UseFontAwesomeSolidMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
