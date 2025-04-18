@@ -72,8 +72,16 @@
                     <Button x:Name="DayFiveDinnerButton" Grid.Row="3" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
                     <Button x:Name="DaySixDinnerButton" Grid.Row="3" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
                     <Button x:Name="DaySevenDinnerButton" Grid.Row="3" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="2" Source="backarrow.png" Aspect="AspectFit" HeightRequest="1" Margin="0, 20" BackgroundColor="Transparent" Clicked="previousDatesButton_Clicked"/>
-                    <ImageButton x:Name="nextDateImageButton" Grid.Row="4" Grid.Column="4" Source="nextarrow.png" Aspect="AspectFit" HeightRequest="1" Margin="0, 20" BackgroundColor="Transparent" Clicked="futureDatesButton_Clicked"/>
+                    <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="2" BackgroundColor="Transparent" Margin="0, 20" Clicked="previousDatesButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowLeft}" Color="{StaticResource IconDark}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="nextDateImageButton" Grid.Row="4" Grid.Column="4" BackgroundColor="Transparent" Margin="0, 20" Clicked="futureDatesButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRight}" Color="{StaticResource IconDark}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>

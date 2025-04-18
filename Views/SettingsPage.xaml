@@ -30,7 +30,11 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ImageButton x:Name="logoutImageButton" Grid.Column="0" Source="logout.png" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="logoutButton_Clicked"/>
+                    <ImageButton x:Name="logoutImageButton" Grid.Column="0" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="logoutButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRightFromBracket}" Color="{StaticResource IconDark}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
                     <Button x:Name="logoutButton" Grid.Column="1" Text="Log Out" TextColor="{StaticResource Tertiary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="logoutButton_Clicked"/>
                 </Grid>
                 <Grid x:Name="deleteAccountGrid" BackgroundColor="{StaticResource Tertiary}">
@@ -38,7 +42,11 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ImageButton x:Name="deleteAccountImageButton" Grid.Column="0" Source="whitedelete.png" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="deleteAccountButton_Clicked"/>
+                    <ImageButton x:Name="deleteAccountImageButton" Grid.Column="0" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="deleteAccountButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=TrashCan}" Color="{StaticResource IconLight}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
                     <Button x:Name="deleteAccountButton" Grid.Column="1" Text="Delete Account" TextColor="{StaticResource Secondary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="deleteAccountButton_Clicked"/>
                 </Grid>
             </VerticalStackLayout>
