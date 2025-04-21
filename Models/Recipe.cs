@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PlanToPlate.Models
 {
-    public class Reccipe
+    public class Recipe
     {
         [PrimaryKey, AutoIncrement]
         public int RecipeId { get; private set; }
@@ -17,7 +17,7 @@ namespace PlanToPlate.Models
         public string RecipeName { get; set; }
         public string RecipeType { get; set; }
         public string CookingDevice { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
-        public List<string> Instructions { get; set; }
+        public Dictionary<Ingredient, (decimal Quantity, string Unit)> Ingredients { get; set; }
+        public Dictionary<int, string> Instructions { get; set; }
     }
 }

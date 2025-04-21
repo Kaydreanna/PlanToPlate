@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PlanToPlate.Models
 {
-    public class Calendar
+    public class ScheduledMeals
     {
         [PrimaryKey, AutoIncrement]
         public int CalendarId { get; set; }

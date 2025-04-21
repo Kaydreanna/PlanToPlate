@@ -17,5 +17,6 @@ namespace PlanToPlate.Models
         public DateTime EndDate { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         public List<Ingredient> ListForShopping { get; set; }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanToPlate.Models
 {
-    class Time : Rating
+    class Timing : Rating
     {
         public int TimeScore { get; set; }
         public string TimeComment { get; set; }
