@@ -28,7 +28,13 @@ public partial class LoginPage : ContentPage
     #region Clicked Events
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
-        User userToLogIn = await DatabaseService.AuthenticateUser(emailEntry.Text, passwordEntry.Text);
+        //User userToLogIn = await DatabaseService.AuthenticateUser("test@email.com", "Test");
+        //await Navigation.PushAsync(new HomePage(userToLogIn));
+        //Navigation.RemovePage(this);
+
+        //Commented out login function for testing purposes
+
+        User userToLogIn = await DatabaseService.AuthenticateUser(emailOrUsernameEntry.Text, passwordEntry.Text);
         if (userToLogIn == null)
         {
             await DisplayAlert("Error", "Invalid email or password", "OK");
@@ -43,21 +49,26 @@ public partial class LoginPage : ContentPage
 
     private async void createAccountButton_Clicked(object sender, EventArgs e)
     {
+        bool validUsername = await DatabaseService.UniqueUsername(usernameEntry.Text);
         bool validEmail = validateEmail(emailEntry.Text);
         bool validPassword = validatePassword(passwordEntry.Text, confirmPasswordEntry.Text);
 
-        if (validEmail == false)
+        if(!validUsername)
+        {
+            await DisplayAlert("Error", "Username already exists. Please choose a different one.", "OK");
+            return;
+        } else if (!validEmail)
         {
             await DisplayAlert("Error", "Please enter a valid email address.", "OK");
             return;
-        } else if (validPassword == false)
+        } else if (!validPassword)
         {
             await DisplayAlert("Error", $"Please ensure passwords match and have the following:{Environment.NewLine}8 or more characters{Environment.NewLine}One or more upper case letters{Environment.NewLine}One or more lower case letters{Environment.NewLine}At least one symbol", "OK");
             return;
         }
         else
         {
-            User newUser = await DatabaseService.CreateUserAccount(emailEntry.Text, passwordEntry.Text);
+            User newUser = await DatabaseService.CreateUserAccount(usernameEntry.Text, emailEntry.Text, passwordEntry.Text);
             await Navigation.PushAsync(new HomePage(newUser));
             Navigation.RemovePage(this);
         }
@@ -68,9 +79,15 @@ public partial class LoginPage : ContentPage
         if(createAccount == false)
         {
             createAccount = true;
+            usernameLabel.IsVisible = true;
+            usernameEntry.IsVisible = true;
+            emailLabel.IsVisible = true;
+            emailEntry.IsVisible = true;
             confirmPasswordLabel.IsVisible = true;
             confirmPasswordEntry.IsVisible = true;
             loginLabel.Text = "Create Account";
+            emailOrUsernameLabel.IsVisible = false;
+            emailOrUsernameEntry.IsVisible = false;
             LoginButton.IsVisible = false;
             createAccountButton.IsVisible = true;
             createAccountLink.Text = "Already have an account? Log in";
@@ -78,9 +95,15 @@ public partial class LoginPage : ContentPage
         else
         {
             createAccount = false;
+            usernameLabel.IsVisible = false;
+            usernameEntry.IsVisible = false;
+            emailLabel.IsVisible = false;
+            emailEntry.IsVisible = false;
             confirmPasswordLabel.IsVisible = false;
             confirmPasswordEntry.IsVisible = false;
             loginLabel.Text = "Log in";
+            emailOrUsernameLabel.IsVisible = true;
+            emailOrUsernameEntry.IsVisible = true;
             LoginButton.IsVisible = true;
             createAccountButton.IsVisible = false;
             createAccountLink.Text = "Don't have an account? Create one";

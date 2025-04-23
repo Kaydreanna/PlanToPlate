@@ -11,22 +11,63 @@ namespace PlanToPlate.Services
     class DatabaseService
     {
         #region Login Methods
-        public static async Task<User> AuthenticateUser(string email, string password)
+        public static async Task<User> AuthenticateUser(string emailOrUsername, string password)
         {
             await Init();
-            var user = await _db.Table<User>().Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
+            var user = await _db.Table<User>().Where(u => u.Email == emailOrUsername && u.Password == password).FirstOrDefaultAsync();
+            if(user == null)
+            {
+                user = await _db.Table<User>().Where(u => u.Username == emailOrUsername && u.Password == password).FirstOrDefaultAsync();
+            }
             return user;
         }
-        public static async Task<User> CreateUserAccount(string email, string password)
+        public static async Task<User> CreateUserAccount(string username, string email, string password)
         {
             await Init();
             var user = new User()
             {
+                Username = username,
                 Email = email,
                 Password = password
             };
             await _db.InsertAsync(user);
             return user;
+        }
+        #endregion
+
+        public static async Task<bool> UniqueUsername(string username)
+        {
+            await Init();
+            var users = await _db.Table<User>().ToListAsync();
+            foreach(User user in users)
+            {
+                if (user.Username == username)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        #region Settings Methods
+        public static async Task ChangePassword(User user, string newPassword)
+        {
+            await Init();
+            user.Password = newPassword;
+            await _db.UpdateAsync(user);
+        }
+
+        public static async Task ChangeUsername(User user, string newUsername)
+        {
+            await Init();
+            user.Username = newUsername;
+            await _db.UpdateAsync(user);
+        }
+
+        public static async Task DeleteAccount(User user)
+        {
+            await Init();
+            await _db.DeleteAsync(user);
         }
         #endregion
 
@@ -60,6 +101,7 @@ namespace PlanToPlate.Services
 
             User user1 = new User()
             {
+                Username = "Test",
                 Password = "Test",
                 Email = "test@email.com"
             };
@@ -128,7 +170,6 @@ namespace PlanToPlate.Services
             {
                 return;
             }
-
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "recipes.db");
 
             _db = new SQLiteAsyncConnection(databasePath);
