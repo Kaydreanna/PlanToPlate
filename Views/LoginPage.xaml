@@ -7,10 +7,8 @@
         <VerticalStackLayout BackgroundColor="{StaticResource Primary}">
             <Image Source="logo.png" HeightRequest="150" Margin="10"/>
             <Label x:Name="loginLabel" Text="Log In" FontSize="40" TextColor="{StaticResource PrimaryLightText}" VerticalOptions="Center" HorizontalOptions="Center" />
-            <Label x:Name="emailLabel" Text="Email:" Margin="10, 0" IsVisible="False"/>
-            <Entry x:Name="emailEntry" BackgroundColor="White" Margin="10, 0" IsVisible="False"/>
-            <Label x:Name="usernamelLabel" Text="Username:" Margin="10, 0"/>
-            <Entry x:Name="usernameEntry" BackgroundColor="White" Margin="10, 0"/>
+            <Label x:Name="emailLabel" Text="Email:" Margin="10, 0" />
+            <Entry x:Name="emailEntry" BackgroundColor="White" Margin="10, 0" />
             <Label x:Name="passwordLabel" Text="Password:" Margin="10, 0"/>
             <Entry x:Name="passwordEntry" BackgroundColor="White" Margin="10, 0"/>
             <Label x:Name="confirmPasswordLabel" Text="Confirm Password:" Margin="10, 0" IsVisible="False"/>

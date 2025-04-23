@@ -1,45 +1,17 @@
+using PlanToPlate.Models;
+
 namespace PlanToPlate.Views;
 
 public partial class SettingsPage : ContentPage
 {
-	public SettingsPage()
+    public User loggedInUser { get; set; }
+    public SettingsPage(User user)
 	{
 		InitializeComponent();
-	}
-
-
-    #region Nav Bar
-    private void recipesButton_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new RecipesPage());
-        Navigation.RemovePage(this);
+        loggedInUser = user;
     }
 
-    private void shoppingListButton_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new ShoppingListPage());
-        Navigation.RemovePage(this);
-    }
-
-    private void homeButton_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new HomePage());
-        Navigation.RemovePage(this);
-    }
-
-    private void scheduleMealsButton_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new ScheduleMealsPage());
-        Navigation.RemovePage(this);
-    }
-
-    private void settingsButton_Clicked(object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new SettingsPage());
-        Navigation.RemovePage(this);
-    }
-    #endregion
-
+    #region Clicked Events
     private void saveChangeUsernameButton_Clicked(object sender, EventArgs e)
     {
 
@@ -59,4 +31,38 @@ public partial class SettingsPage : ContentPage
     {
 
     }
+    #endregion
+
+    #region Nav Bar
+    private void recipesButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new RecipesPage(loggedInUser));
+        Navigation.RemovePage(this);
+    }
+
+    private void shoppingListButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new ShoppingListPage(loggedInUser));
+        Navigation.RemovePage(this);
+    }
+
+    private void homeButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new HomePage(loggedInUser));
+        Navigation.RemovePage(this);
+    }
+
+    private void scheduleMealsButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new ScheduleMealsPage(loggedInUser));
+        Navigation.RemovePage(this);
+    }
+
+    private void settingsButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new SettingsPage(loggedInUser));
+        Navigation.RemovePage(this);
+    }
+    #endregion
+
 }

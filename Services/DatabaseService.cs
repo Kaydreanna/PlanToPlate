@@ -10,6 +10,26 @@ namespace PlanToPlate.Services
 {
     class DatabaseService
     {
+        #region Login Methods
+        public static async Task<User> AuthenticateUser(string email, string password)
+        {
+            await Init();
+            var user = await _db.Table<User>().Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
+            return user;
+        }
+        public static async Task<User> CreateUserAccount(string email, string password)
+        {
+            await Init();
+            var user = new User()
+            {
+                Email = email,
+                Password = password
+            };
+            await _db.InsertAsync(user);
+            return user;
+        }
+        #endregion
+
         #region Starting Data
         public static async Task ClearStartingData()
         {
@@ -25,13 +45,21 @@ namespace PlanToPlate.Services
             await _db.DeleteAllAsync<User>();
         }
 
+        public static async Task<bool> IsThereATestUser()
+        {
+            await Init();
+
+            var count = await _db.Table<User>().CountAsync();
+
+            return count > 0;
+        }
+
         public static async Task LoadStartingData()
         {
             await Init();
 
             User user1 = new User()
             {
-                Username = "Test",
                 Password = "Test",
                 Email = "test@email.com"
             };
