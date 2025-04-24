@@ -5,7 +5,7 @@
              x:Class="PlanToPlate.Views.RecipesPage"
              Title="RecipesPage">
     <Grid>
-        <ScrollView Grid.Row="0" x:Name="mainContent">
+        <ScrollView x:Name="mainContent" Grid.Row="0" Margin="0, 0, 0, 70">
             <VerticalStackLayout>
                 <Button x:Name="addRecipeButton" HorizontalOptions="Center" Text="Add New Recipe" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="addRecipeButton_Clicked"/>
                 <HorizontalStackLayout x:Name="searchfunction" HorizontalOptions="Center" Margin="0, 20">
@@ -14,12 +14,12 @@
                 </HorizontalStackLayout>
                 <HorizontalStackLayout x:Name="firstRowFilters" HorizontalOptions="Center">
                     <Label x:Name="filterByLabel" VerticalOptions="Center" Text="Filter by:" Margin="5, 0, 25, 0" FontSize="18"/>
-                    <Picker x:Name="ratingPicker" WidthRequest="125" Margin="5"/>
-                    <Picker x:Name="devicePicker" WidthRequest="125" Margin="5"/>
+                    <Picker x:Name="ratingPicker" WidthRequest="125" Margin="5" SelectedIndexChanged="ratingPicker_SelectedIndexChanged"/>
+                    <Picker x:Name="devicePicker" WidthRequest="125" Margin="5" SelectedIndexChanged="devicePicker_SelectedIndexChanged"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout x:Name="secondRowFilters" HorizontalOptions="Center">
-                    <Picker x:Name="typePicker" WidthRequest="125" Margin="5"/>
-                    <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5"/>
+                    <Picker x:Name="typePicker" WidthRequest="125" Margin="5" SelectedIndexChanged="typePicker_SelectedIndexChanged"/>
+                    <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5" SelectedIndexChanged="ingredientPicker_SelectedIndexChanged"/>
                     <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
                 </HorizontalStackLayout>
                 <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
@@ -43,9 +43,14 @@
                         <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="18"/>
                     </Border>
                 </Grid>
-                <!-- REMOVE THE FOLLOWING TESTING BUTTON -->
-                <Button x:Name="viewRecipeButton" HorizontalOptions="Center" Text="View Recipe Page" Margin="20" Clicked="viewRecipeButton_Clicked"/>
-                <Grid x:Name="reacipesGridContent"></Grid>
+                <Grid x:Name="recipesGridContent" Margin="5, 0, 5, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
         <Grid x:Name="navBar" Grid.Row="1" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">

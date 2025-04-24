@@ -33,8 +33,6 @@ namespace PlanToPlate.Services
             await _db.InsertAsync(user);
             return user;
         }
-        #endregion
-
         public static async Task<bool> UniqueUsername(string username)
         {
             await Init();
@@ -48,6 +46,8 @@ namespace PlanToPlate.Services
             }
             return true;
         }
+        #endregion
+
 
         #region Settings Methods
         public static async Task ChangePassword(User user, string newPassword)
@@ -68,6 +68,82 @@ namespace PlanToPlate.Services
         {
             await Init();
             await _db.DeleteAsync(user);
+        }
+        #endregion
+
+        #region Recipe Methods
+        public static async Task<List<Recipe>> GetRecipes(int userId, string filterParameter, string selectedItem)
+        {
+            await Init();
+            List<Recipe> recipes = new List<Recipe>();
+            if (filterParameter == null)
+            {
+                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
+            } else if (filterParameter == "Device")
+            {
+                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId && i.CookingDevice == selectedItem).ToListAsync();
+            }
+            else if (filterParameter == "Type")
+            {
+                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId && i.RecipeType == selectedItem).ToListAsync();
+            }
+            else if (filterParameter == "Ingredient")
+            {
+                List<Recipe> allRecipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
+                foreach (Recipe recipe in allRecipes)
+                {
+                    foreach (var ingredient in recipe.Ingredients)
+                    {
+                        if (ingredient.Key.ToString().ToLower() == selectedItem.ToLower())
+                        {
+                            recipes.Add(recipe);
+                            break;
+                        }
+                    }
+                }
+            }
+            return recipes;
+        }
+
+        public static async Task<List<Recipe>> SearchRecipes(int userId, string searchTerm)
+        {
+            await Init();
+            List<Recipe> allRecipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
+            List<Recipe> recipes = new List<Recipe>();
+            foreach (Recipe recipe in allRecipes)
+            {
+                if (recipe.RecipeName.ToLower().Contains(searchTerm.ToLower()))
+                {
+                    recipes.Add(recipe);
+                }
+                else if (recipe.CookingDevice.ToLower().Contains(searchTerm.ToLower()))
+                {
+                    recipes.Add(recipe);
+                }
+                else if (recipe.RecipeType.ToLower().Contains(searchTerm.ToLower()))
+                {
+                    recipes.Add(recipe);
+                }
+                else if (recipe.Ingredients != null)
+                {
+                    foreach (var ingredient in recipe.Ingredients)
+                    {
+                        if (ingredient.Key.ToString().ToLower().Contains(searchTerm.ToLower()))
+                        {
+                            recipes.Add(recipe);
+                            break;
+                        }
+                    }
+                }
+            }
+            return recipes;
+        }
+
+        public static async Task<List<Ingredient>> GetIngredients(int userId)
+        {
+            await Init();
+            List<Ingredient> ingredients = await _db.Table<Ingredient>().Where(i => i.UserId == userId).OrderBy(i => i.IngredientName).ToListAsync();
+            return ingredients;
         }
         #endregion
 
@@ -109,20 +185,27 @@ namespace PlanToPlate.Services
 
             int user1Id = user1.UserId;
 
+            List<string> ingredientsToAdd = new List<string> { "Milk", "Water", "Vanilla Extract", "Rolled Oats", "Cinnamon", "Honey", "Bowtie Pasta", "Kielbasa", "Olive Oil", "Minced Garlic", "Onion", "Red Bell Pepper", "Parmasen Cheese" };
+            foreach(string ing in ingredientsToAdd)
+            {
+                string lowerCaseIng = ing.ToLower();
+                await _db.InsertAsync(new Ingredient() { IngredientName = lowerCaseIng, UserId = user1Id });
+            }
+
             Recipe oatmeal = new Recipe()
             {
                 UserId = user1Id,
                 RecipeName = "Oatmeal",
                 RecipeType = "Breakfast",
                 CookingDevice = "Microwave",
-                Ingredients = new Dictionary<Ingredient, (decimal Quantity, string Unit)>()
+                Ingredients = new Dictionary<string, (decimal Quantity, string Unit)>()
                 {
-                    { new Ingredient() { IngredientName = "Milk" }, (1, "Cup") },
-                    { new Ingredient() { IngredientName = "Water" }, (1, "Cup") },
-                    { new Ingredient() { IngredientName = "Vanilla Extract" }, (0.5m, "tsp") },
-                    { new Ingredient() { IngredientName = "Rolled Oats" }, (1, "Cup") },
-                    { new Ingredient() { IngredientName = "Cinnamon" }, (0.5m, "tsp") },
-                    { new Ingredient() { IngredientName = "Honey" }, (1, "Tbsp") },
+                    { "Milk", (1, "Cup") },
+                    { "Water", (1, "Cup") },
+                    { "Vanilla Extract", (0.5m, "tsp") },
+                    { "Rolled Oats", (1, "Cup") },
+                    { "Cinnamon", (0.5m, "tsp") },
+                    { "Honey", (1, "Tbsp") },
                 },
                 Instructions = new Dictionary<int, string>()
                 {
@@ -139,15 +222,15 @@ namespace PlanToPlate.Services
                 RecipeName = "Kielbassa Pasta",
                 RecipeType = "Dinner",
                 CookingDevice = "Stovetop",
-                Ingredients = new Dictionary<Ingredient, (decimal Quantity, string Unit)>()
+                Ingredients = new Dictionary<string, (decimal Quantity, string Unit)>()
                 {
-                    { new Ingredient() { IngredientName = "Bowtie Pasta" }, (16, "oz") },
-                    { new Ingredient() { IngredientName = "Kielbassa" }, (1, "Whole") },
-                    { new Ingredient() { IngredientName = "Olive Oil" }, (2, "Tbsp") },
-                    { new Ingredient() { IngredientName = "Minced Garlic" }, (2, "tsp") },
-                    { new Ingredient() { IngredientName = "Onion" }, (1, "Medium") },
-                    { new Ingredient() { IngredientName = "Red Bell Pepper" }, (1, "Whole") },
-                    { new Ingredient() { IngredientName = "Parmesan Cheese" }, (0.5m, "Cup") },
+                    { "Bowtie Pasta", (16, "oz") },
+                    { "Kielbassa", (1, "Whole") },
+                    { "Olive Oil", (2, "Tbsp") },
+                    { "Minced Garlic", (2, "tsp") },
+                    { "Onion", (1, "Medium") },
+                    { "Red Bell Pepper", (1, "Whole") },
+                    { "Parmesan Cheese", (0.5m, "Cup") },
                 },
                 Instructions = new Dictionary<int, string>()
                 {

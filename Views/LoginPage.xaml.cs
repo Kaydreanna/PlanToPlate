@@ -28,23 +28,23 @@ public partial class LoginPage : ContentPage
     #region Clicked Events
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
-        //User userToLogIn = await DatabaseService.AuthenticateUser("test@email.com", "Test");
-        //await Navigation.PushAsync(new HomePage(userToLogIn));
-        //Navigation.RemovePage(this);
+        User userToLogIn = await DatabaseService.AuthenticateUser("test@email.com", "Test");
+        await Navigation.PushAsync(new HomePage(userToLogIn));
+        Navigation.RemovePage(this);
 
         //Commented out login function for testing purposes
 
-        User userToLogIn = await DatabaseService.AuthenticateUser(emailOrUsernameEntry.Text, passwordEntry.Text);
-        if (userToLogIn == null)
-        {
-            await DisplayAlert("Error", "Invalid email or password", "OK");
-            return;
-        }
-        else
-        {
-            await Navigation.PushAsync(new HomePage(userToLogIn));
-            Navigation.RemovePage(this);
-        }
+        //User userToLogIn = await DatabaseService.AuthenticateUser(emailOrUsernameEntry.Text, passwordEntry.Text);
+        //if (userToLogIn == null)
+        //{
+        //    await DisplayAlert("Error", "Invalid email or password", "OK");
+        //    return;
+        //}
+        //else
+        //{
+        //    await Navigation.PushAsync(new HomePage(userToLogIn));
+        //    Navigation.RemovePage(this);
+        //}
     }
 
     private async void createAccountButton_Clicked(object sender, EventArgs e)
