@@ -145,6 +145,12 @@ namespace PlanToPlate.Services
             List<Ingredient> ingredients = await _db.Table<Ingredient>().Where(i => i.UserId == userId).OrderBy(i => i.IngredientName).ToListAsync();
             return ingredients;
         }
+
+        public static async Task AddRecipe(Recipe newRecipe)
+        {
+            await Init();
+            await _db.InsertAsync(newRecipe);
+        }
         #endregion
 
         #region Starting Data

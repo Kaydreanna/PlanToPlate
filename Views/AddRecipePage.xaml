@@ -49,17 +49,17 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label x:Name="ingredientsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Text="Ingredients:" Margin="10, 0"/>
-                    <Entry x:Name="ingredientOneAmount" Grid.Row="1" Grid.Column="1" Margin="0, 5"/>
-                    <Entry x:Name="ingredientOneMeasurement" Grid.Row="1" Grid.Column="2" Margin="5"/>
-                    <Entry x:Name="ingredientOneName" Grid.Row="1" Grid.Column="3" Margin="0, 5"/>
+                    <Entry x:Name="ingredientOneAmount" Grid.Row="1" Grid.Column="1" Margin="0, 5" Placeholder="2"/>
+                    <Entry x:Name="ingredientOneMeasurement" Grid.Row="1" Grid.Column="2" Margin="5" Placeholder="Cups"/>
+                    <Entry x:Name="ingredientOneName" Grid.Row="1" Grid.Column="3" Margin="0, 5" Placeholder="Milk"/>
 
-                    <Entry x:Name="ingredientTwoAmount" Grid.Row="2" Grid.Column="1" Margin="0, 5"/>
-                    <Entry x:Name="ingredientTwoMeasurement" Grid.Row="2" Grid.Column="2" Margin="5"/>
-                    <Entry x:Name="ingredientTwoName" Grid.Row="2" Grid.Column="3" Margin="0, 5"/>
+                    <Entry x:Name="ingredientTwoAmount" Grid.Row="2" Grid.Column="1" Margin="0, 5" Placeholder="1"/>
+                    <Entry x:Name="ingredientTwoMeasurement" Grid.Row="2" Grid.Column="2" Margin="5" Placeholder="tsp"/>
+                    <Entry x:Name="ingredientTwoName" Grid.Row="2" Grid.Column="3" Margin="0, 5" Placeholder="Vanilla Extract"/>
 
-                    <Entry x:Name="ingredientThreeAmount" Grid.Row="3" Grid.Column="1" Margin="0, 5"/>
-                    <Entry x:Name="ingredientThreeMeasurement" Grid.Row="3" Grid.Column="2" Margin="5"/>
-                    <Entry x:Name="ingredientThreeName" Grid.Row="3" Grid.Column="3" Margin="0, 5"/>
+                    <Entry x:Name="ingredientThreeAmount" Grid.Row="3" Grid.Column="1" Margin="0, 5" Placeholder="4"/>
+                    <Entry x:Name="ingredientThreeMeasurement" Grid.Row="3" Grid.Column="2" Margin="5" Placeholder="Tbsp"/>
+                    <Entry x:Name="ingredientThreeName" Grid.Row="3" Grid.Column="3" Margin="0, 5" Placeholder="Butter"/>
 
                     <Button x:Name="addIngredientButton" Grid.Row="4" Grid.Column="2" HorizontalOptions="End" FontSize="30" Text="+" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Padding="0" Margin="0, 10" Clicked="addIngredientButton_Clicked"/>
                 </Grid>
