@@ -12,7 +12,7 @@ namespace PlanToPlate.Models
     public class Recipe
     {
         [PrimaryKey, AutoIncrement]
-        public int RecipeId { get; private set; }
+        public int RecipeId { get; set; }
         [Indexed]
         public int UserId { get; set; }
         public string RecipeName { get; set; }

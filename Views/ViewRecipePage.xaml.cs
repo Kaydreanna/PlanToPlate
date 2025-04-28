@@ -1,4 +1,5 @@
 using PlanToPlate.Models;
+using PlanToPlate.Services;
 
 namespace PlanToPlate.Views;
 
@@ -74,6 +75,21 @@ public partial class ViewRecipePage : ContentPage
             instructionsGrid.SetColumn(instructionsLabel, 2);
 
             instructionRowNum++;
+        }
+    }
+
+    private void editButton_Clicked(object sender, EventArgs e)
+    {
+        DisplayAlert("Unavailable", "The ability to edit recipes is coming soon!", "OK");
+    }
+
+    private async void deleteButton_Clicked(object sender, EventArgs e)
+    {
+        bool confirmDelete = await DisplayAlert("Delete Recipe", "Are you sure you want to delete this recipe?", "Yes", "No");
+        if(confirmDelete)
+        {
+            await DatabaseService.DeleteRecipe(selectedRecipe.RecipeId);
+            await Navigation.PopModalAsync();
         }
     }
 }

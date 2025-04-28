@@ -151,6 +151,12 @@ namespace PlanToPlate.Services
             await Init();
             await _db.InsertAsync(newRecipe);
         }
+
+        public static async Task DeleteRecipe(int recipeId)
+        {
+            await Init();
+            await _db.DeleteAsync<Recipe>(recipeId);
+        }
         #endregion
 
         #region Starting Data
@@ -260,6 +266,12 @@ namespace PlanToPlate.Services
                 return;
             }
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "recipes.db");
+
+            // Use the folowing if changes are made to a database
+            //if (File.Exists(databasePath))
+            //{
+            //    File.Delete(databasePath);
+            //}
 
             _db = new SQLiteAsyncConnection(databasePath);
 

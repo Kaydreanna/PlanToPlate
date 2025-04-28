@@ -31,6 +31,7 @@
                 </Grid>
                 <!-- ADD STARS WITH FONT AWESOME -->
                 <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="No ratings yet! The ability to add a rating is coming soon." Margin="20"/>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40"/>
                 <Grid x:Name="ingredientsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -56,7 +57,14 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
                 </Grid>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40"/>
+                <Grid x:Name="editOrDeleteGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="editButton" Grid.Column="0" Text="Edit" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" HorizontalOptions="End" Margin="5, 20" Clicked="editButton_Clicked"/>
+                    <Button x:Name="deleteButton" Grid.Column="1" Text="Delete" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" HorizontalOptions="Start" Margin="5, 20" Clicked="deleteButton_Clicked"/>
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

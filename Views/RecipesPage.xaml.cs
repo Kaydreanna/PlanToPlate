@@ -9,6 +9,7 @@ namespace PlanToPlate.Views;
 public partial class RecipesPage : ContentPage
 {
     public User loggedInUser { get; set; }
+    private List<Recipe> currentListOfRecipes = new List<Recipe>();
 
     public RecipesPage(User user)
 	{
@@ -19,8 +20,8 @@ public partial class RecipesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
-        refreshRecipesTable(recipes);
+        currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
+        refreshRecipesTable();
         ratingPicker.Items.Add("Options coming soon!");
         ratingPicker.SelectedIndex = 0;
         populateDevicePicker();
@@ -46,14 +47,14 @@ public partial class RecipesPage : ContentPage
         devicePicker.SelectedIndex = 0;
         ingredientPicker.SelectedIndex = 0;
         searchRecipesEntry.Text = string.Empty;
-        List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
-        refreshRecipesTable(recipes);
+        currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
+        refreshRecipesTable();
     }
 
     private async void searchButton_Clicked(object sender, EventArgs e)
     {
-        List<Recipe> recipes = await DatabaseService.SearchRecipes(loggedInUser.UserId, searchRecipesEntry.Text);
-        refreshRecipesTable(recipes);
+        currentListOfRecipes = await DatabaseService.SearchRecipes(loggedInUser.UserId, searchRecipesEntry.Text);
+        refreshRecipesTable();
     }
 
     private async void viewRecipeButton_Clicked(Recipe recipe)
@@ -63,9 +64,9 @@ public partial class RecipesPage : ContentPage
     #endregion
 
     #region Methods
-    private void refreshRecipesTable(List<Recipe> recipes)
+    private void refreshRecipesTable()
     {
-        if (recipes.Count == 0)
+        if (currentListOfRecipes.Count == 0)
         {
             noRecipesFoundMessage.IsVisible = true;
             recipesGridLabels.IsVisible = false;
@@ -88,7 +89,7 @@ public partial class RecipesPage : ContentPage
             recipesGridContent.Children.Clear();
             int rowNum = 0;
             var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
-            foreach (Recipe recipe in recipes)
+            foreach (Recipe recipe in currentListOfRecipes)
             {
                 recipesGridContent.RowDefinitions.Add(new RowDefinition());
                 Button recipeNameButton = new Button
@@ -254,8 +255,8 @@ public partial class RecipesPage : ContentPage
             {
                 devicePicker.SelectedIndex = 0;
                 ingredientPicker.SelectedIndex = 0;
-                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Type", selectedItem);
-                refreshRecipesTable(recipes);
+                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Type", selectedItem);
+                refreshRecipesTable();
             }
         }
     }
@@ -268,8 +269,8 @@ public partial class RecipesPage : ContentPage
             {
                 devicePicker.SelectedIndex = 0;
                 typePicker.SelectedIndex = 0;
-                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Ingredient", selectedItem);
-                refreshRecipesTable(recipes);
+                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Ingredient", selectedItem);
+                refreshRecipesTable();
             }
         }
     }
@@ -287,8 +288,8 @@ public partial class RecipesPage : ContentPage
             {
                 typePicker.SelectedIndex = 0;
                 ingredientPicker.SelectedIndex = 0;
-                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Device", selectedItem);
-                refreshRecipesTable(recipes);
+                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Device", selectedItem);
+                refreshRecipesTable();
             }
         }
     }
