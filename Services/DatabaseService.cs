@@ -210,14 +210,14 @@ namespace PlanToPlate.Services
                 RecipeName = "Oatmeal",
                 RecipeType = "Breakfast",
                 CookingDevice = "Microwave",
-                Ingredients = new Dictionary<string, (decimal Quantity, string Unit)>()
+                Ingredients = new Dictionary<string, (string Quantity, string Unit)>()
                 {
-                    { "Milk", (1, "Cup") },
-                    { "Water", (1, "Cup") },
-                    { "Vanilla Extract", (0.5m, "tsp") },
-                    { "Rolled Oats", (1, "Cup") },
-                    { "Cinnamon", (0.5m, "tsp") },
-                    { "Honey", (1, "Tbsp") },
+                    { "Milk", ("1", "Cup") },
+                    { "Water", ("1", "Cup") },
+                    { "Vanilla Extract", ("1/2", "tsp") },
+                    { "Rolled Oats", ("1", "Cup") },
+                    { "Cinnamon", ("1/2", "tsp") },
+                    { "Honey", ("1", "Tbsp") },
                 },
                 Instructions = new Dictionary<int, string>()
                 {
@@ -234,15 +234,15 @@ namespace PlanToPlate.Services
                 RecipeName = "Kielbassa Pasta",
                 RecipeType = "Dinner",
                 CookingDevice = "Stovetop",
-                Ingredients = new Dictionary<string, (decimal Quantity, string Unit)>()
+                Ingredients = new Dictionary<string, (string Quantity, string Unit)>()
                 {
-                    { "Bowtie Pasta", (16, "oz") },
-                    { "Kielbassa", (1, "Whole") },
-                    { "Olive Oil", (2, "Tbsp") },
-                    { "Minced Garlic", (2, "tsp") },
-                    { "Onion", (1, "Medium") },
-                    { "Red Bell Pepper", (1, "Whole") },
-                    { "Parmesan Cheese", (0.5m, "Cup") },
+                    { "Bowtie Pasta", ("16", "oz") },
+                    { "Kielbassa", ("1", "Whole") },
+                    { "Olive Oil", ("2", "Tbsp") },
+                    { "Minced Garlic", ("2", "tsp") },
+                    { "Onion", ("1", "Medium") },
+                    { "Red Bell Pepper", ("1", "Whole") },
+                    { "Parmesan Cheese", ("1/2", "Cup") },
                 },
                 Instructions = new Dictionary<int, string>()
                 {
@@ -267,7 +267,8 @@ namespace PlanToPlate.Services
             }
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "recipes.db");
 
-            // Use the folowing if changes are made to a database
+            //Use the folowing if changes are made to a database
+
             //if (File.Exists(databasePath))
             //{
             //    File.Delete(databasePath);

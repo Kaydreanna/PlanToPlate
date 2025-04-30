@@ -1,5 +1,6 @@
 using PlanToPlate.Models;
 using PlanToPlate.Services;
+using System;
 
 namespace PlanToPlate.Views;
 
@@ -44,6 +45,13 @@ public partial class ViewRecipePage : ContentPage
             ingredientsGrid.SetColumn(ingredientLabel, 1);
             ingredientRowNum++;
         }
+
+        //string str = num.ToString();
+        //if (str.Contains("."))
+        //{
+        //    str = str.TrimEnd('0').TrimEnd('.');
+        //}
+        //return str;
         int instructionRowNum = 1;
         foreach (var instruction in selectedRecipe.Instructions)
         {

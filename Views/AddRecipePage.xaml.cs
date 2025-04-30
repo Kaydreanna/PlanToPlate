@@ -105,7 +105,7 @@ public partial class AddRecipePage : ContentPage
     {
         if (validInput())
         {
-            Dictionary<string, (decimal, string)> ingredientsToAdd = new Dictionary<string, (decimal, string)>();
+            Dictionary<string, (string, string)> ingredientsToAdd = new Dictionary<string, (string, string)>();
             Dictionary<int, string> instructionsToAdd = new Dictionary<int, string>();
 
             var ingredientEntries = ingredientsGrid.Children.OfType<Entry>().GroupBy(e => Grid.GetRow(e)).OrderBy(group => group.Key);
@@ -113,19 +113,14 @@ public partial class AddRecipePage : ContentPage
             {
                 var ingredientInfo = newIngredient.OrderBy(e => Grid.GetColumn(e)).ToList();
                 var inputIngredientAmount = ingredientInfo[0].Text;
-                decimal ingredientAmount;
                 var ingredientMeasurement = ingredientInfo[1].Text;
                 var ingredientName = ingredientInfo[2].Text;
                 if (inputIngredientAmount == null && ingredientMeasurement == null && ingredientName == null)
                 {
                     continue;
-                } else if (!Decimal.TryParse(inputIngredientAmount, out ingredientAmount))
+                }else if (inputIngredientAmount != null && ingredientName != null)
                 {
-                    await DisplayAlert("Error", "Please ensure every ingredient has a valid quantity.", "OK");
-                }
-                else if (inputIngredientAmount != null && ingredientName != null)
-                {
-                    ingredientsToAdd.Add(ingredientName, (Convert.ToDecimal(inputIngredientAmount), ingredientMeasurement));
+                    ingredientsToAdd.Add(ingredientName, (inputIngredientAmount, ingredientMeasurement));
                 }
                 else
                 {

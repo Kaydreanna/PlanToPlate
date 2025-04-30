@@ -20,11 +20,11 @@ namespace PlanToPlate.Models
         public string CookingDevice { get; set; }
         public string IngredientsJson { get; set; }
         [Ignore]
-        public Dictionary<string, (decimal Quantity, string Unit)> Ingredients 
+        public Dictionary<string, (string Quantity, string Unit)> Ingredients 
         {
             get => string.IsNullOrEmpty(IngredientsJson)
-                    ? new Dictionary<string, (decimal, string)>()
-                    : JsonConvert.DeserializeObject<Dictionary<string, (decimal, string)>>(IngredientsJson);
+                    ? new Dictionary<string, (string, string)>()
+                    : JsonConvert.DeserializeObject<Dictionary<string, (string, string)>>(IngredientsJson);
             set => IngredientsJson = JsonConvert.SerializeObject(value);
         }
         public string InstructionsJson { get; set; }
