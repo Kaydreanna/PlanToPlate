@@ -1,15 +1,18 @@
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace PlanToPlate.Views;
 
 public partial class ViewRecipePage : ContentPage
 {
+    public User loggedInUser { get; set; }
     public Recipe selectedRecipe { get; set; }
-    public ViewRecipePage(Recipe recipe)
+    public ViewRecipePage(User user, Recipe recipe)
 	{
 		InitializeComponent();
+        loggedInUser = user;
         selectedRecipe = recipe;
     }
 
@@ -45,13 +48,6 @@ public partial class ViewRecipePage : ContentPage
             ingredientsGrid.SetColumn(ingredientLabel, 1);
             ingredientRowNum++;
         }
-
-        //string str = num.ToString();
-        //if (str.Contains("."))
-        //{
-        //    str = str.TrimEnd('0').TrimEnd('.');
-        //}
-        //return str;
         int instructionRowNum = 1;
         foreach (var instruction in selectedRecipe.Instructions)
         {
@@ -86,9 +82,10 @@ public partial class ViewRecipePage : ContentPage
         }
     }
 
-    private void editButton_Clicked(object sender, EventArgs e)
+    private async void editButton_Clicked(object sender, EventArgs e)
     {
-        DisplayAlert("Unavailable", "The ability to edit recipes is coming soon!", "OK");
+        await Navigation.PushModalAsync(new AddRecipePage(loggedInUser, selectedRecipe));
+        //await Navigation.PopAsync();
     }
 
     private async void deleteButton_Clicked(object sender, EventArgs e)

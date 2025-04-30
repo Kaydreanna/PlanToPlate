@@ -27,7 +27,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Label x:Name="nameLabel" Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" Text="Name:" />
-                <Entry x:Name="nameEntry" Grid.Row="0" Grid.Column="2" Margin="0, 10, 0, 0"/>
+                <Entry x:Name="nameEntry" Grid.Row="0" Grid.Column="2" Margin="0, 10, 0, 0" Placeholder="Recipe Name"/>
                 <Label x:Name="typeLabel" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" Text="Type:" />
                 <Picker x:Name="typePicker" Grid.Row="1" Grid.Column="2" Margin="0, 10, 0, 0"/>
                 <Label x:Name="deviceLabel" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" Text="Device"/>
@@ -44,25 +44,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label x:Name="ingredientsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Text="Ingredients:" Margin="10, 0"/>
-                    <Entry x:Name="ingredientOneAmount" Grid.Row="1" Grid.Column="1" Margin="0, 5" Placeholder="2"/>
-                    <Entry x:Name="ingredientOneMeasurement" Grid.Row="1" Grid.Column="2" Margin="5" Placeholder="Cups"/>
-                    <Entry x:Name="ingredientOneName" Grid.Row="1" Grid.Column="3" Margin="0, 5" Placeholder="Milk"/>
-
-                    <Entry x:Name="ingredientTwoAmount" Grid.Row="2" Grid.Column="1" Margin="0, 5" Placeholder="1"/>
-                    <Entry x:Name="ingredientTwoMeasurement" Grid.Row="2" Grid.Column="2" Margin="5" Placeholder="tsp"/>
-                    <Entry x:Name="ingredientTwoName" Grid.Row="2" Grid.Column="3" Margin="0, 5" Placeholder="Vanilla Extract"/>
-
-                    <Entry x:Name="ingredientThreeAmount" Grid.Row="3" Grid.Column="1" Margin="0, 5" Placeholder="4"/>
-                    <Entry x:Name="ingredientThreeMeasurement" Grid.Row="3" Grid.Column="2" Margin="5" Placeholder="Tbsp"/>
-                    <Entry x:Name="ingredientThreeName" Grid.Row="3" Grid.Column="3" Margin="0, 5" Placeholder="Butter"/>
-
-                    <Button x:Name="addIngredientButton" Grid.Row="4" Grid.Column="2" HorizontalOptions="End" FontSize="30" Text="+" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Padding="0" Margin="0, 10" Clicked="addIngredientButton_Clicked"/>
                 </Grid>
+                <Button x:Name="addIngredientButton" HorizontalOptions="Center" FontSize="30" Text="+" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Padding="0" Margin="0, 10" Clicked="addIngredientButton_Clicked"/>
                 <Grid x:Name="instructionsGrid" Margin="0, 20, 0, 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -72,14 +57,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" Text="Instructions:" Margin="10, 0"/>
-                    <Label x:Name="instructionOneLabel" Grid.Row="1" Grid.Column="0" HorizontalOptions="End" Text="1." Margin="5"/>
-                    <Editor x:Name="instructionOneEditor" Grid.Row="1" Grid.Column="1" AutoSize="TextChanges" />
-                    <Button x:Name="addInstructionButton" Grid.Row="2" Grid.Column="1" HorizontalOptions="Center" FontSize="30" Text="+" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Padding="0" Margin="0, 10" Clicked="addInstructionButton_Clicked"/>
                 </Grid>
+                <Button x:Name="addInstructionButton" HorizontalOptions="Center" FontSize="30" Text="+" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Padding="0" Margin="0, 10" Clicked="addInstructionButton_Clicked"/>
                 <HorizontalStackLayout x:Name="saveOrCancelButtons" HorizontalOptions="Center" Margin="0, 30">
                     <Button x:Name="saveButton" Text="Save" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Margin="5, 0" Clicked="saveButton_Clicked"/>
                     <Button x:Name="cancelButton" Text="Cancel" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Margin="5, 0" Clicked="closeRecipeButton_Clicked"/>

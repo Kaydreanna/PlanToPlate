@@ -38,7 +38,7 @@ public partial class RecipesPage : ContentPage
     #region Clicked Events
     private async void addRecipeButton_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddRecipePage(loggedInUser));
+        await Navigation.PushModalAsync(new AddRecipePage(loggedInUser, null));
     }
 
     private async void clearButton_Clicked(object sender, EventArgs e)
@@ -59,7 +59,7 @@ public partial class RecipesPage : ContentPage
 
     private async void viewRecipeButton_Clicked(Recipe recipe)
     {
-        await Navigation.PushModalAsync(new ViewRecipePage(recipe));
+        await Navigation.PushModalAsync(new ViewRecipePage(loggedInUser, recipe));
     }
     #endregion
 

@@ -152,6 +152,17 @@ namespace PlanToPlate.Services
             await _db.InsertAsync(newRecipe);
         }
 
+        public static async Task UpdateRecipe(Recipe recipeToUpdate, Recipe updatedRecipe)
+        {
+            await Init();
+            recipeToUpdate.RecipeName = updatedRecipe.RecipeName;
+            recipeToUpdate.RecipeType = updatedRecipe.RecipeType;
+            recipeToUpdate.CookingDevice = updatedRecipe.CookingDevice;
+            recipeToUpdate.Ingredients = updatedRecipe.Ingredients;
+            recipeToUpdate.Instructions = updatedRecipe.Instructions;
+            await _db.UpdateAsync(recipeToUpdate);
+        }
+
         public static async Task DeleteRecipe(int recipeId)
         {
             await Init();
