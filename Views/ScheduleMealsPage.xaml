@@ -5,7 +5,7 @@
              x:Class="PlanToPlate.Views.ScheduleMealsPage"
              Title="ScheduleMealsPage">
     <Grid>
-        <ScrollView>
+        <ScrollView x:Name="mainContent" Grid.Row="0" Margin="0, 0, 0, 70">
             <VerticalStackLayout>
                 <Label x:Name="scheduleMealLabel" Text="Schedule Meal" FontSize="30" BackgroundColor="{StaticResource Primary}" Padding="30, 0, 0, 0" Margin="0, 0, 0, 10"/>
                 <Grid x:Name="scheduleMeal">
@@ -28,12 +28,13 @@
                     <Label x:Name="recipeLabel" Grid.Row="2" Grid.Column="1" Text="Recipe:" VerticalOptions="Center"/>
                     <Picker x:Name="recipePicker" Grid.Row="2" Grid.Column="2" />
                 </Grid>
-                <Button x:Name="scheduleRecipeButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="30, 0" Margin="10" HorizontalOptions="Center"/>
+                <Button x:Name="scheduleRecipeButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="30, 0" Margin="10" HorizontalOptions="Center" Clicked="scheduleRecipeButton_Clicked"/>
                 <Label x:Name="viewScheduledMealsLabel" Text="View Scheduled Meals" FontSize="30" Padding="30, 0, 0, 0" Margin="0, 10" BackgroundColor="{StaticResource Primary}"/>
                 <Grid x:Name="scheduledMealsDates" Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -43,8 +44,8 @@
                     <DatePicker x:Name="startDatePicker" Grid.Row="1" Grid.Column="0" HorizontalOptions="Center"/>
                     <Label x:Name="endDateLabel" Grid.Row="0" Grid.Column="1" Text="End Date:" />
                     <DatePicker x:Name="endDatePicker" Grid.Row="1" Grid.Column="1" HorizontalOptions="Center"/>
+                    <Button x:Name="showDatesButton" Grid.Row="1" Grid.Column="2" Text="Go" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="0, 10" HorizontalOptions="Center" Clicked="showDatesButton_Clicked"/>
                 </Grid>
-                <Button x:Name="showDatesButton" Text="Go" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="30, 0" Margin="0, 30" HorizontalOptions="Center" Clicked="showDatesButton_Clicked"/>
                 <Grid x:Name="scheduledMealsGrid"></Grid>
             </VerticalStackLayout>
         </ScrollView>

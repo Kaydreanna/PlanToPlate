@@ -48,30 +48,13 @@ namespace PlanToPlate.Services
         }
         #endregion
 
-
-        #region Settings Methods
-        public static async Task ChangePassword(User user, string newPassword)
-        {
-            await Init();
-            user.Password = newPassword;
-            await _db.UpdateAsync(user);
-        }
-
-        public static async Task ChangeUsername(User user, string newUsername)
-        {
-            await Init();
-            user.Username = newUsername;
-            await _db.UpdateAsync(user);
-        }
-
-        public static async Task DeleteAccount(User user)
-        {
-            await Init();
-            await _db.DeleteAsync(user);
-        }
-        #endregion
-
         #region Recipe Methods
+        public static async Task<List<Recipe>> GetAllRecipes(int userId)
+        {
+            await Init();
+            List<Recipe> recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
+            return recipes;
+        }
         public static async Task<List<Recipe>> GetRecipes(int userId, string filterParameter, string selectedItem)
         {
             await Init();
@@ -167,6 +150,57 @@ namespace PlanToPlate.Services
         {
             await Init();
             await _db.DeleteAsync<Recipe>(recipeId);
+        }
+        #endregion
+
+        #region Schedule Meals Methods
+        public static async Task<int> GetRecipeId(string recipeName, int userId)
+        {
+            await Init();
+            var recipe = await _db.Table<Recipe>().Where(r => r.RecipeName == recipeName && r.UserId == userId).FirstOrDefaultAsync();
+            if (recipe != null)
+            {
+                return recipe.RecipeId;
+            }
+            else
+            {
+                return -1; // or throw an exception
+            }
+        }
+
+        public static async Task ScheduleMeal(ScheduledMeals scheduledMeal)
+        {
+            await Init();
+            await _db.InsertAsync(scheduledMeal);
+        }
+
+        public static async Task<List<ScheduledMeals>> GetScheduledMeals(int userId, DateTime startDate, DateTime endDate)
+        {
+            await Init();
+            List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date >= startDate && i.Date <= endDate).ToListAsync();
+            return scheduledMeals;
+        }
+        #endregion
+
+        #region Settings Methods
+        public static async Task ChangePassword(User user, string newPassword)
+        {
+            await Init();
+            user.Password = newPassword;
+            await _db.UpdateAsync(user);
+        }
+
+        public static async Task ChangeUsername(User user, string newUsername)
+        {
+            await Init();
+            user.Username = newUsername;
+            await _db.UpdateAsync(user);
+        }
+
+        public static async Task DeleteAccount(User user)
+        {
+            await Init();
+            await _db.DeleteAsync(user);
         }
         #endregion
 
