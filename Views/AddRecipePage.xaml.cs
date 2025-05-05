@@ -37,12 +37,14 @@ public partial class AddRecipePage : ContentPage
 
         if(recipeToEdit != null)
         {
+            addNewRecipeLabel.Text = "Edit Recipe";
             nameEntry.Text = recipeToEdit.RecipeName;
             typePicker.SelectedItem = recipeToEdit.RecipeType;
             devicePicker.SelectedItem = recipeToEdit.CookingDevice;
             displayExistingIngredientsAndInstructions();
         } else
         {
+            addNewRecipeLabel.Text = "Add New Recipe";
             typePicker.SelectedIndex = 0;
             devicePicker.SelectedIndex = 0;
             ingredientRowNum = 1;

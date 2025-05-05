@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:Class="PlanToPlate.Views.AddRecipePage"
              Title="AddRecipePage">
     <Grid>
@@ -10,8 +11,12 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" VerticalOptions="Center" BackgroundColor="{StaticResource Primary}" Padding="0, 0, 10, 0">
                 <Label x:Name="addNewRecipeLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="30" Text="Add New Recipe" />
-                <Button x:Name="closeRecipeButton" HorizontalOptions="End" Text="X" BackgroundColor="Transparent" FontSize="30" TextColor="{StaticResource PrimaryDarkText}" Padding="5, 0, 0, 5" Clicked="closeRecipeButton_Clicked"/>
-            </Grid>
+            <ImageButton x:Name="closeRecipeImageButton" HorizontalOptions="End" BackgroundColor="Transparent" Padding="5, 0, 0, 5" Clicked="closeRecipeButton_Clicked">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Xmark}" Color="{StaticResource IconDark}"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
         <ScrollView Grid.Row="1" VerticalOptions="Start">
             <VerticalStackLayout>
                 <Grid x:Name="recipeInfoGrid" Margin="0, 20, 0, 0">
