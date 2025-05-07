@@ -44,34 +44,6 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label x:Name="dayOneLabel" Grid.Row="0" Grid.Column="0" Text="Day 1" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="dayTwoLabel" Grid.Row="0" Grid.Column="1" Text="Day 2" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="dayThreeLabel" Grid.Row="0" Grid.Column="2" Text="Day 3" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="dayFourLabel" Grid.Row="0" Grid.Column="3" Text="Day 4" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="dayFiveLabel" Grid.Row="0" Grid.Column="4" Text="Day 5" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="daySixLabel" Grid.Row="0" Grid.Column="5" Text="Day 6" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Label x:Name="daySevenLabel" Grid.Row="0" Grid.Column="6" Text="Day 7" VerticalOptions="Center" HorizontalTextAlignment="Center" Padding="0, 10" BackgroundColor="{StaticResource SecondaryDark}"/>
-                    <Button x:Name="DayOneBreakfastButton" Grid.Row="1" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayTwoBreakfastButton" Grid.Row="1" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayThreeBreakfastButton" Grid.Row="1" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFourBreakfastButton" Grid.Row="1" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFiveBreakfastButton" Grid.Row="1" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySixBreakfastButton" Grid.Row="1" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySevenBreakfastButton" Grid.Row="1" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayOneLunchButton" Grid.Row="2" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayTwoLunchButton" Grid.Row="2" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayThreeLunchButton" Grid.Row="2" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFourLunchButton" Grid.Row="2" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFiveLunchButton" Grid.Row="2" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySixLunchButton" Grid.Row="2" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySevenLunchButton" Grid.Row="2" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayOneDinnerButton" Grid.Row="3" Grid.Column="0" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayTwoDinnerButton" Grid.Row="3" Grid.Column="1" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayThreeDinnerButton" Grid.Row="3" Grid.Column="2" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFourDinnerButton" Grid.Row="3" Grid.Column="3" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DayFiveDinnerButton" Grid.Row="3" Grid.Column="4" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySixDinnerButton" Grid.Row="3" Grid.Column="5" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
-                    <Button x:Name="DaySevenDinnerButton" Grid.Row="3" Grid.Column="6" Text="--" FontSize="8" HeightRequest="20" CornerRadius="0" Clicked="scheduledRecipeButton_Clicked"/>
                     <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="2" BackgroundColor="Transparent" Margin="0, 20" Clicked="previousDatesButton_Clicked">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowLeft}" Color="{StaticResource IconDark}"/>

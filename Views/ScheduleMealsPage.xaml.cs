@@ -92,7 +92,9 @@ public partial class ScheduleMealsPage : ContentPage
         scheduledMealsGrid.RowDefinitions.Clear();
         var secondaryColor = (Color)Application.Current.Resources["Secondary"];
         var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
-        List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, selectedMonth);
+        DateTime startOfMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1);
+        DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+        List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, startOfMonth, endOfMonth);
 
         scheduledMealsGrid.RowDefinitions.Add(new RowDefinition());
         scheduledMealsGrid.RowDefinitions.Add(new RowDefinition());

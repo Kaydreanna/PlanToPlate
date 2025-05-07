@@ -48,6 +48,14 @@ namespace PlanToPlate.Services
         }
         #endregion
 
+        #region Home Methods
+        public static async Task<Recipe> GetRecipe(int userId, int recipeId)
+        {
+            await Init();
+            return await _db.Table<Recipe>().Where(i => i.UserId == userId && i.RecipeId == recipeId).FirstOrDefaultAsync();
+        }
+        #endregion
+
         #region Recipe Methods
         public static async Task<List<Recipe>> GetAllRecipes(int userId)
         {
@@ -174,12 +182,10 @@ namespace PlanToPlate.Services
             await _db.InsertAsync(scheduledMeal);
         }
 
-        public static async Task<List<ScheduledMeals>> GetScheduledMeals(int userId, DateTime selectedMonth)
+        public static async Task<List<ScheduledMeals>> GetScheduledMeals(int userId, DateTime startDate, DateTime endDate)
         {
             await Init();
-            DateTime startOfMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1);
-            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
-            List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date >= startOfMonth && i.Date <= endOfMonth).ToListAsync();
+            List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date >= startDate && i.Date <= endDate).ToListAsync();
             return scheduledMeals;
         }
 
