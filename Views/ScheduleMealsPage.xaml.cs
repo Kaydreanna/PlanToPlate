@@ -50,9 +50,9 @@ public partial class ScheduleMealsPage : ContentPage
                     MealType = typePicker.SelectedItem.ToString(),
                     RecipeId = recipeId
                 });
+                await DisplayAlert("Meal Scheduled", $"{recipePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", "OK");
                 typePicker.SelectedIndex = 0;
                 recipePicker.SelectedIndex = 0;
-                await DisplayAlert("Meal Scheduled", $"{typePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", "OK");
             }
         }
     }
