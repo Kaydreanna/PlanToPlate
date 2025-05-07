@@ -48,14 +48,6 @@ namespace PlanToPlate.Services
         }
         #endregion
 
-        #region Home Methods
-        public static async Task<Recipe> GetRecipe(int userId, int recipeId)
-        {
-            await Init();
-            return await _db.Table<Recipe>().Where(i => i.UserId == userId && i.RecipeId == recipeId).FirstOrDefaultAsync();
-        }
-        #endregion
-
         #region Recipe Methods
         public static async Task<List<Recipe>> GetAllRecipes(int userId)
         {
@@ -158,6 +150,22 @@ namespace PlanToPlate.Services
         {
             await Init();
             await _db.DeleteAsync<Recipe>(recipeId);
+        }
+        #endregion
+
+        #region Shopping List Methods
+        public static async Task<List<ShoppingList>> GetAllShoppingLists(int userId)
+        {
+            await Init();
+            return await _db.Table<ShoppingList>().Where(i => i.UserId == userId).ToListAsync();
+        }
+        #endregion
+
+        #region Home Methods
+        public static async Task<Recipe> GetRecipe(int userId, int recipeId)
+        {
+            await Init();
+            return await _db.Table<Recipe>().Where(i => i.UserId == userId && i.RecipeId == recipeId).FirstOrDefaultAsync();
         }
         #endregion
 
@@ -265,11 +273,21 @@ namespace PlanToPlate.Services
             int user1Id = user1.UserId;
 
             List<string> ingredientsToAdd = new List<string> { "Milk", "Water", "Vanilla Extract", "Rolled Oats", "Cinnamon", "Honey", "Bowtie Pasta", "Kielbasa", "Olive Oil", "Minced Garlic", "Onion", "Red Bell Pepper", "Parmasen Cheese" };
-            foreach(string ing in ingredientsToAdd)
+            ShoppingList user1ShoppingList = new ShoppingList()
+            {
+                UserId = user1Id,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(7),
+                Ingredients = new List<Ingredient>()
+            };
+            foreach (string ing in ingredientsToAdd)
             {
                 string lowerCaseIng = ing.ToLower();
-                await _db.InsertAsync(new Ingredient() { IngredientName = lowerCaseIng, UserId = user1Id });
+                Ingredient ingredient = new Ingredient() { IngredientName = lowerCaseIng, UserId = user1Id };
+                user1ShoppingList.Ingredients.Add(ingredient);
+                await _db.InsertAsync(ingredient);
             }
+            await _db.InsertAsync(user1ShoppingList);
 
             Recipe oatmeal = new Recipe()
             {
