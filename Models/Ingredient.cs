@@ -9,6 +9,8 @@ namespace PlanToPlate.Models
 {
     public class Ingredient
     {
+        [PrimaryKey, AutoIncrement]
+        public int IngredientId { get; private set; }
         public int UserId { get; set; }
         public string IngredientName { get; set; }
     }

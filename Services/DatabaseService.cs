@@ -159,6 +159,12 @@ namespace PlanToPlate.Services
             await Init();
             return await _db.Table<ShoppingList>().Where(i => i.UserId == userId).ToListAsync();
         }
+
+        public static async Task<ShoppingList> GetShoppingListById(int shoppingListId)
+        {
+            await Init();
+            return await _db.Table<ShoppingList>().Where(i => i.ListId == shoppingListId).FirstOrDefaultAsync();
+        }
         #endregion
 
         #region Home Methods
@@ -273,20 +279,35 @@ namespace PlanToPlate.Services
             int user1Id = user1.UserId;
 
             List<string> ingredientsToAdd = new List<string> { "Milk", "Water", "Vanilla Extract", "Rolled Oats", "Cinnamon", "Honey", "Bowtie Pasta", "Kielbasa", "Olive Oil", "Minced Garlic", "Onion", "Red Bell Pepper", "Parmasen Cheese" };
+            foreach (string ing in ingredientsToAdd)
+            {
+                string lowerCaseIng = ing.ToLower();
+                Ingredient ingredient = new Ingredient() { IngredientName = lowerCaseIng, UserId = user1Id };
+                await _db.InsertAsync(ingredient);
+            }
+
             ShoppingList user1ShoppingList = new ShoppingList()
             {
                 UserId = user1Id,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(7),
-                Ingredients = new List<Ingredient>()
+                IngredientList = new Dictionary<string, bool>{ 
+                    { "Milk", true }, 
+                    { "Water", true }, 
+                    { "Vanilla Extract", true }, 
+                    { "Rolled Oats", true }, 
+                    { "Cinnamon", true }, 
+                    { "Honey", true }, 
+                    { "Bowtie Pasta", true }, 
+                    { "Kielbasa", true }, 
+                    { "Olive Oil", true }, 
+                    { "Minced Garlic", true }, 
+                    { "Onion", true }, 
+                    { "Red Bell Pepper", true },
+                    { "Parmasen Cheese", true } 
+                }
             };
-            foreach (string ing in ingredientsToAdd)
-            {
-                string lowerCaseIng = ing.ToLower();
-                Ingredient ingredient = new Ingredient() { IngredientName = lowerCaseIng, UserId = user1Id };
-                user1ShoppingList.Ingredients.Add(ingredient);
-                await _db.InsertAsync(ingredient);
-            }
+
             await _db.InsertAsync(user1ShoppingList);
 
             Recipe oatmeal = new Recipe()
@@ -373,3 +394,6 @@ namespace PlanToPlate.Services
         }
     }
 }
+
+
+//CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower()); 

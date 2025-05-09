@@ -16,24 +16,14 @@ namespace PlanToPlate.Models
         public int UserId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string IngredientsJson { get; set; }
+        public string IngredientListJson { get; set; }
         [Ignore]
-        public List<Ingredient> Ingredients 
+        public Dictionary<string, bool> IngredientList 
         { 
-            get => string.IsNullOrEmpty(IngredientsJson)
-                ? new List<Ingredient>()
-                : JsonConvert.DeserializeObject<List<Ingredient>>(IngredientsJson); 
-            set => IngredientsJson = JsonConvert.SerializeObject(value); 
+            get => string.IsNullOrEmpty(IngredientListJson)
+                ? new Dictionary<string, bool>()
+                : JsonConvert.DeserializeObject<Dictionary<string, bool>>(IngredientListJson); 
+            set => IngredientListJson = JsonConvert.SerializeObject(value); 
         }
-        public string ListForShoppingJson { get; set; }
-        [Ignore]
-        public List<Ingredient> ListForShopping 
-        { 
-            get => string.IsNullOrEmpty(ListForShoppingJson)
-                ? new List<Ingredient>()
-                : JsonConvert.DeserializeObject<List<Ingredient>>(ListForShoppingJson); 
-            set => ListForShoppingJson = JsonConvert.SerializeObject(value); 
-        }
-
     }
 }

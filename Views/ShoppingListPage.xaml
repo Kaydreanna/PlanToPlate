@@ -25,7 +25,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                 </Grid>
             </VerticalStackLayout>
