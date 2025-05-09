@@ -100,7 +100,7 @@ public partial class ShoppingListPage : ContentPage
                     IsVisible = false
                 };
 
-                Grid shoppingListDetailsGrid = createShoppingListDetailsGrid(shoppingList);
+                Grid shoppingListDetailsGrid = await createShoppingListDetailsGrid(shoppingList);
 
                 container.Children.Add(shoppingListDetailsGrid);
                 pastShoppingListsGrid.Children.Add(container);
@@ -118,7 +118,7 @@ public partial class ShoppingListPage : ContentPage
         }
     }
 
-    private Grid createShoppingListDetailsGrid(ShoppingList shoppingList)
+    private async Task<Grid> createShoppingListDetailsGrid(ShoppingList shoppingList)
     {
         Grid shoppingListDetailsGrid = new Grid
         {
@@ -152,6 +152,33 @@ public partial class ShoppingListPage : ContentPage
             shoppingListDetailsGrid.SetColumn(ingredientLabel, columnNum);
             columnNum++;
         }
+        ImageButton editImageButton = new ImageButton
+        {
+            Source = "editicon.png",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            WidthRequest = 5,
+            HeightRequest = 5,
+            BackgroundColor = Colors.Transparent,
+            Padding = 0,
+            Margin = 0
+        };
+        editImageButton.BindingContext = shoppingList.ListId;
+        editImageButton.Clicked += async (s, e) => await Navigation.PushModalAsync(new EditShoppingListPage(shoppingList));
+        shoppingListDetailsGrid.Children.Add(editImageButton);
+        if(columnNum == 3)
+        {
+            shoppingListDetailsGrid.RowDefinitions.Add(new RowDefinition());
+            rowNum++;
+            shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
+            shoppingListDetailsGrid.SetColumn(editImageButton, 1);
+        }
+        else
+        {
+            shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
+            shoppingListDetailsGrid.SetColumn(editImageButton, 2);
+        }
+
         return shoppingListDetailsGrid;
     }
 

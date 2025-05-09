@@ -1,11 +1,15 @@
+using PlanToPlate.Models;
+
 namespace PlanToPlate.Views;
 
 public partial class EditShoppingListPage : ContentPage
 {
-	public EditShoppingListPage()
+    private ShoppingList shoppingList { get; set; }
+    public EditShoppingListPage(ShoppingList shoppingListToEdit)
 	{
 		InitializeComponent();
-	}
+        shoppingList = shoppingListToEdit;
+    }
 
     private async void closeButton_Clicked(object sender, EventArgs e)
     {
