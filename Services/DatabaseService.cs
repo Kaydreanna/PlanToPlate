@@ -1,4 +1,5 @@
-﻿using PlanToPlate.Models;
+﻿using Newtonsoft.Json;
+using PlanToPlate.Models;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -165,6 +166,37 @@ namespace PlanToPlate.Services
             await Init();
             return await _db.Table<ShoppingList>().Where(i => i.ListId == shoppingListId).FirstOrDefaultAsync();
         }
+
+        public static async Task<List<ScheduledMeals>> GetScheduledMealsByDate(int userId, DateTime startDate, DateTime endDate)
+        {
+            await Init();
+            return await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date >= startDate && i.Date <= endDate).ToListAsync();
+        }
+
+        public static async Task<List<string>> GetRecipeIngredients(int recipeId)
+        {
+            await Init();
+            var recipe = await _db.Table<Recipe>().Where(i => i.RecipeId == recipeId).FirstOrDefaultAsync();
+            if (recipe != null)
+            {
+                return recipe.Ingredients.Keys.ToList();
+            }
+            return new List<string>();
+        }
+
+        public static async Task UpdateShoppingList(ShoppingList shoppingList, Dictionary<string, bool> ingredients)
+        {
+            await Init();
+            shoppingList.IngredientList = ingredients;
+            shoppingList.IngredientListJson = JsonConvert.SerializeObject(ingredients);
+            await _db.UpdateAsync(shoppingList);
+        }
+
+        public static async Task DeleteShoppingList(ShoppingList shoppingList)
+        {
+            await Init();
+            await _db.DeleteAsync(shoppingList);
+        }
         #endregion
 
         #region Home Methods
@@ -290,24 +322,23 @@ namespace PlanToPlate.Services
             {
                 UserId = user1Id,
                 StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(7),
+                EndDate = DateTime.Now.AddDays(6),
                 IngredientList = new Dictionary<string, bool>{ 
-                    { "Milk", true }, 
-                    { "Water", true }, 
-                    { "Vanilla Extract", true }, 
-                    { "Rolled Oats", true }, 
-                    { "Cinnamon", true }, 
-                    { "Honey", true }, 
-                    { "Bowtie Pasta", true }, 
-                    { "Kielbasa", true }, 
-                    { "Olive Oil", true }, 
-                    { "Minced Garlic", true }, 
-                    { "Onion", true }, 
-                    { "Red Bell Pepper", true },
-                    { "Parmasen Cheese", true } 
+                    { "Milk", false }, 
+                    { "Water", false }, 
+                    { "Vanilla Extract", false }, 
+                    { "Rolled Oats", false }, 
+                    { "Cinnamon", false }, 
+                    { "Honey", false }, 
+                    { "Bowtie Pasta", false }, 
+                    { "Kielbasa", false }, 
+                    { "Olive Oil", false }, 
+                    { "Minced Garlic", false }, 
+                    { "Onion", false }, 
+                    { "Red Bell Pepper", false },
+                    { "Parmasen Cheese", false } 
                 }
             };
-
             await _db.InsertAsync(user1ShoppingList);
 
             Recipe oatmeal = new Recipe()

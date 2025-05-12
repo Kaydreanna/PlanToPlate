@@ -11,7 +11,7 @@ namespace PlanToPlate.Models
     public class ShoppingList
     {
         [PrimaryKey, AutoIncrement]
-        public int ListId { get; private set; }
+        public int ListId { get; set; }
         [Indexed]
         public int UserId { get; set; }
         public DateTime StartDate { get; set; }

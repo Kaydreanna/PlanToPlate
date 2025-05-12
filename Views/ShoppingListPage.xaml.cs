@@ -25,7 +25,33 @@ public partial class ShoppingListPage : ContentPage
     #region Clicked Events
     private async void createShoppingListButton_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new EditShoppingListPage());
+        if (startDatePicker.Date > endDatePicker.Date)
+        {
+            await DisplayAlert("Error", "Start date must be before end date.", "OK");
+            return;
+        }
+        List<ScheduledMeals> mealsForShoppingList = await DatabaseService.GetScheduledMealsByDate(loggedInUser.UserId, startDatePicker.Date, endDatePicker.Date);
+        if(mealsForShoppingList.Count == 0)
+        {
+            await DisplayAlert("Error", "No meals scheduled for the selected dates. Please plan some meals then come back to make a shopping list.", "OK");
+            return;
+        }
+        ShoppingList newShoppingList = new ShoppingList
+        {
+            UserId = loggedInUser.UserId,
+            StartDate = startDatePicker.Date,
+            EndDate = endDatePicker.Date,
+            IngredientList = new Dictionary<string, bool>()
+        };
+        foreach (ScheduledMeals meal in mealsForShoppingList)
+        {
+            List<string> ingredients = await DatabaseService.GetRecipeIngredients(meal.RecipeId);
+            foreach(string ingredient in ingredients)
+            {
+                newShoppingList.IngredientList.Add(ingredient, true);
+            }
+        }
+        await Navigation.PushModalAsync(new EditShoppingListPage(newShoppingList));
     }
     #endregion
 
@@ -40,7 +66,9 @@ public partial class ShoppingListPage : ContentPage
         {
             noShoppingListsFoundLabel.IsVisible = false;
             pastShoppingListsGrid.IsVisible = true;
-            var primaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Primary"];
+            var secondaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Secondary"];
+            var secondaryDarkColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["SecondaryDark"];
+            var tertiaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Tertiary"];
 
             int rowNum = 0;
             foreach(ShoppingList shoppingList in shoppingLists)
@@ -56,13 +84,15 @@ public partial class ShoppingListPage : ContentPage
                         new ColumnDefinition { Width = GridLength.Auto}
                     },
                     VerticalOptions = LayoutOptions.Center,
-                    BackgroundColor = primaryColor,
+                    BackgroundColor = secondaryColor,
                     Padding = 0,
                     Margin = 0
                 };
                 Button shoppingListButton = new Button
                 {
                     Text = $"{shoppingList.StartDate.ToString("MM/dd/yyyy")} to {shoppingList.EndDate.ToString("MM/dd/yyyy")}",
+                    TextColor = tertiaryColor,
+                    BackgroundColor = Colors.Transparent,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Center,
                     FontSize = 18,
@@ -71,7 +101,18 @@ public partial class ShoppingListPage : ContentPage
                     Margin = 0
                 };
                 shoppingListButton.BindingContext = shoppingList.ListId;
-                shoppingListButton.Clicked += (s, e) => toggleVisibility((int)shoppingListButton.BindingContext);
+                shoppingListButton.Clicked += (s, e) =>
+                {
+                    if(buttonGrid.BackgroundColor == secondaryColor)
+                    {
+                        buttonGrid.BackgroundColor = secondaryDarkColor;
+                    }
+                    else
+                    {
+                        buttonGrid.BackgroundColor = secondaryColor;
+                    }
+                    toggleVisibility((int)shoppingListButton.BindingContext);
+                };
                 
                 ImageButton shareImageButton = new ImageButton
                 {
@@ -100,7 +141,7 @@ public partial class ShoppingListPage : ContentPage
                     IsVisible = false
                 };
 
-                Grid shoppingListDetailsGrid = await createShoppingListDetailsGrid(shoppingList);
+                Grid shoppingListDetailsGrid = createShoppingListDetailsGrid(shoppingList);
 
                 container.Children.Add(shoppingListDetailsGrid);
                 pastShoppingListsGrid.Children.Add(container);
@@ -118,7 +159,7 @@ public partial class ShoppingListPage : ContentPage
         }
     }
 
-    private async Task<Grid> createShoppingListDetailsGrid(ShoppingList shoppingList)
+    private Grid createShoppingListDetailsGrid(ShoppingList shoppingList)
     {
         Grid shoppingListDetailsGrid = new Grid
         {
@@ -134,6 +175,10 @@ public partial class ShoppingListPage : ContentPage
         int rowNum = 0;
         foreach (var ingredient in shoppingList.IngredientList)
         {
+            if (shoppingList.IngredientList[ingredient.Key] == false)
+            {
+                continue;
+            }
             if (columnNum == 3)
             {
                 shoppingListDetailsGrid.RowDefinitions.Add(new RowDefinition());
@@ -171,7 +216,7 @@ public partial class ShoppingListPage : ContentPage
             shoppingListDetailsGrid.RowDefinitions.Add(new RowDefinition());
             rowNum++;
             shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
-            shoppingListDetailsGrid.SetColumn(editImageButton, 1);
+            shoppingListDetailsGrid.SetColumn(editImageButton, 2);
         }
         else
         {
@@ -192,6 +237,7 @@ public partial class ShoppingListPage : ContentPage
             shoppingListDetailsGrid.IsVisible = shoppingListVisibility[shoppingListId];
             shoppingListDetailsGrid.HeightRequest = shoppingListDetailsGrid.IsVisible ? -1 : 0;
             pastShoppingListsGrid.InvalidateMeasure();
+            
         } else
         {
             //ShoppingList shoppingList = await DatabaseService.GetShoppingListById(shoppingListId);
