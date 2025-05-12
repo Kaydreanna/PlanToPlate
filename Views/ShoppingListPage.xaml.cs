@@ -113,7 +113,7 @@ public partial class ShoppingListPage : ContentPage
                     }
                     toggleVisibility((int)shoppingListButton.BindingContext);
                 };
-                
+
                 ImageButton shareImageButton = new ImageButton
                 {
                     Source = "shareicon.png",
@@ -197,10 +197,32 @@ public partial class ShoppingListPage : ContentPage
             shoppingListDetailsGrid.SetColumn(ingredientLabel, columnNum);
             columnNum++;
         }
+
+        ImageButton deleteImageButton = new ImageButton
+        {
+            Source = "deleteicon.png",
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center,
+            WidthRequest = 30,
+            HeightRequest = 30,
+            BackgroundColor = Colors.Transparent,
+            Padding = 0,
+            Margin = 0
+        };
+        deleteImageButton.Clicked += async (s, e) =>
+        {
+            bool deleteShoppingList = await DisplayAlert("Delete Shopping List?", "Are you sure you want to delete this shopping list? You will not be able to recover it.", "Yes", "No");
+            if (deleteShoppingList)
+            {
+                await DatabaseService.DeleteShoppingList(shoppingList);
+            }
+        };
+        shoppingListDetailsGrid.Children.Add(deleteImageButton);
+
         ImageButton editImageButton = new ImageButton
         {
             Source = "editicon.png",
-            HorizontalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.End,
             VerticalOptions = LayoutOptions.Center,
             WidthRequest = 5,
             HeightRequest = 5,
@@ -208,21 +230,19 @@ public partial class ShoppingListPage : ContentPage
             Padding = 0,
             Margin = 0
         };
-        editImageButton.BindingContext = shoppingList.ListId;
         editImageButton.Clicked += async (s, e) => await Navigation.PushModalAsync(new EditShoppingListPage(shoppingList));
         shoppingListDetailsGrid.Children.Add(editImageButton);
-        if(columnNum == 3)
+
+        if (columnNum != 0)
         {
             shoppingListDetailsGrid.RowDefinitions.Add(new RowDefinition());
             rowNum++;
-            shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
-            shoppingListDetailsGrid.SetColumn(editImageButton, 2);
         }
-        else
-        {
-            shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
-            shoppingListDetailsGrid.SetColumn(editImageButton, 2);
-        }
+        
+        shoppingListDetailsGrid.SetRow(editImageButton, rowNum);
+        shoppingListDetailsGrid.SetColumn(editImageButton, 1);
+        shoppingListDetailsGrid.SetRow(deleteImageButton, rowNum);
+        shoppingListDetailsGrid.SetColumn(deleteImageButton, 2);
 
         return shoppingListDetailsGrid;
     }
@@ -240,8 +260,6 @@ public partial class ShoppingListPage : ContentPage
             
         } else
         {
-            //ShoppingList shoppingList = await DatabaseService.GetShoppingListById(shoppingListId);
-            //createShoppingListDetailsGrid(shoppingList);
             await DisplayAlert("Error", "Shopping list not found.", "OK");
         }
     }
