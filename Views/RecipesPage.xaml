@@ -23,7 +23,7 @@
                     <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
                 </HorizontalStackLayout>
                 <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
-                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0" IsVisible="False">
+                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />

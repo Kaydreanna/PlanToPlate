@@ -101,69 +101,64 @@ public partial class RecipesPage : ContentPage
                     TextColor = tertiaryColor,
                     BackgroundColor = Colors.Transparent,
                     LineBreakMode = LineBreakMode.WordWrap,
+                    Padding = 5,
                     Margin = 5,
                     Command = new Command(() => viewRecipeButton_Clicked(recipe)),
                 };
-                Border borderedRecipeName = new Border
+                Border borderedRecipeButton = new Border
                 {
                     StrokeThickness = 1,
-                    BackgroundColor = Colors.Transparent,
-                    Content = recipeNameButton,
-                    Padding = 5,
-                    Margin = 0
+                    Content = recipeNameButton
                 };
 
-                Label recipeRatingLabel = new Label
-                {
-                    Text = "Ratings Coming Soon!",
-                    HorizontalOptions = LayoutOptions.Start,
-                    VerticalOptions = LayoutOptions.Center,
-                    FontSize = 14
-                };
                 Border borderedRecipeRating = new Border
                 {
                     StrokeThickness = 1,
                     BackgroundColor = Colors.Transparent,
-                    Content = recipeRatingLabel,
                     Padding = 5,
-                    Margin = 0
+                    Margin = 0,
+                    Content = new Label
+                    {
+                        Text = "Ratings Coming Soon!",
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center,
+                        FontSize = 14
+                    }
                 };
 
-                Label recipeDeviceLabel = new Label
-                {
-                    Text = recipe.CookingDevice,
-                    HorizontalOptions = LayoutOptions.Start,
-                    VerticalOptions = LayoutOptions.Center,
-                    FontSize = 14
-                };
                 Border borderedRecipeDevice = new Border
                 {
                     StrokeThickness = 1,
                     BackgroundColor = Colors.Transparent,
-                    Content = recipeDeviceLabel,
                     Padding = 5,
-                    Margin = 0
+                    Margin = 0,
+                    Content = new Label
+                    {
+                        Text = recipe.CookingDevice,
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center,
+                        FontSize = 14
+                    }
                 };
 
-                Label recipeTypeLabel = new Label
-                {
-                    Text = recipe.RecipeType,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    FontSize = 14
-                };
                 Border borderedRecipeType = new Border
                 {
                     StrokeThickness = 1,
                     BackgroundColor = Colors.Transparent,
-                    Content = recipeTypeLabel,
                     Padding = 5,
-                    Margin = 0
+                    Margin = 0,
+                    Content = new Label
+                    {
+                        Text = recipe.RecipeType,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        FontSize = 14
+                    }
                 };
 
-                recipesGridContent.Children.Add(borderedRecipeName);
-                Grid.SetRow(borderedRecipeName, rowNum);
-                Grid.SetColumn(borderedRecipeName, 0);
+                recipesGridContent.Children.Add(borderedRecipeButton);
+                Grid.SetRow(borderedRecipeButton, rowNum);
+                Grid.SetColumn(borderedRecipeButton, 0);
 
                 recipesGridContent.Children.Add(borderedRecipeRating);
                 Grid.SetRow(borderedRecipeRating, rowNum);

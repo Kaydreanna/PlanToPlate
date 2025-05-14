@@ -10,7 +10,7 @@
     <Color x:Key="PrimaryDark">#D5441C</Color>
     <Color x:Key="PrimaryDarkText">#000</Color>
     <Color x:Key="SecondaryDarkText">#000</Color>
-    <Color x:Key="PrimaryLightText">#FFF</Color>
+    <Color x:Key="PrimaryLightText">#F5F5F5</Color>
     <Color x:Key="Secondary">#FFE83D</Color>
     <Color x:Key="SecondaryDark">#FFB83D</Color>
     <Color x:Key="Tertiary">#7B1B00</Color>

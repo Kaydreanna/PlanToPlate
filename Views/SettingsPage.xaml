@@ -7,7 +7,7 @@
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="0, 0, 0, 80">
-                <Label x:Name="changeUsernameLabel" Text="Change Username" FontSize="30" BackgroundColor="{StaticResource Secondary}" />
+                <Label x:Name="changeUsernameLabel" Text="Change Username" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" />
                 <Label x:Name="currentUsernameLabel" Text="Enter Current Username:" />
                 <Entry x:Name="currentUsernameEntry" />
                 <Label x:Name="newUsernameLabel" Text="Enter New Username:" />
@@ -16,7 +16,7 @@
                 <Entry x:Name="changeUsernamePasswordEntry" />
                 <Button x:Name="saveChangeUsernameButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="20" HorizontalOptions="Center" Clicked="saveChangeUsernameButton_Clicked"/>
                 
-                <Label x:Name="changePasswordLabel" Text="Change Password" FontSize="30" BackgroundColor="{StaticResource Secondary}" />
+                <Label x:Name="changePasswordLabel" Text="Change Password" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" />
                 <Label x:Name="currentPasswordLabel" Text="Enter Current Password:" />
                 <Entry x:Name="currentPasswordEntry" />
                 <Label x:Name="newPasswordLabel" Text="Enter New Password:" />

@@ -25,6 +25,7 @@ public partial class HomePage : ContentPage
         base.OnAppearing();
         displayTodaysMealPlan();
         DateTime today = DateTime.Today;
+        dateLabel.Text = today.ToString("MMMM dd, yyyy");
         DayOfWeek dayOfWeek = today.DayOfWeek;
         switch (dayOfWeek)
         {
@@ -157,7 +158,10 @@ public partial class HomePage : ContentPage
 
     private async void displayedScheduledMeals()
     {
+        var primaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Primary"];
+        var secondaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Secondary"];
         var secondaryDarkColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["SecondaryDark"];
+        var tertiaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Tertiary"];
         List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, startDate, endDate);
         DateTime displayDate = startDate;
         for (int i = 0; i < 7; i++)
@@ -167,27 +171,35 @@ public partial class HomePage : ContentPage
             ScheduledMeals lunch = displayDatesMeals.Find(m => m.MealType == "Lunch");
             ScheduledMeals dinner = displayDatesMeals.Find(m => m.MealType == "Dinner");
 
-            Label dateLabel = new Label
-            {
-                Text = displayDate.ToString("MM/dd"),
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Padding = new Thickness(0, 10),
-            };
             Border borderedDateLabel = new Border
             {
                 StrokeThickness = 1,
-                BackgroundColor = secondaryDarkColor,
-                Content = dateLabel,
-                Padding = 5,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                HeightRequest = 30,
+                Padding = 0,
+                Margin = 0,
+                Content = new Label
+                {
+                    Text = displayDate.ToString("MM/dd"),
+                    FontSize = 18,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    Margin = new Thickness(0)
+                }
             };
             Button breakfastButton = new Button
             {
                 Text = breakfast != null ? await DatabaseService.GetRecipeName(breakfast) : "-",
                 LineBreakMode = LineBreakMode.WordWrap,
-                FontSize = 8,
+                FontSize = 10,
+                TextColor = breakfast != null ? tertiaryColor : Colors.Black,
                 HeightRequest = 20,
                 CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                Padding = 0,
+                Margin = 0,
                 Command = new Command(async () =>
                 {
                     if(breakfast != null)
@@ -203,9 +215,14 @@ public partial class HomePage : ContentPage
             {
                 Text = lunch != null ? await DatabaseService.GetRecipeName(lunch) : "-",
                 LineBreakMode = LineBreakMode.WordWrap,
-                FontSize = 8,
+                FontSize = 10,
+                TextColor = lunch != null ? tertiaryColor : Colors.Black,
                 HeightRequest = 20,
                 CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                Padding = 0,
+                Margin = 0,
                 Command = new Command(async () =>
                 {
                     if (lunch != null)
@@ -222,9 +239,14 @@ public partial class HomePage : ContentPage
             {
                 Text = dinner != null ? await DatabaseService.GetRecipeName(dinner) : "-",
                 LineBreakMode = LineBreakMode.WordWrap,
-                FontSize = 8,
+                FontSize = 10,
+                TextColor = dinner != null ? tertiaryColor : Colors.Black,
                 HeightRequest = 20,
                 CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                Padding = 0,
+                Margin = 0,
                 Command = new Command(async () =>
                 {
                     if (dinner != null)
@@ -237,6 +259,19 @@ public partial class HomePage : ContentPage
                     }
                 })
             };
+            if(displayDate == DateTime.Today)
+            {
+                borderedDateLabel.BackgroundColor = primaryColor;
+                breakfastButton.BackgroundColor = secondaryDarkColor;
+                lunchButton.BackgroundColor = secondaryDarkColor;
+                dinnerButton.BackgroundColor = secondaryDarkColor;
+            } else
+            {
+                borderedDateLabel.BackgroundColor = secondaryDarkColor;
+                breakfastButton.BackgroundColor = secondaryColor;
+                lunchButton.BackgroundColor = secondaryColor;
+                dinnerButton.BackgroundColor = secondaryColor;
+            }
 
             mealPlanCalendar.Children.Add(borderedDateLabel);
             mealPlanCalendar.SetColumn(borderedDateLabel, i);

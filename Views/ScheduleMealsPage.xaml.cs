@@ -91,6 +91,7 @@ public partial class ScheduleMealsPage : ContentPage
         scheduledMealsGrid.Children.Clear();
         scheduledMealsGrid.RowDefinitions.Clear();
         var secondaryColor = (Color)Application.Current.Resources["Secondary"];
+        var secondaryDarkColor = (Color)Application.Current.Resources["SecondaryDark"];
         var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
         DateTime startOfMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1);
         DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
@@ -137,21 +138,21 @@ public partial class ScheduleMealsPage : ContentPage
                 scheduledMealsGrid.RowDefinitions.Add(new RowDefinition());
                 rowNum = rowNum + 4;
             }
-            Label dateLabel = new Label
-            {
-                Text = displayDate.ToString("MM/dd"),
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Padding = new Thickness(0, 10),
-                FontSize = 14
-            };
+
             Border borderedDateLabel = new Border
             {
                 StrokeThickness = 1,
-                BackgroundColor = secondaryColor,
-                Content = dateLabel,
+                BackgroundColor = secondaryDarkColor,
                 Padding = 5,
-                Margin = new Thickness(0, 15, 0, 5)
+                Margin = new Thickness(0, 5, 0, 0),
+                Content = new Label
+                {
+                    Text = displayDate.ToString("MM/dd"),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    Padding = new Thickness(0, 10),
+                    FontSize = 14
+                }
             };
 
             List<ScheduledMeals> mealsOnDate = scheduledMeals.FindAll(m => m.Date.Date == displayDate.Date);
@@ -165,11 +166,13 @@ public partial class ScheduleMealsPage : ContentPage
             Button breakfastButton = new Button
             {
                 Text = breakfastName,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
+                LineBreakMode = LineBreakMode.WordWrap,
                 FontSize = 10,
-                BackgroundColor = Colors.Transparent,
-                TextColor = tertiaryColor,
+                TextColor = breakfast != null ? tertiaryColor : Colors.Black,
+                CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                BackgroundColor = secondaryColor,
                 Padding = 0,
                 Margin = 0,
                 Command = new Command(async () =>
@@ -183,13 +186,15 @@ public partial class ScheduleMealsPage : ContentPage
             Button lunchLabel = new Button
             {
                 Text = lunchName,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
+                LineBreakMode = LineBreakMode.WordWrap,
                 FontSize = 10,
-                BackgroundColor = Colors.Transparent,
-                TextColor = tertiaryColor,
+                TextColor = breakfast != null ? tertiaryColor : Colors.Black,
+                CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                BackgroundColor = secondaryColor,
                 Padding = 0,
-                Margin = new Thickness(0, 5),
+                Margin = 0,
                 Command = new Command(async () =>
                 {
                     if (lunch != null)
@@ -201,11 +206,13 @@ public partial class ScheduleMealsPage : ContentPage
             Button dinnerLabel = new Button
             {
                 Text = dinnerName,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
+                LineBreakMode = LineBreakMode.WordWrap,
                 FontSize = 10,
-                BackgroundColor = Colors.Transparent,
-                TextColor = tertiaryColor,
+                TextColor = breakfast != null ? tertiaryColor : Colors.Black,
+                CornerRadius = 0,
+                BorderWidth = 1,
+                BorderColor = Colors.Black,
+                BackgroundColor = secondaryColor,
                 Padding = 0,
                 Margin = 0,
                 Command = new Command(async () =>

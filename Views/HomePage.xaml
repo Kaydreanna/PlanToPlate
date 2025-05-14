@@ -18,7 +18,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label x:Name="dateLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Today's Date" FontSize="20" HorizontalOptions="Center"/>
+                    <Label x:Name="dateLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Today's Date" FontSize="30" HorizontalOptions="Center"/>
                     <Label x:Name="breakfastLabel" Grid.Row="1" Grid.Column="0" Text="Breakfast:" HorizontalOptions="End" VerticalOptions="Center"/>
                     <Button x:Name="breakfastButton" Grid.Row="1" Grid.Column="1" Text="Breakfast Meal" TextColor="{StaticResource Tertiary}" Padding="5, 0, 0, 0" HorizontalOptions="Start" BackgroundColor="Transparent" Clicked="breakfastButton_Clicked"/>
                     <Label x:Name="lunchLabel" Grid.Row="2" Grid.Column="0" Text="Lunch:" HorizontalOptions="End" VerticalOptions="Center"/>
@@ -27,7 +27,7 @@
                     <Button x:Name="dinnerButton" Grid.Row="3" Grid.Column="1" Text="Dinner Meal" TextColor="{StaticResource Tertiary}" Padding="5, 0, 0, 0" HorizontalOptions="Start" BackgroundColor="Transparent" Clicked="dinnerButton_Clicked"/>
                 </Grid>
 
-                <Grid x:Name="mealPlanCalendar" Padding="0, 20">
+                <Grid x:Name="mealPlanCalendar" Padding="0, 20" ColumnSpacing="0" RowSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />

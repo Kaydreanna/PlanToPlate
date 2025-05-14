@@ -7,7 +7,7 @@
     <Grid>
         <ScrollView Grid.Row="0" x:Name="mainContent">
             <VerticalStackLayout Padding="0, 0, 0, 80">
-                <Label x:Name="createShoppingListLabel" Text="Create New Shopping List" FontSize="30" BackgroundColor="{StaticResource Secondary}" Padding="5, 0, 0, 0" Margin="0, 10, 0, 20"/>
+                <Label x:Name="createShoppingListLabel" Text="Create New Shopping List" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="5, 0, 0, 0" Margin="0, 10, 0, 20"/>
                 <HorizontalStackLayout x:Name="startDateLine" HorizontalOptions="Center">
                     <Label x:Name="startDateLabel" VerticalOptions="Center" Text="Start Date:" Margin="15, 0"/>
                     <DatePicker x:Name="startDatePicker" />
@@ -18,7 +18,7 @@
                 </HorizontalStackLayout>
                 <Button x:Name="createShoppingListButton" HorizontalOptions="Center" Text="Create" BorderWidth="1" BorderColor="Black" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="10" Clicked="createShoppingListButton_Clicked"/>
                 
-                <Label x:Name="viewShoppingListsLabel" Text="View Past Shopping List" FontSize="30" BackgroundColor="{StaticResource Secondary}" Padding="5, 0" Margin="0, 20"/>
+                <Label x:Name="viewShoppingListsLabel" Text="View Past Shopping List" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="5, 0" Margin="0, 20"/>
                 <Label x:Name="noShoppingListsFoundLabel" Text="There are no past shopping lists. Please create one above." Margin="10"/>
                 <Grid x:Name="pastShoppingListsGrid">
                     <Grid.ColumnDefinitions>

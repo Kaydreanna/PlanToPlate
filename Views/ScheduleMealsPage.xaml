@@ -7,7 +7,7 @@
     <Grid>
         <ScrollView x:Name="mainContent" Grid.Row="0" Margin="0, 0, 0, 70">
             <VerticalStackLayout>
-                <Label x:Name="scheduleMealLabel" Text="Schedule Meal" FontSize="30" BackgroundColor="{StaticResource Primary}" Padding="30, 0, 0, 0" Margin="0, 0, 0, 10"/>
+                <Label x:Name="scheduleMealLabel" Text="Schedule Meal" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="30, 0, 0, 0" Margin="0, 0, 0, 10"/>
                 <Grid x:Name="scheduleMeal">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -29,22 +29,23 @@
                     <Picker x:Name="recipePicker" Grid.Row="2" Grid.Column="2" />
                 </Grid>
                 <Button x:Name="scheduleRecipeButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="30, 0" Margin="10" HorizontalOptions="Center" Clicked="scheduleRecipeButton_Clicked"/>
-                <Label x:Name="viewScheduledMealsLabel" Text="View Scheduled Meals" FontSize="30" Padding="30, 0, 0, 0" Margin="0, 10" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label x:Name="viewScheduledMealsLabel" Text="View Scheduled Meals" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="30, 0, 0, 0" Margin="0, 10"/>
                 <Grid x:Name="scheduledMealsDates" Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ImageButton x:Name="nextMonthImageButton" Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource SecondaryDark}" Clicked="nextMonthImageButton_Clicked">
+                    <ImageButton x:Name="previousMonthImageButton" Grid.Row="0" Grid.Column="0" Clicked="previousMonthImageButton_Clicked">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRight}" Color="{StaticResource IconDark}"/>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowLeft}" Color="{StaticResource IconDark}"/>
                         </ImageButton.Source>
                     </ImageButton>
                     <Label x:Name="monthAndYearLabel" Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" FontSize="25" TextColor="{StaticResource PrimaryDarkText}"/>
-                    <ImageButton x:Name="previousMonthImageButton" Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource SecondaryDark}" Clicked="previousMonthImageButton_Clicked">
+                    <ImageButton x:Name="nextMonthImageButton" Grid.Row="0" Grid.Column="2" Clicked="nextMonthImageButton_Clicked">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowLeft}" Color="{StaticResource IconDark}"/>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRight}" Color="{StaticResource IconDark}"/>
                         </ImageButton.Source>
                     </ImageButton>
                 </Grid>
