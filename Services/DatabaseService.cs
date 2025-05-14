@@ -158,7 +158,8 @@ namespace PlanToPlate.Services
         public static async Task<List<ShoppingList>> GetAllShoppingLists(int userId)
         {
             await Init();
-            return await _db.Table<ShoppingList>().Where(i => i.UserId == userId).ToListAsync();
+            List<ShoppingList> unsortedShoppingLists = await _db.Table<ShoppingList>().Where(i => i.UserId == userId).ToListAsync();
+            return unsortedShoppingLists.OrderByDescending(list => list.StartDate).ToList();
         }
 
         public static async Task<ShoppingList> GetShoppingListById(int shoppingListId)
@@ -182,6 +183,12 @@ namespace PlanToPlate.Services
                 return recipe.Ingredients.Keys.ToList();
             }
             return new List<string>();
+        }
+
+        public static async Task CreateShoppingList(ShoppingList shoppingList)
+        {
+            await Init();
+            await _db.InsertAsync(shoppingList);
         }
 
         public static async Task UpdateShoppingList(ShoppingList shoppingList, Dictionary<string, bool> ingredients)

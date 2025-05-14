@@ -63,8 +63,10 @@ public partial class EditShoppingListPage : ContentPage
     {
         var tertiaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Tertiary"];
         var secondaryColor = (Color)Microsoft.Maui.Controls.Application.Current.Resources["Secondary"];
+        shoppingListIngredientsGrid.RowDefinitions.Clear();
         int rowNum = 0;
         int colNum = 0;
+        shoppingListIngredientsGrid.RowDefinitions.Add(new RowDefinition());
         foreach (string ingredient in shoppingList.IngredientList.Keys)
         {
             if(colNum == 3)

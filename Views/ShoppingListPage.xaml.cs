@@ -25,16 +25,38 @@ public partial class ShoppingListPage : ContentPage
     #region Clicked Events
     private async void createShoppingListButton_Clicked(object sender, EventArgs e)
     {
+        //Ensure the user has selected a start date that occurs before the end date
         if (startDatePicker.Date > endDatePicker.Date)
         {
             await DisplayAlert("Error", "Start date must be before end date.", "OK");
             return;
         }
+        //Ensure there are meals scheduled for the selected dates
         List<ScheduledMeals> mealsForShoppingList = await DatabaseService.GetScheduledMealsByDate(loggedInUser.UserId, startDatePicker.Date, endDatePicker.Date);
         if(mealsForShoppingList.Count == 0)
         {
             await DisplayAlert("Error", "No meals scheduled for the selected dates. Please plan some meals then come back to make a shopping list.", "OK");
             return;
+        }
+        //Ensure the dates don't match the dates of an existing shopping list
+        List<ShoppingList> shoppingLists = await DatabaseService.GetAllShoppingLists(loggedInUser.UserId);
+        foreach (ShoppingList shoppingList in shoppingLists)
+        {
+            if (shoppingList.StartDate == startDatePicker.Date && shoppingList.EndDate == endDatePicker.Date)
+            {
+                await DisplayAlert("Error", "A shopping list already exists for the selected dates. Please choose different dates or delete the previous shopping list.", "OK");
+                return;
+            }
+        }
+        //Create a new shopping list
+        Dictionary<string, bool> ingredientsToAddToShoppingList = new Dictionary<string, bool>();
+        foreach (ScheduledMeals meal in mealsForShoppingList)
+        {
+            List<string> ingredients = await DatabaseService.GetRecipeIngredients(meal.RecipeId);
+            foreach(string ingredient in ingredients)
+            {
+                ingredientsToAddToShoppingList.Add(ingredient, false);
+            }
         }
         ShoppingList newShoppingList = new ShoppingList
         {
@@ -43,14 +65,8 @@ public partial class ShoppingListPage : ContentPage
             EndDate = endDatePicker.Date,
             IngredientList = new Dictionary<string, bool>()
         };
-        foreach (ScheduledMeals meal in mealsForShoppingList)
-        {
-            List<string> ingredients = await DatabaseService.GetRecipeIngredients(meal.RecipeId);
-            foreach(string ingredient in ingredients)
-            {
-                newShoppingList.IngredientList.Add(ingredient, true);
-            }
-        }
+        await DatabaseService.CreateShoppingList(newShoppingList);
+        await DatabaseService.UpdateShoppingList(newShoppingList, ingredientsToAddToShoppingList);
         await Navigation.PushModalAsync(new EditShoppingListPage(newShoppingList));
     }
     #endregion
@@ -62,7 +78,7 @@ public partial class ShoppingListPage : ContentPage
         pastShoppingListsGrid.Children.Clear();
 
         List<ShoppingList> shoppingLists = await DatabaseService.GetAllShoppingLists(loggedInUser.UserId);
-        if(shoppingLists.Count > 0)
+        if (shoppingLists.Count > 0)
         {
             noShoppingListsFoundLabel.IsVisible = false;
             pastShoppingListsGrid.IsVisible = true;
@@ -86,7 +102,7 @@ public partial class ShoppingListPage : ContentPage
                     VerticalOptions = LayoutOptions.Center,
                     BackgroundColor = secondaryColor,
                     Padding = 0,
-                    Margin = 0
+                    Margin = new Thickness(0, 10)
                 };
                 Button shoppingListButton = new Button
                 {
