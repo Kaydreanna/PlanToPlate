@@ -259,6 +259,19 @@ namespace PlanToPlate.Services
             return scheduledMeals;
         }
 
+        public static async Task<List<ScheduledMeals>> GetScheduledMeals(int userId, DateTime date)
+        {
+            await Init();
+            List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date == date).ToListAsync();
+            return scheduledMeals;
+        }
+
+        public static async Task DeleteScheduleMeal(ScheduledMeals meal)
+        {
+            await Init();
+            await _db.DeleteAsync(meal);
+        }
+
         public static async Task<string> GetRecipeName(ScheduledMeals meal)
         {
             await Init();

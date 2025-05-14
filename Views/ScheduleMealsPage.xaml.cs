@@ -36,6 +36,7 @@ public partial class ScheduleMealsPage : ContentPage
         if (validInputs())
         {
             int recipeId = await DatabaseService.GetRecipeId(recipePicker.SelectedItem.ToString(), loggedInUser.UserId);
+            ScheduledMeals conflictingMeal = await existingMeal();
             if (recipeId == -1)
             {
                 await DisplayAlert("Error", "Recipe not found. Please try again.", "OK");
@@ -43,6 +44,18 @@ public partial class ScheduleMealsPage : ContentPage
             }
             else
             {
+                if (conflictingMeal != null)
+                {
+                    bool replaceMeal = await DisplayAlert("Existing Meal", $"A {typePicker.SelectedItem.ToString()} recipe is already scheduled for this day. Would you like to replace it?", "Yes", "No");
+                    if (replaceMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(conflictingMeal);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
                 await DatabaseService.ScheduleMeal(new ScheduledMeals
                 {
                     UserId = loggedInUser.UserId,
@@ -53,6 +66,7 @@ public partial class ScheduleMealsPage : ContentPage
                 await DisplayAlert("Meal Scheduled", $"{recipePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", "OK");
                 typePicker.SelectedIndex = 0;
                 recipePicker.SelectedIndex = 0;
+                displayScheduledMeals(displayedMonth);
             }
         }
     }
@@ -258,6 +272,20 @@ public partial class ScheduleMealsPage : ContentPage
             return false;
         }
         return true;
+    }
+
+    private async Task<ScheduledMeals> existingMeal()
+    {
+        List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, scheduleMealDatePicker.Date);
+        if (scheduledMeals.Count > 0)
+        {
+            var existingMeal = scheduledMeals.FirstOrDefault(m => m.MealType == typePicker.SelectedItem.ToString());
+            if (existingMeal != null)
+            {
+                return existingMeal;
+            }
+        }
+        return null;
     }
     #endregion
 
