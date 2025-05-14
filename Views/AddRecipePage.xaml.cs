@@ -131,56 +131,59 @@ public partial class AddRecipePage : ContentPage
     {
         if (validInput())
         {
-                Dictionary<string, (string, string)> ingredientsToAdd = new Dictionary<string, (string, string)>();
-                Dictionary<int, string> instructionsToAdd = new Dictionary<int, string>();
+            Dictionary<string, (string, string)> ingredientsToAdd = new Dictionary<string, (string, string)>();
+            Dictionary<int, string> instructionsToAdd = new Dictionary<int, string>();
+            List<string> ingredientNames = new List<string>();
 
-                var ingredientEntries = ingredientsGrid.Children.OfType<Entry>().GroupBy(e => Grid.GetRow(e)).OrderBy(group => group.Key);
-                foreach (var newIngredient in ingredientEntries)
+            var ingredientEntries = ingredientsGrid.Children.OfType<Entry>().GroupBy(e => Grid.GetRow(e)).OrderBy(group => group.Key);
+            foreach (var newIngredient in ingredientEntries)
+            {
+                var ingredientInfo = newIngredient.OrderBy(e => Grid.GetColumn(e)).ToList();
+                var inputIngredientAmount = ingredientInfo[0].Text;
+                var ingredientMeasurement = ingredientInfo[1].Text;
+                var ingredientName = ingredientInfo[2].Text;
+                ingredientNames.Add(ingredientName);
+                if (inputIngredientAmount == null && ingredientMeasurement == null && ingredientName == null)
                 {
-                    var ingredientInfo = newIngredient.OrderBy(e => Grid.GetColumn(e)).ToList();
-                    var inputIngredientAmount = ingredientInfo[0].Text;
-                    var ingredientMeasurement = ingredientInfo[1].Text;
-                    var ingredientName = ingredientInfo[2].Text;
-                    if (inputIngredientAmount == null && ingredientMeasurement == null && ingredientName == null)
+                    continue;
+                }else if (inputIngredientAmount != null && ingredientName != null)
+                {
+                    ingredientsToAdd.Add(ingredientName, (inputIngredientAmount, ingredientMeasurement));
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Please ensure every ingredient has a quantity and a name.", "OK");
+                    return;
+                }
+            }
+            await DatabaseService.AddIngredients(loggedInUser.UserId, ingredientNames);
+
+            var instructionsEntries = instructionsGrid.Children.GroupBy(view => Grid.GetRow((BindableObject)view)).OrderBy(group => group.Key);
+            foreach (var newInstruction in instructionsEntries)
+            {
+                var ingredientInfo = newInstruction.OrderBy(e => Grid.GetColumn((BindableObject)e)).ToList();
+                if(ingredientInfo.Count() < 2)
+                {
+                    continue;
+                }
+                var instructionNum = ingredientInfo[0] as Label;
+                var instructionText = ingredientInfo[1] as Editor;
+                if (instructionNum != null && instructionText != null)
+                {
+                    if(!string.IsNullOrEmpty(instructionText.Text))
                     {
-                        continue;
-                    }else if (inputIngredientAmount != null && ingredientName != null)
-                    {
-                        ingredientsToAdd.Add(ingredientName, (inputIngredientAmount, ingredientMeasurement));
-                    }
-                    else
-                    {
-                        await DisplayAlert("Error", "Please ensure every ingredient has a quantity and a name.", "OK");
-                        return;
+                        instructionsToAdd.Add(Convert.ToInt32(instructionNum.Text.TrimEnd('.')), instructionText.Text);
                     }
                 }
+            }
 
-                var instructionsEntries = instructionsGrid.Children.GroupBy(view => Grid.GetRow((BindableObject)view)).OrderBy(group => group.Key);
-                foreach (var newInstruction in instructionsEntries)
-                {
-                    var ingredientInfo = newInstruction.OrderBy(e => Grid.GetColumn((BindableObject)e)).ToList();
-                    if(ingredientInfo.Count() < 2)
-                    {
-                        continue;
-                    }
-                    var instructionNum = ingredientInfo[0] as Label;
-                    var instructionText = ingredientInfo[1] as Editor;
-                    if (instructionNum != null && instructionText != null)
-                    {
-                        if(!string.IsNullOrEmpty(instructionText.Text))
-                        {
-                            instructionsToAdd.Add(Convert.ToInt32(instructionNum.Text.TrimEnd('.')), instructionText.Text);
-                        }
-                    }
-                }
-
-                Recipe newRecipe = new Recipe();
-                newRecipe.UserId = loggedInUser.UserId;
-                newRecipe.RecipeName = nameEntry.Text;
-                newRecipe.RecipeType = typePicker.SelectedItem.ToString();
-                newRecipe.CookingDevice = devicePicker.SelectedItem.ToString();
-                newRecipe.Ingredients = ingredientsToAdd;
-                newRecipe.Instructions = instructionsToAdd;
+            Recipe newRecipe = new Recipe();
+            newRecipe.UserId = loggedInUser.UserId;
+            newRecipe.RecipeName = nameEntry.Text;
+            newRecipe.RecipeType = typePicker.SelectedItem.ToString();
+            newRecipe.CookingDevice = devicePicker.SelectedItem.ToString();
+            newRecipe.Ingredients = ingredientsToAdd;
+            newRecipe.Instructions = instructionsToAdd;
 
             if(recipeToEdit == null)
             {

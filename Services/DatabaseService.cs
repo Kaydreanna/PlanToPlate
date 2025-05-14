@@ -130,6 +130,23 @@ namespace PlanToPlate.Services
             return ingredients;
         }
 
+        public static async Task AddIngredients(int userId, List<string> ingredientNames)
+        {
+            await Init();
+            var existingIngredients = (await _db.Table<Ingredient>().Where(i => i.UserId == userId).ToListAsync()).Select(i => i.IngredientName.ToLower()).ToHashSet();
+            foreach (string ing in ingredientNames)
+            {
+                string lowerCaseIng = ing.Trim().ToLower();
+                if(string.IsNullOrEmpty(lowerCaseIng) || existingIngredients.Contains(lowerCaseIng))
+                {
+                        continue;
+                }
+                Ingredient ingredient = new Ingredient() { IngredientName = lowerCaseIng, UserId = 0 };
+                await _db.InsertAsync(ingredient);
+                existingIngredients.Add(lowerCaseIng);
+            }
+        }
+
         public static async Task AddRecipe(Recipe newRecipe)
         {
             await Init();
