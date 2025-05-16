@@ -2,6 +2,7 @@ using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace PlanToPlate.Views;
 
@@ -68,6 +69,32 @@ public partial class ShoppingListPage : ContentPage
         await DatabaseService.CreateShoppingList(newShoppingList);
         await DatabaseService.UpdateShoppingList(newShoppingList, ingredientsToAddToShoppingList);
         await Navigation.PushModalAsync(new EditShoppingListPage(newShoppingList));
+    }
+    
+    private async void shareShoppingListButton_Clicked(int shoppingListId)
+    {
+        ShoppingList shoppingList = await DatabaseService.GetShoppingListById(shoppingListId);
+        if (shoppingList == null)
+        {
+            await DisplayAlert("Error", "Shopping list not found.", "OK");
+            return;
+        }
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"Shopping List for {shoppingList.StartDate.ToString("MM/dd/yyyy")} to {shoppingList.EndDate.ToString("MM/dd/yyyy")}");
+        sb.AppendLine();
+        foreach (var ingredient in shoppingList.IngredientList)
+        {
+            if (shoppingList.IngredientList[ingredient.Key] == true)
+            {
+                sb.AppendLine($"-{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ingredient.Key.ToLower())}");
+            }
+        }
+        string shareText = sb.ToString();
+        await Microsoft.Maui.ApplicationModel.DataTransfer.Share.Default.RequestAsync(new Microsoft.Maui.ApplicationModel.DataTransfer.ShareTextRequest
+        {
+            Title = "Share Shopping List",
+            Text = shareText
+        });
     }
     #endregion
 
@@ -142,7 +169,7 @@ public partial class ShoppingListPage : ContentPage
                     Margin = 0
                 };
                 shareImageButton.BindingContext = shoppingList.ListId;
-                shareImageButton.Clicked += (s, e) => toggleVisibility((int)shareImageButton.BindingContext);
+                shareImageButton.Clicked += (s, e) => shareShoppingListButton_Clicked((int)shareImageButton.BindingContext);
 
                 buttonGrid.Children.Add(shoppingListButton);
                 buttonGrid.SetColumn(shoppingListButton, 0);
