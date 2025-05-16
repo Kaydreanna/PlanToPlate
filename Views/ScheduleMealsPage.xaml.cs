@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Platform;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
@@ -21,59 +22,11 @@ public partial class ScheduleMealsPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        typePicker.Items.Add("Type");
-        typePicker.Items.Add("Breakfast");
-        typePicker.Items.Add("Lunch");
-        typePicker.Items.Add("Dinner");
-        typePicker.SelectedIndex = 0;
-        populateRecipePicker();
-        recipePicker.SelectedIndex = 0;
         displayedMonth = DateTime.Today;
         displayScheduledMeals(displayedMonth);
     }
 
     #region Clicked Events
-    private async void scheduleRecipeButton_Clicked(object sender, EventArgs e)
-    {
-        if (validInputs())
-        {
-            int recipeId = await DatabaseService.GetRecipeId(recipePicker.SelectedItem.ToString(), loggedInUser.UserId);
-            ScheduledMeals conflictingMeal = await existingMeal();
-            if (recipeId == -1)
-            {
-                await DisplayAlert("Error", "Recipe not found. Please try again.", "OK");
-                return;
-            }
-            else
-            {
-                if (conflictingMeal != null)
-                {
-                    bool replaceMeal = await DisplayAlert("Existing Meal", $"A {typePicker.SelectedItem.ToString()} recipe is already scheduled for this day. Would you like to replace it?", "Yes", "No");
-                    if (replaceMeal)
-                    {
-                        await DatabaseService.DeleteScheduleMeal(conflictingMeal);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                await DatabaseService.ScheduleMeal(new ScheduledMeals
-                {
-                    UserId = loggedInUser.UserId,
-                    Date = scheduleMealDatePicker.Date,
-                    MealType = typePicker.SelectedItem.ToString(),
-                    RecipeId = recipeId
-                });
-                await CommunityToolkit.Maui.Alerts.Snackbar.Make($"{recipePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", duration: TimeSpan.FromSeconds(2), visualOptions: new SnackbarOptions {BackgroundColor = Colors.Black, TextColor = Colors.White}).Show();
-                await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, scheduleMealDatePicker.Date);
-                typePicker.SelectedIndex = 0;
-                recipePicker.SelectedIndex = 0;
-                displayScheduledMeals(displayedMonth);
-            }
-        }
-    }
-
     private void nextMonthImageButton_Clicked(object sender, EventArgs e)
     {
         displayedMonth = displayedMonth.AddMonths(1);
@@ -88,28 +41,16 @@ public partial class ScheduleMealsPage : ContentPage
     #endregion
 
     #region Methods
-    private async void populateRecipePicker()
-    {
-        recipePicker.Items.Clear();
-        recipePicker.Items.Add("Recipe");
-        List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
-        foreach (Recipe recipe in recipes)
-        {
-            string recipeName = recipe.RecipeName;
-            if (!recipePicker.Items.Contains(recipeName))
-            {
-                recipePicker.Items.Add(recipeName);
-            }
-        }
-    }
-
     private async void displayScheduledMeals(DateTime selectedMonth)
     {
         scheduledMealsGrid.Children.Clear();
         scheduledMealsGrid.RowDefinitions.Clear();
+
+        var primaryColor = (Color)Application.Current.Resources["Primary"];
         var secondaryColor = (Color)Application.Current.Resources["Secondary"];
         var secondaryDarkColor = (Color)Application.Current.Resources["SecondaryDark"];
         var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
+
         DateTime startOfMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1);
         DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
         List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, startOfMonth, endOfMonth);
@@ -159,7 +100,6 @@ public partial class ScheduleMealsPage : ContentPage
             Border borderedDateLabel = new Border
             {
                 StrokeThickness = 1,
-                BackgroundColor = secondaryDarkColor,
                 Padding = 5,
                 Margin = new Thickness(0, 5, 0, 0),
                 Content = new Label
@@ -208,14 +148,17 @@ public partial class ScheduleMealsPage : ContentPage
                 }
                 else
                 {
-                    DateTime buttonsDate = (DateTime)breakfastButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a breakfast to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
+                    string recipeToShcedule = await displayScheduleMealPopup();
+                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                    ScheduledMeals scheduledMeal = new ScheduledMeals
                     {
-                        await mainContent.ScrollToAsync(0, 0, true);
-                        scheduleMealDatePicker.Date = buttonsDate;
-                        typePicker.SelectedItem = "Breakfast";
-                    }
+                        UserId = loggedInUser.UserId,
+                        Date = (DateTime)breakfastButton.BindingContext,
+                        MealType = "Breakfast",
+                        RecipeId = recipeId
+                    };
+                    await DatabaseService.ScheduleMeal(scheduledMeal);
+                    displayScheduledMeals(selectedMonth);
                 }
             };
 
@@ -247,14 +190,17 @@ public partial class ScheduleMealsPage : ContentPage
                 }
                 else
                 {
-                    DateTime buttonsDate = (DateTime)lunchButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a lunch to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
+                    string recipeToShcedule = await displayScheduleMealPopup();
+                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                    ScheduledMeals scheduledMeal = new ScheduledMeals
                     {
-                        await mainContent.ScrollToAsync(0, 0, true);
-                        scheduleMealDatePicker.Date = buttonsDate;
-                        typePicker.SelectedItem = "Lunch";
-                    }
+                        UserId = loggedInUser.UserId,
+                        Date = (DateTime)breakfastButton.BindingContext,
+                        MealType = "Lunch",
+                        RecipeId = recipeId
+                    };
+                    await DatabaseService.ScheduleMeal(scheduledMeal);
+                    displayScheduledMeals(selectedMonth);
                 }
             };
 
@@ -286,16 +232,34 @@ public partial class ScheduleMealsPage : ContentPage
                 }
                 else
                 {
-                    DateTime buttonsDate = (DateTime)dinnerButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a dinner to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
+                    string recipeToShcedule = await displayScheduleMealPopup();
+                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                    ScheduledMeals scheduledMeal = new ScheduledMeals
                     {
-                        await mainContent.ScrollToAsync(0, 0, true);
-                        scheduleMealDatePicker.Date = buttonsDate;
-                        typePicker.SelectedItem = "Dinner";
-                    }
+                        UserId = loggedInUser.UserId,
+                        Date = (DateTime)breakfastButton.BindingContext,
+                        MealType = "Dinner",
+                        RecipeId = recipeId
+                    };
+                    await DatabaseService.ScheduleMeal(scheduledMeal);
+                    displayScheduledMeals(selectedMonth);
                 }
             };
+
+            if (displayDate == DateTime.Today)
+            {
+                borderedDateLabel.BackgroundColor = primaryColor;
+                breakfastButton.BackgroundColor = secondaryDarkColor;
+                lunchButton.BackgroundColor = secondaryDarkColor;
+                dinnerButton.BackgroundColor = secondaryDarkColor;
+            }
+            else
+            {
+                borderedDateLabel.BackgroundColor = secondaryDarkColor;
+                breakfastButton.BackgroundColor = secondaryColor;
+                lunchButton.BackgroundColor = secondaryColor;
+                dinnerButton.BackgroundColor = secondaryColor;
+            }
 
             scheduledMealsGrid.Children.Add(borderedDateLabel);
             scheduledMealsGrid.SetRow(borderedDateLabel, rowNum);
@@ -319,38 +283,17 @@ public partial class ScheduleMealsPage : ContentPage
         }
     }
 
-    private bool validInputs()
+    public async Task<string> displayScheduleMealPopup()
     {
-        if (typePicker.SelectedIndex == 0)
-        {
-            DisplayAlert("Error", "Please select a meal type.", "OK");
-            return false;
-        }
-        if (recipePicker.SelectedIndex == 0)
-        {
-            DisplayAlert("Error", "Please select a recipe.", "OK");
-            return false;
-        }
-        return true;
+        List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
+        List<string> recipeNames = recipes.Select(r => r.RecipeName).ToList();
+        var pickerPopup = new PickerPopup(recipeNames);
+        string selectedItem = await this.ShowPopupAsync(pickerPopup) as string;
+        return selectedItem;
     }
-
-    private async Task<ScheduledMeals> existingMeal()
-    {
-        List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, scheduleMealDatePicker.Date);
-        if (scheduledMeals.Count > 0)
-        {
-            var existingMeal = scheduledMeals.FirstOrDefault(m => m.MealType == typePicker.SelectedItem.ToString());
-            if (existingMeal != null)
-            {
-                return existingMeal;
-            }
-        }
-        return null;
-    }
-
     #endregion
 
-        #region Nav Bar
+    #region Nav Bar
     private void recipesButton_Clicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new RecipesPage(loggedInUser));

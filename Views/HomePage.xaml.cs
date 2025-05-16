@@ -3,6 +3,7 @@ using PlanToPlate.Services;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
+using CommunityToolkit.Maui.Views;
 
 namespace PlanToPlate.Views;
 
@@ -76,10 +77,6 @@ public partial class HomePage : ContentPage
         {
             scheduledRecipeButton_Clicked(todaysBreakfast.RecipeId);
         }
-        else
-        {
-            scheduledRecipeButton_Clicked(-1);
-        }
     }
 
     private void lunchButton_Clicked(object sender, EventArgs e)
@@ -87,10 +84,6 @@ public partial class HomePage : ContentPage
         if(todaysLunch != null)
         {
             scheduledRecipeButton_Clicked(todaysLunch.RecipeId);
-        }
-        else
-        {
-            scheduledRecipeButton_Clicked(-1);
         }
     }
 
@@ -100,19 +93,12 @@ public partial class HomePage : ContentPage
         {
             scheduledRecipeButton_Clicked(todaysDinner.RecipeId);
         }
-        else
-        {
-            scheduledRecipeButton_Clicked(-1);
-        }
     }
  
     private async void scheduledRecipeButton_Clicked(int recipeId)
     {
-        if(recipeId != -1)
-        {
-            Recipe selectedRecipe = await DatabaseService.GetRecipe(loggedInUser.UserId, recipeId);
-            await Navigation.PushModalAsync(new ViewRecipePage(loggedInUser, selectedRecipe));
-        }
+        Recipe selectedRecipe = await DatabaseService.GetRecipe(loggedInUser.UserId, recipeId);
+        await Navigation.PushModalAsync(new ViewRecipePage(loggedInUser, selectedRecipe));
     }
     #endregion
 
@@ -206,23 +192,7 @@ public partial class HomePage : ContentPage
             {
                 if (breakfast != null)
                 {
-                    string breakfastName = await DatabaseService.GetRecipeName(breakfast);
-                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {breakfastName} from {breakfast.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (deleteMeal)
-                    {
-                        await DatabaseService.DeleteScheduleMeal(breakfast);
-                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, breakfast.Date);
-                        displayedScheduledMeals();
-                    }
-                }
-                else
-                {
-                    DateTime buttonsDate = (DateTime)breakfastButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a breakfast to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
-                    {
-                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
-                    }
+                    scheduledRecipeButton_Clicked(breakfast.RecipeId);
                 }
             };
 
@@ -244,23 +214,7 @@ public partial class HomePage : ContentPage
             {
                 if (lunch != null)
                 {
-                    string lunchName = await DatabaseService.GetRecipeName(lunch);
-                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {lunchName} from {lunch.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (deleteMeal)
-                    {
-                        await DatabaseService.DeleteScheduleMeal(lunch);
-                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, lunch.Date);
-                        displayedScheduledMeals();
-                    }
-                }
-                else
-                {
-                    DateTime buttonsDate = (DateTime)lunchButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a lunch to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
-                    {
-                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
-                    }
+                    scheduledRecipeButton_Clicked(lunch.RecipeId);
                 }
             };
 
@@ -282,23 +236,7 @@ public partial class HomePage : ContentPage
             {
                 if (dinner != null)
                 {
-                    string dinnerName = await DatabaseService.GetRecipeName(dinner);
-                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {dinnerName} from {dinner.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (deleteMeal)
-                    {
-                        await DatabaseService.DeleteScheduleMeal(dinner);
-                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, dinner.Date);
-                        displayedScheduledMeals();
-                    }
-                }
-                else
-                {
-                    DateTime buttonsDate = (DateTime)dinnerButton.BindingContext;
-                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a dinner to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
-                    if (addMeal)
-                    {
-                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
-                    }
+                    scheduledRecipeButton_Clicked(dinner.RecipeId);
                 }
             };
 
@@ -333,8 +271,6 @@ public partial class HomePage : ContentPage
             displayDate = displayDate.AddDays(1);
         }
     }
-
-    
     #endregion
 
     #region Nav Bar  

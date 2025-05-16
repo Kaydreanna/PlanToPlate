@@ -274,7 +274,7 @@ namespace PlanToPlate.Services
         #endregion
 
         #region Schedule Meals Methods
-        public static async Task<int> GetRecipeId(string recipeName, int userId)
+        public static async Task<int> GetRecipeId(int userId, string recipeName)
         {
             await Init();
             var recipe = await _db.Table<Recipe>().Where(r => r.RecipeName == recipeName && r.UserId == userId).FirstOrDefaultAsync();
