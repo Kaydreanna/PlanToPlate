@@ -216,6 +216,48 @@ namespace PlanToPlate.Services
             await _db.UpdateAsync(shoppingList);
         }
 
+        public static async Task UpdateShoppingLists(int userId, DateTime mealDate)
+        {
+            List<ShoppingList> allShoppingLists = await GetAllShoppingLists(userId);
+            foreach (ShoppingList shoppingList in allShoppingLists)
+            {
+                if (mealDate >= shoppingList.StartDate && mealDate <= shoppingList.EndDate)
+                {
+                    Dictionary<string, bool> updatedIngredientList = new Dictionary<string, bool>();
+                    List<Recipe> scheduledRecipes = new List<Recipe>();
+                    List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == shoppingList.UserId && i.Date >= shoppingList.StartDate && i.Date <= shoppingList.EndDate).ToListAsync();
+                    //Loop through all the scheduled meals that fall within the shopping list date range
+                    foreach (ScheduledMeals meal in scheduledMeals)
+                    {
+                        //Get ingredients for each meal
+                        List<string> mealIngredients = await GetRecipeIngredients(meal.RecipeId);
+                        //Loop through each ingredient
+                        foreach (string ingredient in mealIngredients)
+                        {
+                            //Check if the ingredient is already in the updated list
+                            if (!updatedIngredientList.ContainsKey(ingredient))
+                            {
+                                //If it is not, check if the ingredient is in the shopping list
+                                if (shoppingList.IngredientList.ContainsKey(ingredient))
+                                {
+                                    //If so, add it to the updated list with its matching value
+                                    updatedIngredientList[ingredient] = shoppingList.IngredientList[ingredient];
+                                }
+                                //If it is not in the shopping list, add it to the updated list with a value of false
+                                else
+                                {
+                                    updatedIngredientList[ingredient] = false;
+                                }
+                            }
+                        }
+                    }
+                    shoppingList.IngredientList = updatedIngredientList;
+                    shoppingList.IngredientListJson = JsonConvert.SerializeObject(updatedIngredientList);
+                    await _db.UpdateAsync(shoppingList);
+                }
+            }
+        }
+
         public static async Task DeleteShoppingList(ShoppingList shoppingList)
         {
             await Init();

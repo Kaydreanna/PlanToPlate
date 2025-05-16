@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Core;
+using Microsoft.Maui.Platform;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System.Globalization;
@@ -63,7 +65,8 @@ public partial class ScheduleMealsPage : ContentPage
                     MealType = typePicker.SelectedItem.ToString(),
                     RecipeId = recipeId
                 });
-                await DisplayAlert("Meal Scheduled", $"{recipePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", "OK");
+                await CommunityToolkit.Maui.Alerts.Snackbar.Make($"{recipePicker.SelectedItem.ToString()} has been scheduled on {scheduleMealDatePicker.Date.ToString("MM/dd/yyyy")}", duration: TimeSpan.FromSeconds(2), visualOptions: new SnackbarOptions {BackgroundColor = Colors.Black, TextColor = Colors.White}).Show();
+                await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, scheduleMealDatePicker.Date);
                 typePicker.SelectedIndex = 0;
                 recipePicker.SelectedIndex = 0;
                 displayScheduledMeals(displayedMonth);
@@ -189,15 +192,34 @@ public partial class ScheduleMealsPage : ContentPage
                 BackgroundColor = secondaryColor,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if (breakfast != null)
-                    {
-                        await DisplayAlert("Scheduled Meal", $"{breakfastName} is scheduled on {breakfast.Date.ToString("MM/dd/yyyy")}", "OK");
-                    }
-                })
             };
-            Button lunchLabel = new Button
+            breakfastButton.BindingContext = displayDate;
+            breakfastButton.Clicked += async (sender, e) =>
+            {
+                if (breakfast != null)
+                {
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {breakfastName} from {breakfast.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(breakfast);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, breakfast.Date);
+                        displayScheduledMeals(displayedMonth);
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)breakfastButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a breakfast to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await mainContent.ScrollToAsync(0, 0, true);
+                        scheduleMealDatePicker.Date = buttonsDate;
+                        typePicker.SelectedItem = "Breakfast";
+                    }
+                }
+            };
+
+            Button lunchButton = new Button
             {
                 Text = lunchName,
                 LineBreakMode = LineBreakMode.WordWrap,
@@ -209,34 +231,72 @@ public partial class ScheduleMealsPage : ContentPage
                 BackgroundColor = secondaryColor,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if (lunch != null)
-                    {
-                        await DisplayAlert("Scheduled Meal", $"{lunchName} is scheduled on {lunch.Date.ToString("MM/dd/yyyy")}", "OK");
-                    }
-                })
             };
-            Button dinnerLabel = new Button
+            lunchButton.BindingContext = displayDate;
+            lunchButton.Clicked += async (sender, e) =>
+            {
+                if (lunch != null)
+                {
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {lunchName} from {lunch.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(lunch);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, lunch.Date);
+                        displayScheduledMeals(displayedMonth);
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)lunchButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a lunch to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await mainContent.ScrollToAsync(0, 0, true);
+                        scheduleMealDatePicker.Date = buttonsDate;
+                        typePicker.SelectedItem = "Lunch";
+                    }
+                }
+            };
+
+            Button dinnerButton = new Button
             {
                 Text = dinnerName,
                 LineBreakMode = LineBreakMode.WordWrap,
                 FontSize = 10,
-                TextColor = breakfast != null ? tertiaryColor : Colors.Black,
+                TextColor = dinner != null ? tertiaryColor : Colors.Black,
                 CornerRadius = 0,
                 BorderWidth = 1,
                 BorderColor = Colors.Black,
                 BackgroundColor = secondaryColor,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if (dinner != null)
-                    {
-                        await DisplayAlert("Scheduled Meal", $"{dinnerName} is scheduled on {dinner.Date.ToString("MM/dd/yyyy")}", "OK");
-                    }
-                })
             };
+            dinnerButton.BindingContext = displayDate;
+            dinnerButton.Clicked += async (sender, e) =>
+            {
+                if (dinner != null)
+                {
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {dinnerName} from {dinner.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(dinner);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, dinner.Date);
+                        displayScheduledMeals(displayedMonth);
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)dinnerButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a dinner to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await mainContent.ScrollToAsync(0, 0, true);
+                        scheduleMealDatePicker.Date = buttonsDate;
+                        typePicker.SelectedItem = "Dinner";
+                    }
+                }
+            };
+
             scheduledMealsGrid.Children.Add(borderedDateLabel);
             scheduledMealsGrid.SetRow(borderedDateLabel, rowNum);
             scheduledMealsGrid.SetColumn(borderedDateLabel, columnNum);
@@ -246,13 +306,13 @@ public partial class ScheduleMealsPage : ContentPage
 
             scheduledMealsGrid.SetColumn(breakfastButton, columnNum);
 
-            scheduledMealsGrid.Children.Add(lunchLabel);
-            scheduledMealsGrid.SetRow(lunchLabel, rowNum + 2);
-            scheduledMealsGrid.SetColumn(lunchLabel, columnNum);
+            scheduledMealsGrid.Children.Add(lunchButton);
+            scheduledMealsGrid.SetRow(lunchButton, rowNum + 2);
+            scheduledMealsGrid.SetColumn(lunchButton, columnNum);
 
-            scheduledMealsGrid.Children.Add(dinnerLabel);
-            scheduledMealsGrid.SetRow(dinnerLabel, rowNum + 3);
-            scheduledMealsGrid.SetColumn(dinnerLabel, columnNum);
+            scheduledMealsGrid.Children.Add(dinnerButton);
+            scheduledMealsGrid.SetRow(dinnerButton, rowNum + 3);
+            scheduledMealsGrid.SetColumn(dinnerButton, columnNum);
 
             columnNum++;
             displayDate = displayDate.AddDays(1);
@@ -287,9 +347,10 @@ public partial class ScheduleMealsPage : ContentPage
         }
         return null;
     }
+
     #endregion
 
-    #region Nav Bar
+        #region Nav Bar
     private void recipesButton_Clicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new RecipesPage(loggedInUser));
