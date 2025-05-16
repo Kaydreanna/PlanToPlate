@@ -5,7 +5,7 @@
              x:Class="PlanToPlate.Views.HomePage"
              Title="HomePage">
     <Grid>
-        <ScrollView Grid.Row="0">
+        <ScrollView x:Name="mainContent" Grid.Row="0">
             <VerticalStackLayout>
                 <Grid x:Name="todaysMealPlan">
                     <Grid.ColumnDefinitions>

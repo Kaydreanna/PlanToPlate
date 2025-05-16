@@ -29,7 +29,7 @@
                 </Grid>
                 <HorizontalStackLayout x:Name="saveOrCancelButtons" HorizontalOptions="Center" Margin="0, 30">
                     <Button x:Name="saveButton" Text="Save" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Margin="5, 0" Clicked="saveButton_Clicked"/>
-                    <Button x:Name="cancelButton" Text="Cancel" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Margin="5, 0" Clicked="closeButton_Clicked"/>
+                    <Button x:Name="cancelButton" Text="Cancel" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Margin="5, 0" Clicked="cancelButton_Clicked"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

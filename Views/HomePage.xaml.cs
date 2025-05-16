@@ -200,17 +200,32 @@ public partial class HomePage : ContentPage
                 BorderColor = Colors.Black,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if(breakfast != null)
-                    {
-                        scheduledRecipeButton_Clicked(breakfast.RecipeId);
-                    } else
-                    {
-                        scheduledRecipeButton_Clicked(-1);
-                    }
-                })
             };
+            breakfastButton.BindingContext = displayDate;
+            breakfastButton.Clicked += async (sender, e) =>
+            {
+                if (breakfast != null)
+                {
+                    string breakfastName = await DatabaseService.GetRecipeName(breakfast);
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {breakfastName} from {breakfast.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(breakfast);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, breakfast.Date);
+                        displayedScheduledMeals();
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)breakfastButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a breakfast to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
+                    }
+                }
+            };
+
             Button lunchButton = new Button
             {
                 Text = lunch != null ? await DatabaseService.GetRecipeName(lunch) : "-",
@@ -223,18 +238,32 @@ public partial class HomePage : ContentPage
                 BorderColor = Colors.Black,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if (lunch != null)
-                    {
-                        scheduledRecipeButton_Clicked(lunch.RecipeId);
-                    }
-                    else
-                    {
-                        scheduledRecipeButton_Clicked(-1);
-                    }
-                })
             };
+            lunchButton.BindingContext = displayDate;
+            lunchButton.Clicked += async (sender, e) =>
+            {
+                if (lunch != null)
+                {
+                    string lunchName = await DatabaseService.GetRecipeName(lunch);
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {lunchName} from {lunch.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(lunch);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, lunch.Date);
+                        displayedScheduledMeals();
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)lunchButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a lunch to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
+                    }
+                }
+            };
+
             Button dinnerButton = new Button
             {
                 Text = dinner != null ? await DatabaseService.GetRecipeName(dinner) : "-",
@@ -247,19 +276,33 @@ public partial class HomePage : ContentPage
                 BorderColor = Colors.Black,
                 Padding = 0,
                 Margin = 0,
-                Command = new Command(async () =>
-                {
-                    if (dinner != null)
-                    {
-                        scheduledRecipeButton_Clicked(dinner.RecipeId);
-                    }
-                    else
-                    {
-                        scheduledRecipeButton_Clicked(-1);
-                    }
-                })
             };
-            if(displayDate == DateTime.Today)
+            dinnerButton.BindingContext = displayDate;
+            dinnerButton.Clicked += async (sender, e) =>
+            {
+                if (dinner != null)
+                {
+                    string dinnerName = await DatabaseService.GetRecipeName(dinner);
+                    bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {dinnerName} from {dinner.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (deleteMeal)
+                    {
+                        await DatabaseService.DeleteScheduleMeal(dinner);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, dinner.Date);
+                        displayedScheduledMeals();
+                    }
+                }
+                else
+                {
+                    DateTime buttonsDate = (DateTime)dinnerButton.BindingContext;
+                    bool addMeal = await DisplayAlert("Add Meal?", $"Would you like to add a dinner to {buttonsDate.ToString("MM/dd/yyyy")}?", "Yes", "No");
+                    if (addMeal)
+                    {
+                        await DisplayAlert("Add Meal", "This feature is not yet implemented.", "OK");
+                    }
+                }
+            };
+
+            if (displayDate == DateTime.Today)
             {
                 borderedDateLabel.BackgroundColor = primaryColor;
                 breakfastButton.BackgroundColor = secondaryDarkColor;
@@ -290,6 +333,8 @@ public partial class HomePage : ContentPage
             displayDate = displayDate.AddDays(1);
         }
     }
+
+    
     #endregion
 
     #region Nav Bar  

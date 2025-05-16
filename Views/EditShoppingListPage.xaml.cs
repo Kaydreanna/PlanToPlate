@@ -26,11 +26,7 @@ public partial class EditShoppingListPage : ContentPage
     #region Clicked Events
     private async void closeButton_Clicked(object sender, EventArgs e)
     {
-        bool closePage = await DisplayAlert("Close Page", "Are you sure you want to close this page? Any unsaved changes will be lost.", "Yes", "No");
-        if(closePage)
-        {
-            await Navigation.PopModalAsync();
-        }
+        await Navigation.PopModalAsync();
     }
 
     private async void saveButton_Clicked(object sender, EventArgs e)
@@ -55,6 +51,14 @@ public partial class EditShoppingListPage : ContentPage
         }
         await DatabaseService.UpdateShoppingList(shoppingList, listOfIngredients);
         await Navigation.PopModalAsync();
+    }
+    private async void cancelButton_Clicked(object sender, EventArgs e)
+    {
+        bool closePage = await DisplayAlert("Close Page", "Are you sure you want to close this page? Any unsaved changes will be lost.", "Yes", "No");
+        if(closePage)
+        {
+            await Navigation.PopModalAsync();
+        }
     }
     #endregion
 
@@ -109,4 +113,5 @@ public partial class EditShoppingListPage : ContentPage
         }
     }
     #endregion
+
 }
