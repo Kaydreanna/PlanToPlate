@@ -10,8 +10,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" VerticalOptions="Center" BackgroundColor="{StaticResource Primary}" Padding="0, 0, 10, 0">
-            <Label x:Name="shoppingListDatesLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="30" Text="[List Dates]" />
-            <ImageButton x:Name="closeRecipeImageButton" HorizontalOptions="End" BackgroundColor="Transparent" Padding="5, 0, 0, 5" Clicked="closeButton_Clicked">
+            <Label x:Name="shoppingListDatesLabel" HorizontalOptions="Start" VerticalOptions="Center" FontSize="30" Padding="2, 0, 0, 0" />
+            <ImageButton x:Name="closeRecipeImageButton" HorizontalOptions="End" VerticalOptions="Center" BackgroundColor="Transparent" Padding="5, 0, 0, 0" Clicked="closeButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Xmark}" Color="{StaticResource IconDark}"/>
                 </ImageButton.Source>

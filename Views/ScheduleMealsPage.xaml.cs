@@ -158,6 +158,7 @@ public partial class ScheduleMealsPage : ContentPage
                         RecipeId = recipeId
                     };
                     await DatabaseService.ScheduleMeal(scheduledMeal);
+                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)breakfastButton.BindingContext);
                     displayScheduledMeals(selectedMonth);
                 }
             };
@@ -195,11 +196,12 @@ public partial class ScheduleMealsPage : ContentPage
                     ScheduledMeals scheduledMeal = new ScheduledMeals
                     {
                         UserId = loggedInUser.UserId,
-                        Date = (DateTime)breakfastButton.BindingContext,
+                        Date = (DateTime)lunchButton.BindingContext,
                         MealType = "Lunch",
                         RecipeId = recipeId
                     };
                     await DatabaseService.ScheduleMeal(scheduledMeal);
+                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
                     displayScheduledMeals(selectedMonth);
                 }
             };
@@ -237,11 +239,12 @@ public partial class ScheduleMealsPage : ContentPage
                     ScheduledMeals scheduledMeal = new ScheduledMeals
                     {
                         UserId = loggedInUser.UserId,
-                        Date = (DateTime)breakfastButton.BindingContext,
+                        Date = (DateTime)dinnerButton.BindingContext,
                         MealType = "Dinner",
                         RecipeId = recipeId
                     };
                     await DatabaseService.ScheduleMeal(scheduledMeal);
+                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)dinnerButton.BindingContext);
                     displayScheduledMeals(selectedMonth);
                 }
             };

@@ -86,6 +86,7 @@ public partial class EditShoppingListPage : ContentPage
                 BorderWidth = 1,
                 BorderColor = Colors.Black,
                 HorizontalOptions = LayoutOptions.Center,
+                LineBreakMode = LineBreakMode.WordWrap,
                 Margin = new Thickness(5)
             };
             ingredientButton.BindingContext = ingredient;

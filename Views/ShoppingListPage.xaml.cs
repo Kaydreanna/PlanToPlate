@@ -10,7 +10,7 @@ public partial class ShoppingListPage : ContentPage
 {
     public User loggedInUser { get; set; }
     private Dictionary<int, bool> shoppingListVisibility = new Dictionary<int, bool>();
-    private Dictionary<int, VerticalStackLayout> shoppingListGridLayout = new Dictionary<int, VerticalStackLayout>();
+    private Dictionary<int, VerticalStackLayout> shoppingListLayout = new Dictionary<int, VerticalStackLayout>();
     public ShoppingListPage(User user)
 	{
 		InitializeComponent();
@@ -190,7 +190,7 @@ public partial class ShoppingListPage : ContentPage
                 pastShoppingListsGrid.Children.Add(container);
                 pastShoppingListsGrid.SetColumn(container, 1);
                 pastShoppingListsGrid.SetRow(container, rowNum + 1);
-                shoppingListGridLayout[shoppingList.ListId] = container;
+                shoppingListLayout[shoppingList.ListId] = container;
 
                 rowNum+= 2;
             }
@@ -294,9 +294,9 @@ public partial class ShoppingListPage : ContentPage
     {
         shoppingListVisibility[shoppingListId] = !shoppingListVisibility[shoppingListId];
 
-        if(shoppingListGridLayout.ContainsKey(shoppingListId))
+        if(shoppingListLayout.ContainsKey(shoppingListId))
         {
-            var shoppingListDetailsGrid = shoppingListGridLayout[shoppingListId];
+            var shoppingListDetailsGrid = shoppingListLayout[shoppingListId];
             shoppingListDetailsGrid.IsVisible = shoppingListVisibility[shoppingListId];
             shoppingListDetailsGrid.HeightRequest = shoppingListDetailsGrid.IsVisible ? -1 : 0;
             pastShoppingListsGrid.InvalidateMeasure();
