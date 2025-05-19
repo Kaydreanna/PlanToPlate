@@ -44,12 +44,13 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="2" BackgroundColor="Transparent" Margin="0, 20" Clicked="previousDatesButton_Clicked">
+                    <ImageButton x:Name="previousDateImageButton" Grid.Row="4" Grid.Column="1" BackgroundColor="Transparent" Margin="0, 20" Clicked="previousDatesButton_Clicked">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowLeft}" Color="{StaticResource IconDark}"/>
                         </ImageButton.Source>
                     </ImageButton>
-                    <ImageButton x:Name="nextDateImageButton" Grid.Row="4" Grid.Column="4" BackgroundColor="Transparent" Margin="0, 20" Clicked="futureDatesButton_Clicked">
+                    <Button x:Name="viewOrCreateShoppingListButton" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center" LineBreakMode="WordWrap" Text="Create Shopping List"/>
+                    <ImageButton x:Name="nextDateImageButton" Grid.Row="4" Grid.Column="5" BackgroundColor="Transparent" Margin="0, 20" Clicked="futureDatesButton_Clicked">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRight}" Color="{StaticResource IconDark}"/>
                         </ImageButton.Source>

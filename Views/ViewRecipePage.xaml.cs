@@ -85,7 +85,7 @@ public partial class ViewRecipePage : ContentPage
 
     private async void editButton_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddRecipePage(loggedInUser, selectedRecipe));
+        await Navigation.PushAsync(new AddRecipePage(loggedInUser, selectedRecipe));
     }
 
     private async void deleteButton_Clicked(object sender, EventArgs e)
@@ -94,7 +94,7 @@ public partial class ViewRecipePage : ContentPage
         if(confirmDelete)
         {
             await DatabaseService.DeleteRecipe(selectedRecipe.RecipeId);
-            await Navigation.PopModalAsync();
+            await Navigation.PopAsync();
         }
     }
 

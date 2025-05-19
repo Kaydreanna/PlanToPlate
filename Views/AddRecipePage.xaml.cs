@@ -61,7 +61,7 @@ public partial class AddRecipePage : ContentPage
         bool confirmClose = await DisplayAlert("Discard This Recipe?", "Are you sure you want to close this recipe? Your changes won't be saved if you exit.", "Yes", "No");
         if(confirmClose)
         {
-            await Navigation.PopModalAsync();
+            await Navigation.PopAsync();
         }
     }
 
@@ -192,7 +192,7 @@ public partial class AddRecipePage : ContentPage
             {
                 await DatabaseService.UpdateRecipe(recipeToEdit, newRecipe);
             }
-            await Navigation.PopModalAsync();
+            await Navigation.PopAsync();
         }
     }
 

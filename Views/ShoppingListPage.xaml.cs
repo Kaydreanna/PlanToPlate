@@ -45,30 +45,13 @@ public partial class ShoppingListPage : ContentPage
         {
             if (shoppingList.StartDate == startDatePicker.Date && shoppingList.EndDate == endDatePicker.Date)
             {
-                await DisplayAlert("Error", "A shopping list already exists for the selected dates. Please choose different dates or delete the previous shopping list.", "OK");
+                await DisplayAlert("Error", "A shopping list already exists for the selected dates. Please choose different dates.", "OK");
                 return;
             }
         }
         //Create a new shopping list
-        Dictionary<string, bool> ingredientsToAddToShoppingList = new Dictionary<string, bool>();
-        foreach (ScheduledMeals meal in mealsForShoppingList)
-        {
-            List<string> ingredients = await DatabaseService.GetRecipeIngredients(meal.RecipeId);
-            foreach(string ingredient in ingredients)
-            {
-                ingredientsToAddToShoppingList.Add(ingredient, false);
-            }
-        }
-        ShoppingList newShoppingList = new ShoppingList
-        {
-            UserId = loggedInUser.UserId,
-            StartDate = startDatePicker.Date,
-            EndDate = endDatePicker.Date,
-            IngredientList = new Dictionary<string, bool>()
-        };
-        await DatabaseService.CreateShoppingList(newShoppingList);
-        await DatabaseService.UpdateShoppingList(newShoppingList, ingredientsToAddToShoppingList);
-        await Navigation.PushModalAsync(new EditShoppingListPage(newShoppingList));
+        ShoppingList newShoppingList = await DatabaseService.CreateShoppingList(loggedInUser.UserId, startDatePicker.Date, endDatePicker.Date);
+        await Navigation.PushAsync(new EditShoppingListPage(newShoppingList));
     }
     
     private async void shareShoppingListButton_Clicked(int shoppingListId)
@@ -258,6 +241,7 @@ public partial class ShoppingListPage : ContentPage
             if (deleteShoppingList)
             {
                 await DatabaseService.DeleteShoppingList(shoppingList);
+                displayShoppingLists();
             }
         };
         shoppingListDetailsGrid.Children.Add(deleteImageButton);
@@ -273,7 +257,7 @@ public partial class ShoppingListPage : ContentPage
             Padding = 0,
             Margin = 0
         };
-        editImageButton.Clicked += async (s, e) => await Navigation.PushModalAsync(new EditShoppingListPage(shoppingList));
+        editImageButton.Clicked += async (s, e) => await Navigation.PushAsync(new EditShoppingListPage(shoppingList));
         shoppingListDetailsGrid.Children.Add(editImageButton);
 
         if (columnNum != 0)

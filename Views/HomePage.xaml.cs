@@ -15,6 +15,7 @@ public partial class HomePage : ContentPage
     private Recipe todaysDinner = null;
     private DateTime startDate { get; set; }
     private DateTime endDate { get; set; }
+    private ShoppingList shoppingList { get; set; }
     public HomePage(User user)
     {
         InitializeComponent();
@@ -54,6 +55,7 @@ public partial class HomePage : ContentPage
         }
         endDate = startDate.AddDays(6);
         displayedScheduledMeals();
+        editViewOrCreateShoppingListButton();
     }
 
     #region Clicked Events  
@@ -62,6 +64,7 @@ public partial class HomePage : ContentPage
         startDate = startDate.AddDays(-7);
         endDate = endDate.AddDays(-7);
         displayedScheduledMeals();
+        editViewOrCreateShoppingListButton();
     }
 
     private void futureDatesButton_Clicked(object sender, EventArgs e)
@@ -69,6 +72,7 @@ public partial class HomePage : ContentPage
         startDate = startDate.AddDays(7);
         endDate = endDate.AddDays(7);
         displayedScheduledMeals();
+        editViewOrCreateShoppingListButton();
     }
 
     private void breakfastButton_Clicked(object sender, EventArgs e)
@@ -98,7 +102,7 @@ public partial class HomePage : ContentPage
     private async void scheduledRecipeButton_Clicked(int recipeId)
     {
         Recipe selectedRecipe = await DatabaseService.GetRecipe(loggedInUser.UserId, recipeId);
-        await Navigation.PushModalAsync(new ViewRecipePage(loggedInUser, selectedRecipe));
+        await Navigation.PushAsync(new ViewRecipePage(loggedInUser, selectedRecipe));
     }
     #endregion
 
@@ -270,6 +274,43 @@ public partial class HomePage : ContentPage
 
             displayDate = displayDate.AddDays(1);
         }
+    }
+
+    private async void editViewOrCreateShoppingListButton()
+    {
+        bool shoppingListExists = await existingShoppingList(startDate, endDate);
+        if (shoppingListExists)
+        {
+            viewOrCreateShoppingListButton.Text = "View Shopping List";
+            viewOrCreateShoppingListButton.Clicked += async (sender, e) =>
+            {
+                await Navigation.PushAsync(new EditShoppingListPage(shoppingList));
+            };
+        }
+        else
+        {
+            viewOrCreateShoppingListButton.Text = "Create Shopping List";
+            viewOrCreateShoppingListButton.Clicked += async (sender, e) =>
+            {
+                ShoppingList newShoppingList = await DatabaseService.CreateShoppingList(loggedInUser.UserId, startDate, endDate);
+                await Navigation.PushAsync(new EditShoppingListPage(newShoppingList));
+            };
+
+        }
+    }
+
+    private async Task<bool> existingShoppingList(DateTime startDate, DateTime endDate)
+    {
+        List<ShoppingList> shoppingLists = await DatabaseService.GetAllShoppingLists(loggedInUser.UserId);
+        foreach(ShoppingList list in shoppingLists)
+        {
+            if (list.StartDate == startDate && list.EndDate == endDate)
+            {
+                shoppingList = list;
+                return true;
+            }
+        }
+        return false;
     }
     #endregion
 

@@ -208,6 +208,37 @@ namespace PlanToPlate.Services
             await _db.InsertAsync(shoppingList);
         }
 
+        public static async Task<ShoppingList> CreateShoppingList(int userId, DateTime startDate, DateTime endDate)
+        {
+            await Init();
+            List<ScheduledMeals> scheduledMeals = await _db.Table<ScheduledMeals>().Where(i => i.UserId == userId && i.Date >= startDate && i.Date <= endDate).ToListAsync();
+            Dictionary<string, bool> ingredientsToAddToShoppingList = new Dictionary<string, bool>();
+            foreach (ScheduledMeals meal in scheduledMeals)
+            {
+                List<string> ingredients = await DatabaseService.GetRecipeIngredients(meal.RecipeId);
+                foreach (string ingredient in ingredients)
+                {
+                    if(!ingredientsToAddToShoppingList.ContainsKey(ingredient))
+                    {
+                        ingredientsToAddToShoppingList.Add(ingredient, false);
+                    }
+                }
+            }
+
+            ShoppingList newShoppingList = new ShoppingList
+            {
+                UserId = userId,
+                StartDate = startDate,
+                EndDate = endDate,
+                IngredientList = new Dictionary<string, bool>()
+            };
+
+            await _db.InsertAsync(newShoppingList);
+            await UpdateShoppingList(newShoppingList, ingredientsToAddToShoppingList);
+
+            return newShoppingList;
+        }
+
         public static async Task UpdateShoppingList(ShoppingList shoppingList, Dictionary<string, bool> ingredients)
         {
             await Init();
