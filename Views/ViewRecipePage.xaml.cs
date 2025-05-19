@@ -112,6 +112,29 @@ public partial class ViewRecipePage : ContentPage
         {
             DateTime selectedDate = selection.Item1;
             string selectedMealType = selection.Item2;
+            List<ScheduledMeals> scheduledMeals = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, selectedDate);
+            ScheduledMeals conflictingMeal = null;
+            foreach(ScheduledMeals meal in scheduledMeals)
+            {
+                if (meal.MealType == selectedMealType)
+                {
+                    conflictingMeal = meal;
+                    break;
+                }
+            }
+
+            if (conflictingMeal != null)
+            {
+                bool confirmReplace = await DisplayAlert("Conflicting Meal", "You already have a meal scheduled for this date and meal type. Do you want to replace it?", "Yes", "No");
+                if (confirmReplace)
+                {
+                    await DatabaseService.DeleteScheduleMeal(conflictingMeal);
+                } else
+                {
+                    return;
+                }
+            }
+
             ScheduledMeals newMeal = new ScheduledMeals
             {
                 UserId = loggedInUser.UserId,
