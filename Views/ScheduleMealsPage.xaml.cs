@@ -290,7 +290,7 @@ public partial class ScheduleMealsPage : ContentPage
     {
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
         List<string> recipeNames = recipes.Select(r => r.RecipeName).ToList();
-        var pickerPopup = new PickerPopup(recipeNames);
+        var pickerPopup = new MealPickerPopup(recipeNames);
         string selectedItem = await this.ShowPopupAsync(pickerPopup) as string;
         return selectedItem;
     }

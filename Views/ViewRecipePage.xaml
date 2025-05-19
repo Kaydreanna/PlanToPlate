@@ -36,7 +36,7 @@
                 </Grid>
                 <!-- ADD STARS WITH FONT AWESOME -->
                 <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="No ratings yet! The ability to add a rating is coming soon." Margin="20"/>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40"/>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40" Clicked="scheduleMealButton_Clicked"/>
                 <Grid x:Name="ingredientsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

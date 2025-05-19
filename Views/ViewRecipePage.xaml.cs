@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System;
@@ -27,7 +28,7 @@ public partial class ViewRecipePage : ContentPage
 
     private async void closeRecipeButton_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PopModalAsync();
+        await Navigation.PopAsync();
     }
 
     private void displayIngredients()
@@ -85,7 +86,6 @@ public partial class ViewRecipePage : ContentPage
     private async void editButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushModalAsync(new AddRecipePage(loggedInUser, selectedRecipe));
-        //await Navigation.PopAsync();
     }
 
     private async void deleteButton_Clicked(object sender, EventArgs e)
@@ -95,6 +95,31 @@ public partial class ViewRecipePage : ContentPage
         {
             await DatabaseService.DeleteRecipe(selectedRecipe.RecipeId);
             await Navigation.PopModalAsync();
+        }
+    }
+
+    private async void scheduleMealButton_Clicked(object sender, EventArgs e)
+    {
+        await displayScheduleMealPopup();
+    }
+
+    public async Task displayScheduleMealPopup()
+    {
+        var pickerPopup = new DatePickerPopup();
+        var result = await this.ShowPopupAsync(pickerPopup);
+
+        if(result is ValueTuple<DateTime, string> selection)
+        {
+            DateTime selectedDate = selection.Item1;
+            string selectedMealType = selection.Item2;
+            ScheduledMeals newMeal = new ScheduledMeals
+            {
+                UserId = loggedInUser.UserId,
+                RecipeId = selectedRecipe.RecipeId,
+                Date = selectedDate,
+                MealType = selectedMealType
+            };
+            await DatabaseService.ScheduleMeal(newMeal);
         }
     }
 }

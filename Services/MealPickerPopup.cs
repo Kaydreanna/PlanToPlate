@@ -2,12 +2,12 @@
 
 namespace PlanToPlate.Services
 {
-    public class PickerPopup : Popup
+    public class MealPickerPopup : Popup
     {
-        public PickerPopup(IEnumerable<string> items)
+        public MealPickerPopup(IEnumerable<string> meals)
         {
             var label = new Label { Text = "Pick a meal to schedule" };
-            var picker = new Picker { ItemsSource = (System.Collections.IList)items };
+            var picker = new Picker { ItemsSource = (System.Collections.IList)meals };
             var confirmButton = new Button { Text = "Confirm" };
 
             confirmButton.Clicked += (s, e) =>

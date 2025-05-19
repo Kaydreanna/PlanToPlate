@@ -59,7 +59,7 @@ public partial class RecipesPage : ContentPage
 
     private async void viewRecipeButton_Clicked(Recipe recipe)
     {
-        await Navigation.PushModalAsync(new ViewRecipePage(loggedInUser, recipe));
+        await Navigation.PushAsync(new ViewRecipePage(loggedInUser, recipe));
     }
     #endregion
 
