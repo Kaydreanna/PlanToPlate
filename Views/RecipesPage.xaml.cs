@@ -9,7 +9,8 @@ namespace PlanToPlate.Views;
 public partial class RecipesPage : ContentPage
 {
     public User loggedInUser { get; set; }
-    private List<Recipe> currentListOfRecipes = new List<Recipe>();
+    //private List<Recipe> currentListOfRecipes = new List<Recipe>();
+    private Dictionary<Recipe, float> currentListOfRecipesAndRatings = new Dictionary<Recipe, float>();
 
     public RecipesPage(User user)
 	{
@@ -20,9 +21,16 @@ public partial class RecipesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
-        refreshRecipesTable();
-        ratingPicker.Items.Add("Options coming soon!");
+        List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
+        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+        await refreshRecipesTable();
+        ratingPicker.Items.Add("Rating");
+        ratingPicker.Items.Add("None");
+        ratingPicker.Items.Add("0-1");
+        ratingPicker.Items.Add("1-2");
+        ratingPicker.Items.Add("2-3");
+        ratingPicker.Items.Add("3-4");
+        ratingPicker.Items.Add("4-5");
         ratingPicker.SelectedIndex = 0;
         populateDevicePicker();
         devicePicker.SelectedIndex = 0;
@@ -43,18 +51,21 @@ public partial class RecipesPage : ContentPage
 
     private async void clearButton_Clicked(object sender, EventArgs e)
     {
+        ratingPicker.SelectedIndex = 0;
         typePicker.SelectedIndex = 0;
         devicePicker.SelectedIndex = 0;
         ingredientPicker.SelectedIndex = 0;
         searchRecipesEntry.Text = string.Empty;
-        currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
-        refreshRecipesTable();
+        List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, null, null);
+        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+        await refreshRecipesTable();
     }
 
     private async void searchButton_Clicked(object sender, EventArgs e)
     {
-        currentListOfRecipes = await DatabaseService.SearchRecipes(loggedInUser.UserId, searchRecipesEntry.Text);
-        refreshRecipesTable();
+        List<Recipe> recipes = await DatabaseService.SearchRecipes(loggedInUser.UserId, searchRecipesEntry.Text);
+        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+        await refreshRecipesTable();
     }
 
     private async void viewRecipeButton_Clicked(Recipe recipe)
@@ -64,9 +75,9 @@ public partial class RecipesPage : ContentPage
     #endregion
 
     #region Methods
-    private void refreshRecipesTable()
+    private async Task refreshRecipesTable()
     {
-        if (currentListOfRecipes.Count == 0)
+        if (currentListOfRecipesAndRatings.Count == 0)
         {
             noRecipesFoundMessage.IsVisible = true;
             recipesGridLabels.IsVisible = false;
@@ -89,7 +100,7 @@ public partial class RecipesPage : ContentPage
             recipesGridContent.Children.Clear();
             int rowNum = 0;
             var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
-            foreach (Recipe recipe in currentListOfRecipes)
+            foreach (var (recipe, rating) in currentListOfRecipesAndRatings)
             {
                 recipesGridContent.RowDefinitions.Add(new RowDefinition());
                 Button recipeNameButton = new Button
@@ -105,12 +116,20 @@ public partial class RecipesPage : ContentPage
                     Margin = 5,
                     Command = new Command(() => viewRecipeButton_Clicked(recipe)),
                 };
-                Border borderedRecipeButton = new Border
+                Border borderedNameButton = new Border
                 {
                     StrokeThickness = 1,
                     Content = recipeNameButton
                 };
 
+                string displayOverallRating;
+                if (rating != -1)
+                {
+                    displayOverallRating = rating % 1 == 0 ? rating.ToString("0") : rating.ToString("n2");
+                } else
+                {
+                    displayOverallRating = "None";
+                }
                 Border borderedRecipeRating = new Border
                 {
                     StrokeThickness = 1,
@@ -119,8 +138,8 @@ public partial class RecipesPage : ContentPage
                     Margin = 0,
                     Content = new Label
                     {
-                        Text = "Ratings Coming Soon!",
-                        HorizontalOptions = LayoutOptions.Start,
+                        Text = displayOverallRating,
+                        HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center,
                         FontSize = 14
                     }
@@ -156,9 +175,9 @@ public partial class RecipesPage : ContentPage
                     }
                 };
 
-                recipesGridContent.Children.Add(borderedRecipeButton);
-                Grid.SetRow(borderedRecipeButton, rowNum);
-                Grid.SetColumn(borderedRecipeButton, 0);
+                recipesGridContent.Children.Add(borderedNameButton);
+                Grid.SetRow(borderedNameButton, rowNum);
+                Grid.SetColumn(borderedNameButton, 0);
 
                 recipesGridContent.Children.Add(borderedRecipeRating);
                 Grid.SetRow(borderedRecipeRating, rowNum);
@@ -208,6 +227,21 @@ public partial class RecipesPage : ContentPage
             }
         }
     }
+
+    private async void filterByRating(int minNum, int maxNum)
+    {
+        Dictionary<Recipe, float> filteredRecipes = new Dictionary<Recipe, float>();
+        if(minNum == -1 && maxNum == -1)
+        {
+            filteredRecipes = currentListOfRecipesAndRatings.Where(i => i.Value == -1).ToDictionary(i => i.Key, i => i.Value);
+        } else
+        {
+            filteredRecipes = currentListOfRecipesAndRatings.Where(i => i.Value >= minNum && i.Value < maxNum).ToDictionary(i => i.Key, i => i.Value);
+        }
+
+        currentListOfRecipesAndRatings = filteredRecipes;
+        await refreshRecipesTable();
+    }
     #endregion
 
     #region Nav Bar
@@ -250,8 +284,9 @@ public partial class RecipesPage : ContentPage
             {
                 devicePicker.SelectedIndex = 0;
                 ingredientPicker.SelectedIndex = 0;
-                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Type", selectedItem);
-                refreshRecipesTable();
+                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Type", selectedItem);
+                currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+                await refreshRecipesTable();
             }
         }
     }
@@ -264,15 +299,33 @@ public partial class RecipesPage : ContentPage
             {
                 devicePicker.SelectedIndex = 0;
                 typePicker.SelectedIndex = 0;
-                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Ingredient", selectedItem);
-                refreshRecipesTable();
+                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Ingredient", selectedItem);
+                currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+                await refreshRecipesTable();
             }
         }
     }
 
     private void ratingPicker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //TODO: Add rating filter
+        int ratingFilter = ratingPicker.SelectedIndex;
+        switch (ratingFilter)
+        {
+            case 0:
+                break;
+            case 1:
+                filterByRating(-1, -1); break;
+            case 2:
+                filterByRating(0, 1); break;
+            case 3:
+                filterByRating(1, 2); break;
+            case 4:
+                filterByRating(2, 3); break;
+            case 5:
+                filterByRating(3, 4); break;
+            case 6:
+                filterByRating(4, 5); break;
+        }
     }
 
     private async void devicePicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -283,8 +336,9 @@ public partial class RecipesPage : ContentPage
             {
                 typePicker.SelectedIndex = 0;
                 ingredientPicker.SelectedIndex = 0;
-                currentListOfRecipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Device", selectedItem);
-                refreshRecipesTable();
+                List<Recipe> recipes = await DatabaseService.GetRecipes(loggedInUser.UserId, "Device", selectedItem);
+                currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+                await refreshRecipesTable();
             }
         }
     }

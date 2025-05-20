@@ -25,30 +25,30 @@
                 <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
                 <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="nameLabel" HorizontalOptions="Center" Text="Name" FontSize="18"/>
+                        <Label x:Name="nameLabel" HorizontalOptions="Center" Text="Name" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="ratingLabel" HorizontalOptions="Center" Text="Rating" FontSize="18"/>
+                        <Label x:Name="ratingLabel" HorizontalOptions="Center" Text="Rating" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="18"/>
+                        <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="18"/>
+                        <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="16"/>
                     </Border>
                 </Grid>
                 <Grid x:Name="recipesGridContent" Margin="5, 0, 5, 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
             </VerticalStackLayout>

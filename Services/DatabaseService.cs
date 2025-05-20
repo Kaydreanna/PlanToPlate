@@ -89,6 +89,18 @@ namespace PlanToPlate.Services
             return recipes;
         }
 
+        public static async Task<Dictionary<Recipe, float>> GetRecipesAndRatings(int userId, List<Recipe> recipes)
+        {
+            await Init();
+            Dictionary<Recipe, float> recipeRatings = new Dictionary<Recipe, float>();
+            foreach (Recipe recipe in recipes)
+            {
+                var ratings = await GetRatings(userId, recipe.RecipeId);
+                recipeRatings.Add(recipe, ratings.overall);
+            }
+            return recipeRatings;
+        }
+
         public static async Task<List<Recipe>> SearchRecipes(int userId, string searchTerm)
         {
             await Init();
@@ -136,6 +148,10 @@ namespace PlanToPlate.Services
             var existingIngredients = (await _db.Table<Ingredient>().Where(i => i.UserId == userId).ToListAsync()).Select(i => i.IngredientName.ToLower()).ToHashSet();
             foreach (string ing in ingredientNames)
             {
+                if(ing == null)
+                {
+                    continue;
+                }
                 string lowerCaseIng = ing.Trim().ToLower();
                 if(string.IsNullOrEmpty(lowerCaseIng) || existingIngredients.Contains(lowerCaseIng))
                 {
@@ -168,6 +184,70 @@ namespace PlanToPlate.Services
         {
             await Init();
             await _db.DeleteAsync<Recipe>(recipeId);
+        }
+
+        public static async Task<(float overall, int ease, int taste, int timing)> GetRatings(int userId, int recipeId)
+        {
+            await Init();
+
+            List<Ease> easeRatings = await GetEaseRatings(userId, recipeId);
+            List<Taste> tasteRatings = await GetTasteRatings(userId, recipeId);
+            List<Timing> timingRatings = await GetTimingRatings(userId, recipeId);
+
+            float overallRating;
+            int numOfRatings = easeRatings.Count + tasteRatings.Count + timingRatings.Count;
+            if (numOfRatings == 0)
+            {
+                return (-1, -1, -1, -1);
+            }
+            else
+            {
+                overallRating = 0;
+            }
+
+            int totalEaseRating = easeRatings.Count > 0 ? 0 : -1;
+            int totalTasteRating = tasteRatings.Count > 0 ? 0 : -1;
+            int totalTimingRating = timingRatings.Count > 0 ? 0 : -1;
+
+
+            foreach (Ease easeRating in easeRatings)
+            {
+                overallRating += easeRating.EaseScore;
+                totalEaseRating += easeRating.EaseScore;
+            }
+            foreach (Taste tasteRating in tasteRatings)
+            {
+                overallRating += tasteRating.TasteScore;
+                totalTasteRating += tasteRating.TasteScore;
+            }
+            foreach (Timing timingRating in timingRatings)
+            {
+                overallRating += timingRating.TimeScore;
+                totalTimingRating += timingRating.TimeScore;
+            }
+
+            overallRating /= numOfRatings;
+
+            return (overallRating, totalEaseRating, totalTasteRating, totalTimingRating);
+        }
+
+        public static async Task<List<Ease>> GetEaseRatings(int userId, int recipeId)
+        {
+            await Init();
+            List<Ease> ratings = await _db.Table<Ease>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
+            return ratings;
+        }
+        public static async Task<List<Taste>> GetTasteRatings(int userId, int recipeId)
+        {
+            await Init();
+            List<Taste> ratings = await _db.Table<Taste>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
+            return ratings;
+        }
+        public static async Task<List<Timing>> GetTimingRatings(int userId, int recipeId)
+        {
+            await Init();
+            List<Timing> ratings = await _db.Table<Timing>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
+            return ratings;
         }
         #endregion
 
@@ -474,6 +554,39 @@ namespace PlanToPlate.Services
                     {4, "Let sit for 1 minute before serving" }
                 }
             };
+            await _db.InsertAsync(oatmeal);
+
+            Ease oatmealEaseRating = new Ease()
+            {
+                UserId = user1Id,
+                RecipeId = oatmeal.RecipeId,
+                Date = new DateTime(2023, 10, 1),
+                EaseScore = 4,
+                EaseComment = "This was easy to make, but I had to microwave it twice to get the oats soft enough."
+            };
+
+            Timing oatmealTimingRating = new Timing()
+            {
+                UserId = user1Id,
+                RecipeId = oatmeal.RecipeId,
+                Date = new DateTime(2023, 10, 1),
+                TimeScore = 5,
+                TimeComment = "It's awesome to have a meal in a couple minutes!",
+                AmountOfTime = 5,
+                TimeUnit = "Minutes"
+            };
+
+            Taste oatmealTasteRating = new Taste()
+            {
+                UserId = user1Id,
+                RecipeId = oatmeal.RecipeId,
+                Date = new DateTime(2023, 10, 1),
+                TasteScore = 3,
+                TasteComment = "It was alright, but I think I would like it better with some fruit."
+            };
+            await _db.InsertAsync(oatmealEaseRating);
+            await _db.InsertAsync(oatmealTimingRating);
+            await _db.InsertAsync(oatmealTasteRating);
 
             Recipe kielbassaPasta = new Recipe()
             {
@@ -500,8 +613,39 @@ namespace PlanToPlate.Services
                     {5, "Add 1 Tbsp of oil and Parmesan Cheese to the pot and toss to combine" }
                 }
             };
-                await _db.InsertAsync(oatmeal);
-                await _db.InsertAsync(kielbassaPasta);
+            await _db.InsertAsync(kielbassaPasta);
+
+            Ease kielbassaPastaEaseRating = new Ease()
+            {
+                UserId = user1Id,
+                RecipeId = kielbassaPasta.RecipeId,
+                Date = new DateTime(2023, 10, 1),
+                EaseScore = 5,
+                EaseComment = "This was super easy to make! I love one pot meals."
+            };
+            Timing kielbassaPastaTimingRating = new Timing()
+            {
+                UserId = user1Id,
+                RecipeId = kielbassaPasta.RecipeId,
+                Date = new DateTime(2023, 10, 1),
+                TimeScore = 4,
+                TimeComment = "I love meals that take less than an hour to make! Chopping the veggies and kielbassa before had could make it even faster!",
+                AmountOfTime = 45,
+                TimeUnit = "Minutes"
+            };
+            Timing kielbassaPastaTimingRating1 = new Timing()
+            {
+                UserId = user1Id,
+                RecipeId = kielbassaPasta.RecipeId,
+                Date = new DateTime(2023, 11, 6),
+                TimeScore = 5,
+                TimeComment = "Chopping everything before hand made it so much quicker!",
+                AmountOfTime = 30,
+                TimeUnit = "Minutes"
+            };
+            await _db.InsertAsync(kielbassaPastaEaseRating);
+            await _db.InsertAsync(kielbassaPastaTimingRating);
+            await _db.InsertAsync(kielbassaPastaTimingRating1);
         }
         #endregion
 
