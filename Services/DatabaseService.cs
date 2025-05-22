@@ -82,40 +82,6 @@ namespace PlanToPlate.Services
             return recipeRatings;
         }
 
-        public static async Task<List<Recipe>> SearchRecipes(int userId, string searchTerm)
-        {
-            await Init();
-            List<Recipe> allRecipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
-            List<Recipe> recipes = new List<Recipe>();
-            foreach (Recipe recipe in allRecipes)
-            {
-                if (recipe.RecipeName.ToLower().Contains(searchTerm.ToLower()))
-                {
-                    recipes.Add(recipe);
-                }
-                else if (recipe.CookingDevice.ToLower().Contains(searchTerm.ToLower()))
-                {
-                    recipes.Add(recipe);
-                }
-                else if (recipe.RecipeType.ToLower().Contains(searchTerm.ToLower()))
-                {
-                    recipes.Add(recipe);
-                }
-                else if (recipe.Ingredients != null)
-                {
-                    foreach (var ingredient in recipe.Ingredients)
-                    {
-                        if (ingredient.Key.ToString().ToLower().Contains(searchTerm.ToLower()))
-                        {
-                            recipes.Add(recipe);
-                            break;
-                        }
-                    }
-                }
-            }
-            return recipes;
-        }
-
         public static async Task<List<Ingredient>> GetIngredients(int userId)
         {
             await Init();

@@ -22,8 +22,12 @@
                     <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5" SelectedIndexChanged="ingredientPicker_SelectedIndexChanged"/>
                     <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
                 </HorizontalStackLayout>
+                <HorizontalStackLayout x:Name="sortByFunction" HorizontalOptions="Start" Margin="0, 20, 0, 0">
+                    <Label x:Name="sortByLabel" VerticalOptions="Center" Text="Sort by:" Margin="5, 0, 5, 0" FontSize="14"/>
+                    <Picker x:Name="sortByPicker" WidthRequest="100" SelectedIndexChanged="sortByPicker_SelectedIndexChanged"/>
+                </HorizontalStackLayout>
                 <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
-                <Grid x:Name="recipesGridLabels" Margin="5, 20, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
+                <Grid x:Name="recipesGridLabels" Margin="5, 5, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>

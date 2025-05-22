@@ -9,7 +9,6 @@ namespace PlanToPlate.Views;
 public partial class RecipesPage : ContentPage
 {
     public User loggedInUser { get; set; }
-    //private List<Recipe> currentListOfRecipes = new List<Recipe>();
     private Dictionary<Recipe, float> currentListOfRecipesAndRatings = new Dictionary<Recipe, float>();
 
     public RecipesPage(User user)
@@ -41,6 +40,11 @@ public partial class RecipesPage : ContentPage
         typePicker.SelectedIndex = 0;
         populateIngredientPicker();
         ingredientPicker.SelectedIndex = 0;
+        sortByPicker.Items.Add("Recipe Name");
+        sortByPicker.Items.Add("Rating");
+        sortByPicker.Items.Add("Cooking Device");
+        sortByPicker.Items.Add("Recipe Type");
+        sortByPicker.SelectedIndex = 0;
     }
 
     #region Clicked Events
@@ -61,11 +65,41 @@ public partial class RecipesPage : ContentPage
         refreshRecipesTable();
     }
 
-    private async void searchButton_Clicked(object sender, EventArgs e)
+    private void searchButton_Clicked(object sender, EventArgs e)
     {
-        List<Recipe> recipes = await DatabaseService.SearchRecipes(loggedInUser.UserId, searchRecipesEntry.Text);
-        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
-        refreshRecipesTable();
+        string searchTerm = searchRecipesEntry.Text.Trim().ToLower();
+        if(!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            Dictionary<Recipe, float> recipeResults = new Dictionary<Recipe, float>();
+            foreach (var (recipe, rating) in currentListOfRecipesAndRatings)
+            {
+                if (recipe.RecipeName.ToLower().Contains(searchTerm))
+                {
+                    recipeResults.Add(recipe, rating);
+                }
+                else if (recipe.CookingDevice.ToLower().Contains(searchTerm))
+                {
+                    recipeResults.Add(recipe, rating);
+                }
+                else if (recipe.RecipeType.ToLower().Contains(searchTerm))
+                {
+                    recipeResults.Add(recipe, rating);
+                }
+                else if (recipe.Ingredients != null)
+                {
+                    foreach (var ingredient in recipe.Ingredients)
+                    {
+                        if (ingredient.Key.ToString().ToLower().Contains(searchTerm))
+                        {
+                            recipeResults.Add(recipe, rating);
+                            break;
+                        }
+                    }
+                }
+            }
+            currentListOfRecipesAndRatings = recipeResults;
+            refreshRecipesTable();
+        }
     }
 
     private async void viewRecipeButton_Clicked(Recipe recipe)
@@ -170,8 +204,7 @@ public partial class RecipesPage : ContentPage
             recipesGridContent.Children.Clear();
             int rowNum = 0;
             var tertiaryColor = (Color)Application.Current.Resources["Tertiary"];
-            Dictionary<Recipe, float> orderedRecipes = currentListOfRecipesAndRatings.OrderBy(i => i.Key.RecipeName).ToDictionary(i => i.Key, i => i.Value);
-            foreach (var (recipe, rating) in orderedRecipes)
+            foreach (var (recipe, rating) in currentListOfRecipesAndRatings)
             {
                 recipesGridContent.RowDefinitions.Add(new RowDefinition());
                 Button recipeNameButton = new Button
@@ -345,4 +378,27 @@ public partial class RecipesPage : ContentPage
     }
     #endregion
 
+    private void sortByPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        switch (sortByPicker.SelectedIndex)
+        {
+            case 0:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.RecipeName).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 1:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderByDescending(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 2:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.CookingDevice).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 3:
+                List<string> typeOrder = new List<string> { "Breakfast", "Lunch", "Dinner" };
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => typeOrder.IndexOf(i.Key.RecipeType)).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+        }
+    }
 }
