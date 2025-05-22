@@ -10,7 +10,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" VerticalOptions="Center" BackgroundColor="{StaticResource Primary}" Padding="0, 0, 10, 0">
-            <Label x:Name="viewRecipeLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="40" Text="View Recipe" />
+            <Label x:Name="recipeNameLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="40" Text="View Recipe" />
             <ImageButton x:Name="closeRecipeImageButton" HorizontalOptions="End" VerticalOptions="Center" BackgroundColor="Transparent" Padding="5, 0, 0, 5" Clicked="closeRecipeButton_Clicked">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Xmark}" Color="{StaticResource IconDark}"/>
@@ -19,8 +19,7 @@
         </Grid>
         <ScrollView Grid.Row="1" VerticalOptions="Start">
             <VerticalStackLayout>
-                <Label x:Name="recipeNameLabel" HorizontalOptions="Center" Text="Recipe Name" FontSize="30" Margin="0, 20"/>
-                <Grid>
+                <Grid x:Name="deviceAndTypeGrid" Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
@@ -34,9 +33,93 @@
                         <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="15"/>
                     </Border>
                 </Grid>
-                <!-- ADD STARS WITH FONT AWESOME -->
-                <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="No ratings yet! The ability to add a rating is coming soon." Margin="20"/>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40" Clicked="scheduleMealButton_Clicked"/>
+                <HorizontalStackLayout x:Name="ratingStars" HorizontalOptions="Center" Margin="0, 10">
+                    <Image x:Name="star1" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                    <Image x:Name="star2" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                    <Image x:Name="star3" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                    <Image x:Name="star4" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                    <Image x:Name="star5" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                    <Image x:Name="halfStar" IsVisible="False">
+                        <Image.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=StarHalf}" Color="Gold" Size="50"/>
+                        </Image.Source>
+                    </Image>
+                </HorizontalStackLayout>
+                <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" TextColor="{StaticResource Tertiary}" Text="View Ratings" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
+                <Grid x:Name="ratingsGrid" IsVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="easeRatingsGrid" Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="addEaseRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Ease Rating" Clicked="addEaseRating_Clicked"/>
+                    </Grid>
+                    <Grid x:Name="tasteRatingsGrid" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="addTasteRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Taste Rating" Clicked="addTasteRating_Clicked"/>
+                    </Grid>
+                    <Grid x:Name="timingRatingsGrid" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="addTimingRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Timing Rating" Clicked="addTimingRating_Clicked"/>
+                    </Grid>
+                </Grid>
+                <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="There are no ratings for this recipe yet. Add some using the button above!" Margin="20" IsVisible="False"/>
+                <HorizontalStackLayout HorizontalOptions="End">
+                    <ImageButton x:Name="editImageButton" BackgroundColor="{StaticResource SecondaryDark}" HorizontalOptions="End" Margin="5, 20" Clicked="editButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=PenToSquare}" Color="{StaticResource Tertiary}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="deleteImageButton" BackgroundColor="{StaticResource Tertiary}" HorizontalOptions="End" Margin="5, 20" Clicked="deleteButton_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=TrashCan}" Color="{StaticResource SecondaryDark}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
                 <Grid x:Name="ingredientsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -62,14 +145,7 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
                 </Grid>
-                <Grid x:Name="editOrDeleteGrid">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="editButton" Grid.Column="0" Text="Edit" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" HorizontalOptions="End" Margin="5, 20" Clicked="editButton_Clicked"/>
-                    <Button x:Name="deleteButton" Grid.Column="1" Text="Delete" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" HorizontalOptions="Start" Margin="5, 20" Clicked="deleteButton_Clicked"/>
-                </Grid>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40" Clicked="scheduleMealButton_Clicked"/>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

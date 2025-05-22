@@ -21,7 +21,7 @@ public partial class RecipesPage : ContentPage
     {
         base.OnAppearing();
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
-        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId, recipes);
+        currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(recipes);
         refreshRecipesTable();
         ratingPicker.Items.Add("Rating");
         ratingPicker.Items.Add("None");

@@ -64,22 +64,75 @@ namespace PlanToPlate.Services
             Dictionary<Recipe, float> recipeRatings = new Dictionary<Recipe, float>();
             foreach (Recipe recipe in recipes)
             {
-                var ratings = await GetRatings(userId, recipe.RecipeId);
+                var ratings = await GetRatingScores(recipe.RecipeId);
                 recipeRatings.Add(recipe, ratings.overall);
             }
             return recipeRatings;
         }
 
-        public static async Task<Dictionary<Recipe, float>> GetRecipesAndRatings(int userId, List<Recipe> recipes)
+        public static async Task<Dictionary<Recipe, float>> GetRecipesAndRatings(List<Recipe> recipes)
         {
             await Init();
             Dictionary<Recipe, float> recipeRatings = new Dictionary<Recipe, float>();
             foreach (Recipe recipe in recipes)
             {
-                var ratings = await GetRatings(userId, recipe.RecipeId);
+                var ratings = await GetRatingScores(recipe.RecipeId);
                 recipeRatings.Add(recipe, ratings.overall);
             }
             return recipeRatings;
+        }
+        public static async Task<(float overall, int ease, int taste, int timing)> GetRatingScores(int recipeId)
+        {
+            await Init();
+
+            List<Ease> easeRatings = await _db.Table<Ease>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Taste> tasteRatings = await _db.Table<Taste>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Timing> timingRatings = await _db.Table<Timing>().Where(i => i.RecipeId == recipeId).ToListAsync();
+
+            float overallRating;
+            int numOfRatings = easeRatings.Count + tasteRatings.Count + timingRatings.Count;
+            if (numOfRatings == 0)
+            {
+                return (-1, -1, -1, -1);
+            }
+            else
+            {
+                overallRating = 0;
+            }
+
+            int totalEaseRating = easeRatings.Count > 0 ? 0 : -1;
+            int totalTasteRating = tasteRatings.Count > 0 ? 0 : -1;
+            int totalTimingRating = timingRatings.Count > 0 ? 0 : -1;
+
+
+            foreach (Ease easeRating in easeRatings)
+            {
+                overallRating += easeRating.EaseScore;
+                totalEaseRating += easeRating.EaseScore;
+            }
+            foreach (Taste tasteRating in tasteRatings)
+            {
+                overallRating += tasteRating.TasteScore;
+                totalTasteRating += tasteRating.TasteScore;
+            }
+            foreach (Timing timingRating in timingRatings)
+            {
+                overallRating += timingRating.TimeScore;
+                totalTimingRating += timingRating.TimeScore;
+            }
+
+            overallRating /= numOfRatings;
+
+            return (overallRating, totalEaseRating, totalTasteRating, totalTimingRating);
+        }
+
+        public static async Task<(List<Ease> easeRatings, List<Taste> tasteRatings, List<Timing> timingRatings)> GetRatings(int recipeId)
+        {
+            await Init();
+            List<Ease> easeRatings = await _db.Table<Ease>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Taste> tasteRatings = await _db.Table<Taste>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Timing> timingRatings = await _db.Table<Timing>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            return (easeRatings, tasteRatings, timingRatings);
         }
 
         public static async Task<List<Ingredient>> GetIngredients(int userId)
@@ -133,69 +186,7 @@ namespace PlanToPlate.Services
             await _db.DeleteAsync<Recipe>(recipeId);
         }
 
-        public static async Task<(float overall, int ease, int taste, int timing)> GetRatings(int userId, int recipeId)
-        {
-            await Init();
 
-            List<Ease> easeRatings = await GetEaseRatings(userId, recipeId);
-            List<Taste> tasteRatings = await GetTasteRatings(userId, recipeId);
-            List<Timing> timingRatings = await GetTimingRatings(userId, recipeId);
-
-            float overallRating;
-            int numOfRatings = easeRatings.Count + tasteRatings.Count + timingRatings.Count;
-            if (numOfRatings == 0)
-            {
-                return (-1, -1, -1, -1);
-            }
-            else
-            {
-                overallRating = 0;
-            }
-
-            int totalEaseRating = easeRatings.Count > 0 ? 0 : -1;
-            int totalTasteRating = tasteRatings.Count > 0 ? 0 : -1;
-            int totalTimingRating = timingRatings.Count > 0 ? 0 : -1;
-
-
-            foreach (Ease easeRating in easeRatings)
-            {
-                overallRating += easeRating.EaseScore;
-                totalEaseRating += easeRating.EaseScore;
-            }
-            foreach (Taste tasteRating in tasteRatings)
-            {
-                overallRating += tasteRating.TasteScore;
-                totalTasteRating += tasteRating.TasteScore;
-            }
-            foreach (Timing timingRating in timingRatings)
-            {
-                overallRating += timingRating.TimeScore;
-                totalTimingRating += timingRating.TimeScore;
-            }
-
-            overallRating /= numOfRatings;
-
-            return (overallRating, totalEaseRating, totalTasteRating, totalTimingRating);
-        }
-
-        public static async Task<List<Ease>> GetEaseRatings(int userId, int recipeId)
-        {
-            await Init();
-            List<Ease> ratings = await _db.Table<Ease>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
-            return ratings;
-        }
-        public static async Task<List<Taste>> GetTasteRatings(int userId, int recipeId)
-        {
-            await Init();
-            List<Taste> ratings = await _db.Table<Taste>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
-            return ratings;
-        }
-        public static async Task<List<Timing>> GetTimingRatings(int userId, int recipeId)
-        {
-            await Init();
-            List<Timing> ratings = await _db.Table<Timing>().Where(i => i.UserId == userId && i.RecipeId == recipeId).ToListAsync();
-            return ratings;
-        }
         #endregion
 
         #region Shopping List Methods
