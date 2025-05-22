@@ -56,37 +56,18 @@ namespace PlanToPlate.Services
             List<Recipe> recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
             return recipes;
         }
-        public static async Task<List<Recipe>> GetRecipes(int userId, string filterParameter, string selectedItem)
+
+        public static async Task<Dictionary<Recipe, float>> GetRecipesAndRatings(int userId)
         {
             await Init();
-            List<Recipe> recipes = new List<Recipe>();
-            if (filterParameter == null)
+            List<Recipe> recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
+            Dictionary<Recipe, float> recipeRatings = new Dictionary<Recipe, float>();
+            foreach (Recipe recipe in recipes)
             {
-                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
-            } else if (filterParameter == "Device")
-            {
-                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId && i.CookingDevice == selectedItem).ToListAsync();
+                var ratings = await GetRatings(userId, recipe.RecipeId);
+                recipeRatings.Add(recipe, ratings.overall);
             }
-            else if (filterParameter == "Type")
-            {
-                recipes = await _db.Table<Recipe>().Where(i => i.UserId == userId && i.RecipeType == selectedItem).ToListAsync();
-            }
-            else if (filterParameter == "Ingredient")
-            {
-                List<Recipe> allRecipes = await _db.Table<Recipe>().Where(i => i.UserId == userId).ToListAsync();
-                foreach (Recipe recipe in allRecipes)
-                {
-                    foreach (var ingredient in recipe.Ingredients)
-                    {
-                        if (ingredient.Key.ToString().ToLower() == selectedItem.ToLower())
-                        {
-                            recipes.Add(recipe);
-                            break;
-                        }
-                    }
-                }
-            }
-            return recipes;
+            return recipeRatings;
         }
 
         public static async Task<Dictionary<Recipe, float>> GetRecipesAndRatings(int userId, List<Recipe> recipes)
