@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Views;
-using Windows.Media.Core;
 
 namespace PlanToPlate.Services
 {

@@ -292,6 +292,12 @@ public partial class HomePage : ContentPage
             viewOrCreateShoppingListButton.Text = "Create Shopping List";
             viewOrCreateShoppingListButton.Clicked += async (sender, e) =>
             {
+                List<ScheduledMeals> mealsForShoppingList = await DatabaseService.GetScheduledMealsByDate(loggedInUser.UserId, startDate, endDate);
+                if (mealsForShoppingList.Count == 0)
+                {
+                    await DisplayAlert("Error", "No meals scheduled for the selected dates. Please plan some meals then come back to make a shopping list.", "OK");
+                    return;
+                }
                 ShoppingList newShoppingList = await DatabaseService.CreateShoppingList(loggedInUser.UserId, startDate, endDate);
                 await Navigation.PushAsync(new EditShoppingListPage(newShoppingList));
             };

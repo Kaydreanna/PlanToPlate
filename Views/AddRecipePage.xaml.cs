@@ -148,7 +148,12 @@ public partial class AddRecipePage : ContentPage
                     continue;
                 }else if (inputIngredientAmount != null && ingredientName != null)
                 {
-                    ingredientsToAdd.Add(ingredientName, (inputIngredientAmount, ingredientMeasurement));
+                    if(ingredientsToAdd.ContainsKey(ingredientName.Trim()))
+                    {
+                        await DisplayAlert("Error", $"The ingredient '{ingredientName.Trim()}' was added more than once.", "OK");
+                        return;
+                    }
+                    ingredientsToAdd.Add(ingredientName.Trim(), (inputIngredientAmount, ingredientMeasurement));
                 }
                 else
                 {

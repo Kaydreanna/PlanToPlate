@@ -22,10 +22,10 @@ public partial class SettingsPage : ContentPage
             bool validUsername = await DatabaseService.UniqueUsername(newUsernameEntry.Text);
             if(validUsername)
             {
+                await DatabaseService.ChangeUsername(loggedInUser, newUsernameEntry.Text);
                 currentUsernameEntry.Text = string.Empty;
                 newUsernameEntry.Text = string.Empty;
                 changeUsernamePasswordEntry.Text = string.Empty;
-                await DatabaseService.ChangeUsername(loggedInUser, newUsernameEntry.Text);
                 await DisplayAlert("Username Changed", "Username was successfully changed!", "OK");
             }
             else
@@ -46,10 +46,10 @@ public partial class SettingsPage : ContentPage
             bool validPassword = validatePassword(newPasswordEntry.Text, confirmPasswordEntry.Text);
             if(validPassword)
             {
+                await DatabaseService.ChangePassword(loggedInUser, confirmPasswordEntry.Text);
                 currentPasswordEntry.Text = string.Empty;
                 newPasswordEntry.Text = string.Empty;
                 confirmPasswordEntry.Text = string.Empty;
-                await DatabaseService.ChangePassword(loggedInUser, confirmPasswordEntry.Text);
                 await DisplayAlert("Password Changed", "Password was successfully changed!", "OK");
             }
             else

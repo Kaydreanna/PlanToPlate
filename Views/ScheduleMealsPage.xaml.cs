@@ -149,17 +149,23 @@ public partial class ScheduleMealsPage : ContentPage
                 else
                 {
                     string recipeToShcedule = await displayScheduleMealPopup();
-                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
-                    ScheduledMeals scheduledMeal = new ScheduledMeals
+                    if(string.IsNullOrEmpty(recipeToShcedule))
                     {
-                        UserId = loggedInUser.UserId,
-                        Date = (DateTime)breakfastButton.BindingContext,
-                        MealType = "Breakfast",
-                        RecipeId = recipeId
-                    };
-                    await DatabaseService.ScheduleMeal(scheduledMeal);
-                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)breakfastButton.BindingContext);
-                    displayScheduledMeals(selectedMonth);
+                        await DisplayAlert("Error", "Unable to schedule a meal on selected date.", "OK");
+                    } else
+                    {
+                        int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                        ScheduledMeals scheduledMeal = new ScheduledMeals
+                        {
+                            UserId = loggedInUser.UserId,
+                            Date = (DateTime)breakfastButton.BindingContext,
+                            MealType = "Breakfast",
+                            RecipeId = recipeId
+                        };
+                        await DatabaseService.ScheduleMeal(scheduledMeal);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)breakfastButton.BindingContext);
+                        displayScheduledMeals(selectedMonth);
+                    }
                 }
             };
 
@@ -192,17 +198,25 @@ public partial class ScheduleMealsPage : ContentPage
                 else
                 {
                     string recipeToShcedule = await displayScheduleMealPopup();
-                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
-                    ScheduledMeals scheduledMeal = new ScheduledMeals
+                    if (string.IsNullOrEmpty(recipeToShcedule))
                     {
-                        UserId = loggedInUser.UserId,
-                        Date = (DateTime)lunchButton.BindingContext,
-                        MealType = "Lunch",
-                        RecipeId = recipeId
-                    };
-                    await DatabaseService.ScheduleMeal(scheduledMeal);
-                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
-                    displayScheduledMeals(selectedMonth);
+                        await DisplayAlert("Error", "Unable to schedule a meal on selected date.", "OK");
+                    }
+                    else
+                    {
+
+                        int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                        ScheduledMeals scheduledMeal = new ScheduledMeals
+                        {
+                            UserId = loggedInUser.UserId,
+                            Date = (DateTime)lunchButton.BindingContext,
+                            MealType = "Lunch",
+                            RecipeId = recipeId
+                        };
+                        await DatabaseService.ScheduleMeal(scheduledMeal);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
+                        displayScheduledMeals(selectedMonth);
+                    }
                 }
             };
 
@@ -235,17 +249,24 @@ public partial class ScheduleMealsPage : ContentPage
                 else
                 {
                     string recipeToShcedule = await displayScheduleMealPopup();
-                    int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
-                    ScheduledMeals scheduledMeal = new ScheduledMeals
+                    if (string.IsNullOrEmpty(recipeToShcedule))
                     {
-                        UserId = loggedInUser.UserId,
-                        Date = (DateTime)dinnerButton.BindingContext,
-                        MealType = "Dinner",
-                        RecipeId = recipeId
-                    };
-                    await DatabaseService.ScheduleMeal(scheduledMeal);
-                    await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)dinnerButton.BindingContext);
-                    displayScheduledMeals(selectedMonth);
+                        await DisplayAlert("Error", "Unable to schedule a meal on selected date.", "OK");
+                    }
+                    else
+                    {
+                        int recipeId = await DatabaseService.GetRecipeId(loggedInUser.UserId, recipeToShcedule);
+                        ScheduledMeals scheduledMeal = new ScheduledMeals
+                        {
+                            UserId = loggedInUser.UserId,
+                            Date = (DateTime)dinnerButton.BindingContext,
+                            MealType = "Dinner",
+                            RecipeId = recipeId
+                        };
+                        await DatabaseService.ScheduleMeal(scheduledMeal);
+                        await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)dinnerButton.BindingContext);
+                        displayScheduledMeals(selectedMonth);
+                    }
                 }
             };
 
