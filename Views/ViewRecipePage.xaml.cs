@@ -62,6 +62,13 @@ public partial class ViewRecipePage : ContentPage
     private void viewRatingsButton_Clicked(object sender, EventArgs e)
     {
         ratingsGrid.IsVisible = !ratingsGrid.IsVisible;
+        if(ratingsGrid.IsVisible)
+        {
+            viewRatingsButton.Text = "Hide Ratings";
+        } else
+        {
+            viewRatingsButton.Text = "View Ratings";
+        }
     }
     #endregion
 
@@ -108,127 +115,162 @@ public partial class ViewRecipePage : ContentPage
     private async void displayRatings()
     {
         (List<Ease> easeRatings, List<Taste> tasteRatings, List<Timing> timingRatings) = await DatabaseService.GetRatings(selectedRecipe.RecipeId);
-        int rowNum = 0;
-        foreach (Ease ease in easeRatings)
+        int rowNum = 1;
+        if (easeRatings.Count < 1)
         {
-            easeRatingsGrid.RowDefinitions.Add(new RowDefinition());
-            Label dateLabel = new Label
-            {
-                Text = ease.Date.ToString("MM/d/yy"),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label ratingLabel = new Label
-            {
-                Text = $"{ease.EaseScore} / 5",
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label commentLabel = new Label
-            {
-                Text = ease.EaseComment.ToString(),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            easeRatingsGrid.Children.Add(dateLabel);
-            easeRatingsGrid.SetColumn(dateLabel, 0);
-            easeRatingsGrid.SetRow(dateLabel, rowNum);
-            easeRatingsGrid.Children.Add(ratingLabel);
-            easeRatingsGrid.SetColumn(ratingLabel, 1);
-            easeRatingsGrid.SetRow(ratingLabel, rowNum);
-            easeRatingsGrid.Children.Add(commentLabel);
-            easeRatingsGrid.SetColumn(commentLabel, 2);
-            easeRatingsGrid.SetRow(commentLabel, rowNum);
-            rowNum++;
+            noEaseRatingsFoundMessage.IsVisible = true;
         }
-        easeRatingsGrid.SetRow(addEaseRatingButton, rowNum);
-        rowNum = 0;
-        foreach (Taste taste in tasteRatings)
+        else
         {
-            tasteRatingsGrid.RowDefinitions.Add(new RowDefinition());
-            Label dateLabel = new Label
+            noEaseRatingsFoundMessage.IsVisible = false;
+            foreach (Ease ease in easeRatings)
             {
-                Text = taste.Date.ToString("MM/d/yy"),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label ratingLabel = new Label
-            {
-                Text = $"{taste.TasteScore} / 5",
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label commentLabel = new Label
-            {
-                Text = taste.TasteComment.ToString(),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            tasteRatingsGrid.Children.Add(dateLabel);
-            tasteRatingsGrid.SetColumn(dateLabel, 0);
-            tasteRatingsGrid.SetRow(dateLabel, rowNum);
-            tasteRatingsGrid.Children.Add(ratingLabel);
-            tasteRatingsGrid.SetColumn(ratingLabel, 1);
-            tasteRatingsGrid.SetRow(ratingLabel, rowNum);
-            tasteRatingsGrid.Children.Add(commentLabel);
-            tasteRatingsGrid.SetColumn(commentLabel, 2);
-            tasteRatingsGrid.SetRow(commentLabel, rowNum);
-            rowNum++;
+                easeRatingsGrid.RowDefinitions.Add(new RowDefinition());
+                Label dateLabel = new Label
+                {
+                    Text = ease.Date.ToString("MM/d/yy"),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label ratingLabel = new Label
+                {
+                    Text = $"{ease.EaseScore} / 5",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label commentLabel = new Label
+                {
+                    Text = ease.EaseComment.ToString(),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                easeRatingsGrid.Children.Add(dateLabel);
+                easeRatingsGrid.SetColumn(dateLabel, 0);
+                easeRatingsGrid.SetRow(dateLabel, rowNum);
+                easeRatingsGrid.Children.Add(ratingLabel);
+                easeRatingsGrid.SetColumn(ratingLabel, 1);
+                easeRatingsGrid.SetRow(ratingLabel, rowNum);
+                easeRatingsGrid.Children.Add(commentLabel);
+                easeRatingsGrid.SetColumn(commentLabel, 2);
+                easeRatingsGrid.SetRow(commentLabel, rowNum);
+                rowNum++;
+            }
+            easeRatingsGrid.SetRow(addEaseRatingButton, rowNum);
+            rowNum = 1;
         }
-        tasteRatingsGrid.SetRow(addTasteRatingButton, rowNum);
-        rowNum = 0;
-        foreach (Timing timing in timingRatings)
+        if (tasteRatings.Count < 1)
         {
-            timingRatingsGrid.RowDefinitions.Add(new RowDefinition());
-            Label dateLabel = new Label
-            {
-                Text = timing.Date.ToString("MM/d/yy"),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label ratingLabel = new Label
-            {
-                Text = $"{timing.TimeScore} / 5",
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label timeLengthLabel = new Label
-            {
-                Text = $"{timing.AmountOfTime} {timing.TimeUnit}",
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            Label commentLabel = new Label
-            {
-                Text = timing.TimeComment.ToString(),
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 16
-            };
-            timingRatingsGrid.Children.Add(dateLabel);
-            timingRatingsGrid.SetColumn(dateLabel, 0);
-            timingRatingsGrid.SetRow(dateLabel, rowNum);
-            timingRatingsGrid.Children.Add(ratingLabel);
-            timingRatingsGrid.SetColumn(ratingLabel, 1);
-            timingRatingsGrid.SetRow(ratingLabel, rowNum);
-            timingRatingsGrid.Children.Add(timeLengthLabel);
-            timingRatingsGrid.SetColumn(timeLengthLabel, 2);
-            timingRatingsGrid.SetRow(timeLengthLabel, rowNum);
-            timingRatingsGrid.Children.Add(commentLabel);
-            timingRatingsGrid.SetColumn(commentLabel, 3);
-            timingRatingsGrid.SetRow(commentLabel, rowNum);
-            rowNum++;
+            noTasteRatingsFoundMessage.IsVisible = true;
         }
-        timingRatingsGrid.SetRow(addTimingRatingButton, rowNum);
+        else
+        {
+            noTasteRatingsFoundMessage.IsVisible = false;
+            foreach (Taste taste in tasteRatings)
+            {
+                tasteRatingsGrid.RowDefinitions.Add(new RowDefinition());
+                Label dateLabel = new Label
+                {
+                    Text = taste.Date.ToString("MM/d/yy"),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label ratingLabel = new Label
+                {
+                    Text = $"{taste.TasteScore} / 5",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label commentLabel = new Label
+                {
+                    Text = taste.TasteComment.ToString(),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                tasteRatingsGrid.Children.Add(dateLabel);
+                tasteRatingsGrid.SetColumn(dateLabel, 0);
+                tasteRatingsGrid.SetRow(dateLabel, rowNum);
+                tasteRatingsGrid.Children.Add(ratingLabel);
+                tasteRatingsGrid.SetColumn(ratingLabel, 1);
+                tasteRatingsGrid.SetRow(ratingLabel, rowNum);
+                tasteRatingsGrid.Children.Add(commentLabel);
+                tasteRatingsGrid.SetColumn(commentLabel, 2);
+                tasteRatingsGrid.SetRow(commentLabel, rowNum);
+                rowNum++;
+            }
+            tasteRatingsGrid.SetRow(addTasteRatingButton, rowNum);
+            rowNum = 1;
+        }
+
+        if (timingRatings.Count < 1)
+        {
+            noTimingRatingsFoundMessage.IsVisible = true;
+        }
+        else
+        {
+            noTimingRatingsFoundMessage.IsVisible = false;
+            foreach (Timing timing in timingRatings)
+            {
+                timingRatingsGrid.RowDefinitions.Add(new RowDefinition());
+                Label dateLabel = new Label
+                {
+                    Text = timing.Date.ToString("MM/d/yy"),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label ratingLabel = new Label
+                {
+                    Text = $"{timing.TimeScore} / 5",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                Label timeLengthLabel = new Label
+                {
+                    Text = $"{timing.AmountOfTime} {timing.TimeUnit}",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(0, 15)
+                };
+                Label commentLabel = new Label
+                {
+                    Text = timing.TimeComment.ToString(),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    FontSize = 14,
+                    Margin = new Thickness(5, 15, 0, 15)
+                };
+                timingRatingsGrid.Children.Add(dateLabel);
+                timingRatingsGrid.SetColumn(dateLabel, 0);
+                timingRatingsGrid.SetRow(dateLabel, rowNum);
+                timingRatingsGrid.Children.Add(ratingLabel);
+                timingRatingsGrid.SetColumn(ratingLabel, 1);
+                timingRatingsGrid.SetRow(ratingLabel, rowNum);
+                timingRatingsGrid.Children.Add(timeLengthLabel);
+                timingRatingsGrid.SetColumn(timeLengthLabel, 2);
+                timingRatingsGrid.SetRow(timeLengthLabel, rowNum);
+                timingRatingsGrid.Children.Add(commentLabel);
+                timingRatingsGrid.SetColumn(commentLabel, 3);
+                timingRatingsGrid.SetRow(commentLabel, rowNum);
+                rowNum++;
+            }
+            timingRatingsGrid.SetRow(addTimingRatingButton, rowNum);
+        }
     }
 
     private void displayIngredients()

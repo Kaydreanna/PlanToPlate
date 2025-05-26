@@ -65,8 +65,7 @@
                         </Image.Source>
                     </Image>
                 </HorizontalStackLayout>
-                <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" TextColor="{StaticResource Tertiary}" Text="View Ratings" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
-                <Grid x:Name="ratingsGrid" IsVisible="False">
+                <Grid x:Name="ratingsGrid" Margin="0, 20" IsVisible="False">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -80,10 +79,15 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="addEaseRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Ease Rating" Clicked="addEaseRating_Clicked"/>
+                        <Label x:Name="easeBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryDark}" />
+                        <Label x:Name="easeRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Ease Ratings" Margin="10"/>
+                        <Label x:Name="noEaseRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for ease were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
+                        <Button x:Name="addEaseRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Ease Rating" Clicked="addEaseRating_Clicked"/>
                     </Grid>
-                    <Grid x:Name="tasteRatingsGrid" Grid.Row="1">
+                    <Grid x:Name="tasteRatingsGrid" Grid.Row="1" Margin="0, 20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -91,8 +95,13 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="addTasteRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Taste Rating" Clicked="addTasteRating_Clicked"/>
+                        <Label x:Name="tasteBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryDark}"/>
+                        <Label x:Name="tasteRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Taste Ratings" Margin="10"/>
+                        <Label x:Name="noTasteRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for taste were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
+                        <Button x:Name="addTasteRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Taste Rating" Clicked="addTasteRating_Clicked"/>
                     </Grid>
                     <Grid x:Name="timingRatingsGrid" Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -103,10 +112,16 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="addTimingRatingButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Add Timing Rating" Clicked="addTimingRating_Clicked"/>
+                        <Label x:Name="timingBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource PrimaryDark}"/>
+                        <Label x:Name="timingRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Time Ratings" Margin="10"/>
+                        <Label x:Name="noTimingRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for time were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
+                        <Button x:Name="addTimingRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Timing Rating" Clicked="addTimingRating_Clicked"/>
                     </Grid>
                 </Grid>
+                <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" TextColor="{StaticResource Tertiary}" Text="View Ratings" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
                 <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="There are no ratings for this recipe yet. Add some using the button above!" Margin="20" IsVisible="False"/>
                 <HorizontalStackLayout HorizontalOptions="End">
                     <ImageButton x:Name="editImageButton" BackgroundColor="{StaticResource SecondaryDark}" HorizontalOptions="End" Margin="5, 20" Clicked="editButton_Clicked">
