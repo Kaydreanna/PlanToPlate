@@ -186,7 +186,23 @@ namespace PlanToPlate.Services
             await _db.DeleteAsync<Recipe>(recipeId);
         }
 
+        public static async Task AddEaseRating(Ease easeRating)
+        {
+            await Init();
+            await _db.InsertAsync(easeRating);
+        }
 
+        public static async Task AddTasteRating(Taste tasteRating)
+        {
+            await Init();
+            await _db.InsertAsync(tasteRating);
+        }
+
+        public static async Task AddTimingRating(Timing timingRating)
+        {
+            await Init();
+            await _db.InsertAsync(timingRating);
+        }
         #endregion
 
         #region Shopping List Methods
@@ -510,8 +526,7 @@ namespace PlanToPlate.Services
                 Date = new DateTime(2023, 10, 1),
                 TimeScore = 5,
                 TimeComment = "It's awesome to have a meal in a couple minutes!",
-                AmountOfTime = 5,
-                TimeUnit = "Minutes"
+                AmountOfTime = "Less than 15 minutes"
             };
 
             Taste oatmealTasteRating = new Taste()
@@ -568,8 +583,7 @@ namespace PlanToPlate.Services
                 Date = new DateTime(2023, 10, 1),
                 TimeScore = 4,
                 TimeComment = "I love meals that take less than an hour to make! Chopping the veggies and kielbassa before had could make it even faster!",
-                AmountOfTime = 45,
-                TimeUnit = "Minutes"
+                AmountOfTime = "45 minutes"
             };
             Timing kielbassaPastaTimingRating1 = new Timing()
             {
@@ -578,8 +592,7 @@ namespace PlanToPlate.Services
                 Date = new DateTime(2023, 11, 6),
                 TimeScore = 5,
                 TimeComment = "Chopping everything before hand made it so much quicker!",
-                AmountOfTime = 30,
-                TimeUnit = "Minutes"
+                AmountOfTime = "30 minutes"
             };
             await _db.InsertAsync(kielbassaPastaEaseRating);
             await _db.InsertAsync(kielbassaPastaTimingRating);

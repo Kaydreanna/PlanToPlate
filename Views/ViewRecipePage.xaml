@@ -70,6 +70,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid x:Name="easeRatingsGrid" Grid.Row="0">
                         <Grid.ColumnDefinitions>
@@ -85,7 +86,6 @@
                         <Label x:Name="easeBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryDark}" />
                         <Label x:Name="easeRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Ease Ratings" Margin="10"/>
                         <Label x:Name="noEaseRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for ease were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
-                        <Button x:Name="addEaseRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Ease Rating" Clicked="addEaseRating_Clicked"/>
                     </Grid>
                     <Grid x:Name="tasteRatingsGrid" Grid.Row="1" Margin="0, 20">
                         <Grid.ColumnDefinitions>
@@ -101,7 +101,6 @@
                         <Label x:Name="tasteBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryDark}"/>
                         <Label x:Name="tasteRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Taste Ratings" Margin="10"/>
                         <Label x:Name="noTasteRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for taste were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
-                        <Button x:Name="addTasteRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Taste Rating" Clicked="addTasteRating_Clicked"/>
                     </Grid>
                     <Grid x:Name="timingRatingsGrid" Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -117,24 +116,12 @@
                         </Grid.RowDefinitions>
                         <Label x:Name="timingBackgroundColor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource PrimaryDark}"/>
                         <Label x:Name="timingRatingLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Time Ratings" Margin="10"/>
-                        <Label x:Name="noTimingRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="Center" Text="No ratings for time were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
-                        <Button x:Name="addTimingRatingButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Timing Rating" Clicked="addTimingRating_Clicked"/>
+                        <Label x:Name="noTimingRatingsFoundMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" Text="No ratings for time were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
                     </Grid>
                 </Grid>
+                <Button x:Name="addRatingButton" Grid.Row="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Rating" Clicked="addRatingButton_Clicked"/>
                 <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" TextColor="{StaticResource Tertiary}" Text="View Ratings" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
                 <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="There are no ratings for this recipe yet. Add some using the button above!" Margin="20" IsVisible="False"/>
-                <HorizontalStackLayout HorizontalOptions="End">
-                    <ImageButton x:Name="editImageButton" BackgroundColor="{StaticResource SecondaryDark}" HorizontalOptions="End" Margin="5, 20" Clicked="editButton_Clicked">
-                        <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=PenToSquare}" Color="{StaticResource Tertiary}"/>
-                        </ImageButton.Source>
-                    </ImageButton>
-                    <ImageButton x:Name="deleteImageButton" BackgroundColor="{StaticResource Tertiary}" HorizontalOptions="End" Margin="5, 20" Clicked="deleteButton_Clicked">
-                        <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=TrashCan}" Color="{StaticResource SecondaryDark}"/>
-                        </ImageButton.Source>
-                    </ImageButton>
-                </HorizontalStackLayout>
                 <Grid x:Name="ingredientsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -150,9 +137,8 @@
                 <Grid x:Name="instructionsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -160,7 +146,11 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
                 </Grid>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 40" Clicked="scheduleMealButton_Clicked"/>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 20" Clicked="scheduleMealButton_Clicked"/>
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 30">
+                    <Button x:Name="editRecipeButton" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Edit Recipe" Margin="20" Clicked="editButton_Clicked"/>
+                    <Button x:Name="deleteRecipeButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Delete Recipe" Margin="20" Clicked="deleteButton_Clicked"/>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

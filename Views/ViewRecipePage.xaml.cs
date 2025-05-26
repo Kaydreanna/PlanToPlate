@@ -10,10 +10,6 @@ public partial class ViewRecipePage : ContentPage
 {
     public User loggedInUser { get; set; }
     public Recipe selectedRecipe { get; set; }
-    private float overallRating;
-    private int easeRating;
-    private int tasteRating;
-    private int timeRating;
     public ViewRecipePage(User user, Recipe recipe)
 	{
 		InitializeComponent();
@@ -24,11 +20,6 @@ public partial class ViewRecipePage : ContentPage
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        (float overall, int ease, int taste, int time) = await DatabaseService.GetRatingScores(selectedRecipe.RecipeId);
-        overallRating = overall;
-        easeRating = ease;
-        tasteRating = taste;
-        timeRating = time;
         diaplayOverallRating();
         recipeNameLabel.Text = selectedRecipe.RecipeName;
         typeLabel.Text = selectedRecipe.RecipeType;
@@ -73,9 +64,10 @@ public partial class ViewRecipePage : ContentPage
     #endregion
 
     #region Methods
-    private void diaplayOverallRating()
+    private async void diaplayOverallRating()
     {
-        double roundedOverall = Math.Round(overallRating * 2, MidpointRounding.AwayFromZero) / 2;
+        (float overall, int ease, int taste, int time) = await DatabaseService.GetRatingScores(selectedRecipe.RecipeId);
+        double roundedOverall = Math.Round(overall * 2, MidpointRounding.AwayFromZero) / 2;
         if(roundedOverall < 0)
         {
             noRatingsFoundMessage.IsVisible = true;
@@ -161,7 +153,6 @@ public partial class ViewRecipePage : ContentPage
                 easeRatingsGrid.SetRow(commentLabel, rowNum);
                 rowNum++;
             }
-            easeRatingsGrid.SetRow(addEaseRatingButton, rowNum);
             rowNum = 1;
         }
         if (tasteRatings.Count < 1)
@@ -209,7 +200,6 @@ public partial class ViewRecipePage : ContentPage
                 tasteRatingsGrid.SetRow(commentLabel, rowNum);
                 rowNum++;
             }
-            tasteRatingsGrid.SetRow(addTasteRatingButton, rowNum);
             rowNum = 1;
         }
 
@@ -241,7 +231,7 @@ public partial class ViewRecipePage : ContentPage
                 };
                 Label timeLengthLabel = new Label
                 {
-                    Text = $"{timing.AmountOfTime} {timing.TimeUnit}",
+                    Text = timing.AmountOfTime.ToString(),
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Start,
                     FontSize = 14,
@@ -269,7 +259,6 @@ public partial class ViewRecipePage : ContentPage
                 timingRatingsGrid.SetRow(commentLabel, rowNum);
                 rowNum++;
             }
-            timingRatingsGrid.SetRow(addTimingRatingButton, rowNum);
         }
     }
 
@@ -315,11 +304,11 @@ public partial class ViewRecipePage : ContentPage
 
             instructionsGrid.Children.Add(instructionNumLabel);
             instructionsGrid.SetRow(instructionNumLabel, instructionRowNum);
-            instructionsGrid.SetColumn(instructionNumLabel, 1);
+            instructionsGrid.SetColumn(instructionNumLabel, 0);
 
             instructionsGrid.Children.Add(instructionsLabel);
             instructionsGrid.SetRow(instructionsLabel, instructionRowNum);
-            instructionsGrid.SetColumn(instructionsLabel, 2);
+            instructionsGrid.SetColumn(instructionsLabel, 1);
 
             instructionRowNum++;
         }
@@ -369,18 +358,54 @@ public partial class ViewRecipePage : ContentPage
     }
     #endregion
 
-    private void addEaseRating_Clicked(object sender, EventArgs e)
+    private async void addRatingButton_Clicked(object sender, EventArgs e)
     {
-
-    }
-
-    private void addTasteRating_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void addTimingRating_Clicked(object sender, EventArgs e)
-    {
-
+        var addRatingPopup = new AddRatingPopup(selectedRecipe.RecipeName);
+        var result = await this.ShowPopupAsync(addRatingPopup);
+        if (result is ValueTuple<string, int, string, string> ratingInfo)
+        {
+            string ratingType = ratingInfo.Item1;
+            int ratingScore = ratingInfo.Item2;
+            string ratingComment = ratingInfo.Item3;
+            if (ratingType == "Ease")
+            {
+                Ease newEaseRating = new Ease
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    EaseScore = ratingScore,
+                    EaseComment = ratingComment
+                };
+                await DatabaseService.AddEaseRating(newEaseRating);
+            }
+            else if (ratingType == "Taste")
+            {
+                Taste newTasteRating = new Taste
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    TasteScore = ratingScore,
+                    TasteComment = ratingComment
+                };
+                await DatabaseService.AddTasteRating(newTasteRating);
+            }
+            else if (ratingType == "Time")
+            {
+                Timing newTimingRating = new Timing
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    TimeScore = ratingScore,
+                    TimeComment = ratingComment,
+                    AmountOfTime = ratingInfo.Item4
+                };
+                await DatabaseService.AddTimingRating(newTimingRating);
+            }
+            diaplayOverallRating();
+            displayRatings();
+        }
     }
 }
