@@ -77,8 +77,14 @@ public partial class ViewRecipePage : ContentPage
         {
             noRatingsFoundMessage.IsVisible = false;
             viewRatingsButton.IsVisible = true;
+            star1.IsVisible = false;
+            star2.IsVisible = false;
+            star3.IsVisible = false;
+            star4.IsVisible = false;
+            star5.IsVisible = false;
+            halfStar.IsVisible = false;
         }
-        if(roundedOverall >= 1)
+        if (roundedOverall >= 1)
         {
             star1.IsVisible = true;
         }
@@ -98,7 +104,7 @@ public partial class ViewRecipePage : ContentPage
         {
             star5.IsVisible = true;
         }
-        if(roundedOverall % 2 != 0)
+        if(roundedOverall % 1 != 0)
         {
             halfStar.IsVisible = true;
         }

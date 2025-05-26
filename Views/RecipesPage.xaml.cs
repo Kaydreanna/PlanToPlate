@@ -23,27 +23,36 @@ public partial class RecipesPage : ContentPage
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
         currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(recipes);
         refreshRecipesTable();
-        ratingPicker.Items.Add("Rating");
-        ratingPicker.Items.Add("None");
-        ratingPicker.Items.Add("0-1");
-        ratingPicker.Items.Add("1-2");
-        ratingPicker.Items.Add("2-3");
-        ratingPicker.Items.Add("3-4");
-        ratingPicker.Items.Add("4-5");
+        if(ratingPicker.Items.Count == 0)
+        {
+            ratingPicker.Items.Add("Rating");
+            ratingPicker.Items.Add("None");
+            ratingPicker.Items.Add("0-1");
+            ratingPicker.Items.Add("1-2");
+            ratingPicker.Items.Add("2-3");
+            ratingPicker.Items.Add("3-4");
+            ratingPicker.Items.Add("4-5");
+        }
         ratingPicker.SelectedIndex = 0;
         populateDevicePicker();
         devicePicker.SelectedIndex = 0;
-        typePicker.Items.Add("Type");
-        typePicker.Items.Add("Breakfast");
-        typePicker.Items.Add("Lunch");
-        typePicker.Items.Add("Dinner");
+        if(typePicker.Items.Count == 0)
+        {
+            typePicker.Items.Add("Type");
+            typePicker.Items.Add("Breakfast");
+            typePicker.Items.Add("Lunch");
+            typePicker.Items.Add("Dinner");
+        }
         typePicker.SelectedIndex = 0;
         populateIngredientPicker();
         ingredientPicker.SelectedIndex = 0;
-        sortByPicker.Items.Add("Recipe Name");
-        sortByPicker.Items.Add("Rating");
-        sortByPicker.Items.Add("Cooking Device");
-        sortByPicker.Items.Add("Recipe Type");
+        if(sortByPicker.Items.Count == 0)
+        {
+            sortByPicker.Items.Add("Recipe Name");
+            sortByPicker.Items.Add("Rating");
+            sortByPicker.Items.Add("Cooking Device");
+            sortByPicker.Items.Add("Recipe Type");
+        }
         sortByPicker.SelectedIndex = 0;
     }
 
@@ -303,31 +312,35 @@ public partial class RecipesPage : ContentPage
 
     private async void populateDevicePicker()
     {
-        devicePicker.Items.Clear();
-        devicePicker.Items.Add("Device");
-        List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
-        foreach (Recipe recipe in recipes)
+        if(devicePicker.Items.Count == 0)
         {
-            if (!devicePicker.Items.Contains(recipe.CookingDevice))
+            devicePicker.Items.Add("Device");
+            List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
+            foreach (Recipe recipe in recipes)
             {
-                devicePicker.Items.Add(recipe.CookingDevice);
+                if (!devicePicker.Items.Contains(recipe.CookingDevice))
+                {
+                    devicePicker.Items.Add(recipe.CookingDevice);
+                }
             }
         }
     }
 
     private async void populateIngredientPicker()
     {
-        ingredientPicker.Items.Clear();
-        ingredientPicker.Items.Add("Ingredient");
-        List<Ingredient> ingredients = await DatabaseService.GetIngredients(loggedInUser.UserId);
-        foreach (Ingredient ingredient in ingredients)
+        if(ingredientPicker.Items.Count == 0)
         {
-            string ingredientName = ingredient.IngredientName.ToLower();
-            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-            string capitalizedIngredientName = textInfo.ToTitleCase(ingredientName);
-            if (!ingredientPicker.Items.Contains(capitalizedIngredientName))
+            ingredientPicker.Items.Add("Ingredient");
+            List<Ingredient> ingredients = await DatabaseService.GetIngredients(loggedInUser.UserId);
+            foreach (Ingredient ingredient in ingredients)
             {
-                ingredientPicker.Items.Add(capitalizedIngredientName);
+                string ingredientName = ingredient.IngredientName.ToLower();
+                TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+                string capitalizedIngredientName = textInfo.ToTitleCase(ingredientName);
+                if (!ingredientPicker.Items.Contains(capitalizedIngredientName))
+                {
+                    ingredientPicker.Items.Add(capitalizedIngredientName);
+                }
             }
         }
     }
