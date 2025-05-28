@@ -17,7 +17,7 @@ public partial class ViewRecipePage : ContentPage
         selectedRecipe = recipe;
     }
 
-    protected async override void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
         diaplayOverallRating();
@@ -52,14 +52,7 @@ public partial class ViewRecipePage : ContentPage
     }
     private void viewRatingsButton_Clicked(object sender, EventArgs e)
     {
-        ratingsGrid.IsVisible = !ratingsGrid.IsVisible;
-        if(ratingsGrid.IsVisible)
-        {
-            viewRatingsButton.Text = "Hide Ratings";
-        } else
-        {
-            viewRatingsButton.Text = "View Ratings";
-        }
+        viewOrHideRatings();
     }
     #endregion
 
@@ -71,11 +64,16 @@ public partial class ViewRecipePage : ContentPage
         if(roundedOverall < 0)
         {
             noRatingsFoundMessage.IsVisible = true;
+            ratingStars.IsVisible = false;
+            //Set ratings grid to true so it will be changed to false in the following method
+            ratingsGrid.IsVisible = true;
+            viewOrHideRatings();
             viewRatingsButton.IsVisible = false;
             return;
         } else
         {
             noRatingsFoundMessage.IsVisible = false;
+            ratingStars.IsVisible = true;
             viewRatingsButton.IsVisible = true;
             star1.IsVisible = false;
             star2.IsVisible = false;
@@ -114,6 +112,9 @@ public partial class ViewRecipePage : ContentPage
     {
         (List<Ease> easeRatings, List<Taste> tasteRatings, List<Timing> timingRatings) = await DatabaseService.GetRatings(selectedRecipe.RecipeId);
         int rowNum = 1;
+        easeRatingsGrid.Children.Clear();
+        tasteRatingsGrid.Children.Clear();
+        timingRatingsGrid.Children.Clear();
         if (easeRatings.Count < 1)
         {
             noEaseRatingsFoundMessage.IsVisible = true;
@@ -148,6 +149,20 @@ public partial class ViewRecipePage : ContentPage
                     FontSize = 14,
                     Margin = new Thickness(5, 15, 0, 15)
                 };
+                TapGestureRecognizer tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += async (s, e) =>
+                {
+                    bool deleteRating = await DisplayAlert("Delete Rating", $"Would you like to delete the {ease.EaseScore}/5 Ease rating made on {ease.Date.ToString("MM/d/yyyy")}?", "Yes", "No");
+                    if(deleteRating)
+                    {
+                        await DatabaseService.DeleteEaseRating(ease);
+                        displayRatings();
+                        diaplayOverallRating();
+                    }
+                };
+                dateLabel.GestureRecognizers.Add(tapGesture);
+                ratingLabel.GestureRecognizers.Add(tapGesture);
+                commentLabel.GestureRecognizers.Add(tapGesture);
                 easeRatingsGrid.Children.Add(dateLabel);
                 easeRatingsGrid.SetColumn(dateLabel, 0);
                 easeRatingsGrid.SetRow(dateLabel, rowNum);
@@ -195,6 +210,21 @@ public partial class ViewRecipePage : ContentPage
                     FontSize = 14,
                     Margin = new Thickness(5, 15, 0, 15)
                 };
+                TapGestureRecognizer tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += async (s, e) =>
+                {
+                    bool deleteRating = await DisplayAlert("Delete Rating", $"Would you like to delete the {taste.TasteScore}/5 Taste rating made on {taste.Date.ToString("MM/d/yyyy")}?", "Yes", "No");
+                    if (deleteRating)
+                    {
+                        await DatabaseService.DeleteTasteRating(taste);
+                        displayRatings();
+                        diaplayOverallRating();
+                    }
+                };
+                dateLabel.GestureRecognizers.Add(tapGesture);
+                ratingLabel.GestureRecognizers.Add(tapGesture);
+                commentLabel.GestureRecognizers.Add(tapGesture);
+
                 tasteRatingsGrid.Children.Add(dateLabel);
                 tasteRatingsGrid.SetColumn(dateLabel, 0);
                 tasteRatingsGrid.SetRow(dateLabel, rowNum);
@@ -251,6 +281,21 @@ public partial class ViewRecipePage : ContentPage
                     FontSize = 14,
                     Margin = new Thickness(5, 15, 0, 15)
                 };
+                TapGestureRecognizer tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += async (s, e) =>
+                {
+                    bool deleteRating = await DisplayAlert("Delete Rating", $"Would you like to delete the {timing.TimeScore}/5 Time rating made on {timing.Date.ToString("MM/d/yyyy")}?", "Yes", "No");
+                    if (deleteRating)
+                    {
+                        await DatabaseService.DeleteTimingRating(timing);
+                        displayRatings();
+                        diaplayOverallRating();
+                    }
+                };
+                dateLabel.GestureRecognizers.Add(tapGesture);
+                ratingLabel.GestureRecognizers.Add(tapGesture);
+                commentLabel.GestureRecognizers.Add(tapGesture);
+
                 timingRatingsGrid.Children.Add(dateLabel);
                 timingRatingsGrid.SetColumn(dateLabel, 0);
                 timingRatingsGrid.SetRow(dateLabel, rowNum);
@@ -361,6 +406,20 @@ public partial class ViewRecipePage : ContentPage
             };
             await DatabaseService.ScheduleMeal(newMeal);
         }
+    }
+
+    private void viewOrHideRatings()
+    {
+        ratingsGrid.IsVisible = !ratingsGrid.IsVisible;
+        if (ratingsGrid.IsVisible)
+        {
+            viewRatingsButton.Text = "Hide Ratings";
+        }
+        else
+        {
+            viewRatingsButton.Text = "View Ratings";
+        }
+
     }
     #endregion
 

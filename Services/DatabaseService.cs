@@ -135,6 +135,24 @@ namespace PlanToPlate.Services
             return (easeRatings, tasteRatings, timingRatings);
         }
 
+        public static async Task DeleteEaseRating(Ease rating)
+        {
+            await Init();
+            await _db.DeleteAsync(rating);
+        }
+
+        public static async Task DeleteTasteRating(Taste rating)
+        {
+            await Init();
+            await _db.DeleteAsync(rating);
+        }
+
+        public static async Task DeleteTimingRating(Timing rating)
+        {
+            await Init();
+            await _db.DeleteAsync(rating);
+        }
+
         public static async Task<List<Ingredient>> GetIngredients(int userId)
         {
             await Init();
