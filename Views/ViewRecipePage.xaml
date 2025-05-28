@@ -127,10 +127,12 @@
                     </Grid>
                     <Label x:Name="noTimingRatingsFoundMessage" Grid.Row="5" HorizontalOptions="Center" Text="No ratings for time were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
                 </Grid>
-                <Button x:Name="addRatingButton" Grid.Row="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Rating" Clicked="addRatingButton_Clicked"/>
-                <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" TextColor="{StaticResource Tertiary}" Text="View Ratings" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 10">
+                    <Button x:Name="addRatingButton" Grid.Row="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Rating" Margin="5, 0" Clicked="addRatingButton_Clicked"/>
+                    <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="1" TextColor="{StaticResource Tertiary}" Text="View Ratings" Margin="5, 0" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
+                </HorizontalStackLayout>
                 <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="There are no ratings for this recipe yet. Add some using the button above!" Margin="20" IsVisible="False"/>
-                <Grid x:Name="ingredientsGrid">
+                <Grid x:Name="ingredientsGrid" Margin="0, 15, 0, 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="6*"/>
@@ -154,7 +156,7 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
                 </Grid>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Schedule Meal" Margin="0, 20" Clicked="scheduleMealButton_Clicked"/>
+                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Text="Schedule Meal" Margin="0, 20" Clicked="scheduleMealButton_Clicked"/>
                 <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 30">
                     <Button x:Name="editRecipeButton" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Edit Recipe" Margin="20" Clicked="editButton_Clicked"/>
                     <Button x:Name="deleteRecipeButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Delete Recipe" Margin="20" Clicked="deleteButton_Clicked"/>
