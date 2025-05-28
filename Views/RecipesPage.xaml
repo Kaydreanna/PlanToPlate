@@ -8,20 +8,12 @@
         <ScrollView x:Name="mainContent" Grid.Row="0" Margin="0, 0, 0, 70">
             <VerticalStackLayout>
                 <Button x:Name="addRecipeButton" HorizontalOptions="Center" Text="Add New Recipe" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="addRecipeButton_Clicked"/>
+                <Button x:Name="filterByButton" HorizontalOptions="Center" Text="Filters" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="filterByButton_Clicked"/>
                 <HorizontalStackLayout x:Name="searchfunction" HorizontalOptions="Center" Margin="0, 20">
                     <Entry x:Name="searchRecipesEntry" WidthRequest="200" Margin="10, 0"/>
                     <Button x:Name="searchButton" Text="Search" FontSize="20" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Clicked="searchButton_Clicked"/>
                 </HorizontalStackLayout>
-                <HorizontalStackLayout x:Name="firstRowFilters" HorizontalOptions="Center">
-                    <Label x:Name="filterByLabel" VerticalOptions="Center" Text="Filter by:" Margin="5, 0, 25, 0" FontSize="18"/>
-                    <Picker x:Name="ratingPicker" WidthRequest="125" Margin="5" SelectedIndexChanged="ratingPicker_SelectedIndexChanged"/>
-                    <Picker x:Name="devicePicker" WidthRequest="125" Margin="5" SelectedIndexChanged="devicePicker_SelectedIndexChanged"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout x:Name="secondRowFilters" HorizontalOptions="Center">
-                    <Picker x:Name="typePicker" WidthRequest="125" Margin="5" SelectedIndexChanged="typePicker_SelectedIndexChanged"/>
-                    <Picker x:Name="ingredientPicker" WidthRequest="125" Margin="5" SelectedIndexChanged="ingredientPicker_SelectedIndexChanged"/>
-                    <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
-                </HorizontalStackLayout>
+                <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
                 <HorizontalStackLayout x:Name="sortByFunction" HorizontalOptions="Start" Margin="0, 20, 0, 0">
                     <Label x:Name="sortByLabel" VerticalOptions="Center" Text="Sort by:" Margin="5, 0, 5, 0" FontSize="14"/>
                     <Picker x:Name="sortByPicker" WidthRequest="100" SelectedIndexChanged="sortByPicker_SelectedIndexChanged"/>

@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System.ComponentModel;
@@ -23,37 +24,6 @@ public partial class RecipesPage : ContentPage
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
         currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(recipes);
         refreshRecipesTable();
-        if(ratingPicker.Items.Count == 0)
-        {
-            ratingPicker.Items.Add("Rating");
-            ratingPicker.Items.Add("None");
-            ratingPicker.Items.Add("0-1");
-            ratingPicker.Items.Add("1-2");
-            ratingPicker.Items.Add("2-3");
-            ratingPicker.Items.Add("3-4");
-            ratingPicker.Items.Add("4-5");
-        }
-        ratingPicker.SelectedIndex = 0;
-        populateDevicePicker();
-        devicePicker.SelectedIndex = 0;
-        if(typePicker.Items.Count == 0)
-        {
-            typePicker.Items.Add("Type");
-            typePicker.Items.Add("Breakfast");
-            typePicker.Items.Add("Lunch");
-            typePicker.Items.Add("Dinner");
-        }
-        typePicker.SelectedIndex = 0;
-        populateIngredientPicker();
-        ingredientPicker.SelectedIndex = 0;
-        if(sortByPicker.Items.Count == 0)
-        {
-            sortByPicker.Items.Add("Recipe Name");
-            sortByPicker.Items.Add("Rating");
-            sortByPicker.Items.Add("Cooking Device");
-            sortByPicker.Items.Add("Recipe Type");
-        }
-        sortByPicker.SelectedIndex = 0;
     }
 
     #region Clicked Events
@@ -64,10 +34,6 @@ public partial class RecipesPage : ContentPage
 
     private async void clearButton_Clicked(object sender, EventArgs e)
     {
-        ratingPicker.SelectedIndex = 0;
-        typePicker.SelectedIndex = 0;
-        devicePicker.SelectedIndex = 0;
-        ingredientPicker.SelectedIndex = 0;
         searchRecipesEntry.Text = string.Empty;
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
         currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(loggedInUser.UserId);
@@ -116,73 +82,82 @@ public partial class RecipesPage : ContentPage
         await Navigation.PushAsync(new ViewRecipePage(loggedInUser, recipe));
     }
 
-    private void typePicker_SelectedIndexChanged(object sender, EventArgs e)
+    private async void filterByButton_Clicked(object sender, EventArgs e)
     {
-        if(typePicker.SelectedIndex != 0)
+        List<string> devices = new List<string>();
+        List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
+        foreach (Recipe recipe in recipes)
         {
-            if (typePicker.SelectedItem is string selectedItem)
+            if (!devices.Contains(recipe.CookingDevice))
             {
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.RecipeType == selectedItem).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
+                devices.Add(recipe.CookingDevice);
             }
         }
-    }
 
-    private void ingredientPicker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if(ingredientPicker.SelectedIndex != 0)
+        List<string> capitalizedIngredients = new List<string>();
+        List<Ingredient> ingredients = await DatabaseService.GetIngredients(loggedInUser.UserId);
+        foreach (Ingredient ingredient in ingredients)
         {
-            if (ingredientPicker.SelectedItem is string selectedItem)
+            string ingredientName = ingredient.IngredientName.ToLower();
+            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            string capitalizedIngredientName = textInfo.ToTitleCase(ingredientName);
+            if (!capitalizedIngredients.Contains(capitalizedIngredientName))
             {
-                Dictionary<Recipe, float> recipes = new Dictionary<Recipe, float>();
+                capitalizedIngredients.Add(capitalizedIngredientName);
+            }
+        }
+
+        var filterPopup = new FilterRecipesPopup(devices, capitalizedIngredients);
+        var result = await this.ShowPopupAsync(filterPopup);
+        if(result is ValueTuple<string, string, string, string> filterByInfo)
+        {
+            string selectedRating = filterByInfo.Item1;
+            string selectedDevice = filterByInfo.Item2;
+            string selectedMealType = filterByInfo.Item3;
+            string selectedIngredient = filterByInfo.Item4;
+            if (selectedRating != null)
+            {
+                switch (selectedRating)
+                {
+                    case "None":
+                        filterByRating(-1, -1); break;
+                    case "0-1":
+                        filterByRating(0, 1); break;
+                    case "1-2":
+                        filterByRating(1, 2); break;
+                    case "2-3":
+                        filterByRating(2, 3); break;
+                    case "3-4":
+                        filterByRating(3, 4); break;
+                    case "4-5":
+                        filterByRating(4, 5); break;
+                }
+            }
+            if (selectedDevice != null)
+            {
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.CookingDevice == selectedDevice).ToDictionary(i => i.Key, i => i.Value);
+            }
+            if (selectedMealType != null)
+            {
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.RecipeType == selectedMealType).ToDictionary(i => i.Key, i => i.Value);
+            }
+            if (selectedIngredient != null)
+            {
+                Dictionary<Recipe, float> recipesToAdd = new Dictionary<Recipe, float>();
                 foreach (var (recipe, rating) in currentListOfRecipesAndRatings)
                 {
                     foreach (var ingredient in recipe.Ingredients)
                     {
-                        if (ingredient.Key.ToString().ToLower() == selectedItem.ToLower())
+                        if (ingredient.Key.ToString().ToLower() == selectedIngredient.ToLower())
                         {
-                            recipes.Add(recipe, rating);
+                            recipesToAdd.Add(recipe, rating);
                             break;
                         }
                     }
                 }
-                currentListOfRecipesAndRatings = recipes;
-                refreshRecipesTable();
+                currentListOfRecipesAndRatings = recipesToAdd;
             }
-        }
-    }
-
-    private void ratingPicker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        int ratingFilter = ratingPicker.SelectedIndex;
-        switch (ratingFilter)
-        {
-            case 0:
-                break;
-            case 1:
-                filterByRating(-1, -1); break;
-            case 2:
-                filterByRating(0, 1); break;
-            case 3:
-                filterByRating(1, 2); break;
-            case 4:
-                filterByRating(2, 3); break;
-            case 5:
-                filterByRating(3, 4); break;
-            case 6:
-                filterByRating(4, 5); break;
-        }
-    }
-
-    private void devicePicker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if(devicePicker.SelectedIndex != 0)
-        {
-            if (devicePicker.SelectedItem is string selectedItem)
-            {
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.CookingDevice == selectedItem).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
-            }
+            refreshRecipesTable();
         }
     }
     #endregion
@@ -194,10 +169,6 @@ public partial class RecipesPage : ContentPage
         {
             noRecipesFoundMessage.IsVisible = true;
             recipesGridLabels.IsVisible = false;
-            ratingPicker.IsEnabled = false;
-            devicePicker.IsEnabled = false;
-            typePicker.IsEnabled = false;
-            ingredientPicker.IsEnabled = false;
             recipesGridContent.Children.Clear();
             recipesGridContent.IsVisible = false;
         }
@@ -205,10 +176,6 @@ public partial class RecipesPage : ContentPage
         {
             noRecipesFoundMessage.IsVisible = false;
             recipesGridLabels.IsVisible = true;
-            ratingPicker.IsEnabled = true;
-            devicePicker.IsEnabled = true;
-            typePicker.IsEnabled = true;
-            ingredientPicker.IsEnabled = true;
             recipesGridContent.IsVisible = true;
             recipesGridContent.Children.Clear();
             int rowNum = 0;
@@ -310,41 +277,6 @@ public partial class RecipesPage : ContentPage
         }
     }
 
-    private async void populateDevicePicker()
-    {
-        if(devicePicker.Items.Count == 0)
-        {
-            devicePicker.Items.Add("Device");
-            List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
-            foreach (Recipe recipe in recipes)
-            {
-                if (!devicePicker.Items.Contains(recipe.CookingDevice))
-                {
-                    devicePicker.Items.Add(recipe.CookingDevice);
-                }
-            }
-        }
-    }
-
-    private async void populateIngredientPicker()
-    {
-        if(ingredientPicker.Items.Count == 0)
-        {
-            ingredientPicker.Items.Add("Ingredient");
-            List<Ingredient> ingredients = await DatabaseService.GetIngredients(loggedInUser.UserId);
-            foreach (Ingredient ingredient in ingredients)
-            {
-                string ingredientName = ingredient.IngredientName.ToLower();
-                TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                string capitalizedIngredientName = textInfo.ToTitleCase(ingredientName);
-                if (!ingredientPicker.Items.Contains(capitalizedIngredientName))
-                {
-                    ingredientPicker.Items.Add(capitalizedIngredientName);
-                }
-            }
-        }
-    }
-
     private void filterByRating(int minNum, int maxNum)
     {
         if(minNum == -1 && maxNum == -1)
@@ -414,4 +346,5 @@ public partial class RecipesPage : ContentPage
                 break;
         }
     }
+
 }

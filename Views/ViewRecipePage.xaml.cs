@@ -54,6 +54,56 @@ public partial class ViewRecipePage : ContentPage
     {
         viewOrHideRatings();
     }
+    private async void addRatingButton_Clicked(object sender, EventArgs e)
+    {
+        var addRatingPopup = new AddRatingPopup(selectedRecipe.RecipeName);
+        var result = await this.ShowPopupAsync(addRatingPopup);
+        if (result is ValueTuple<string, int, string, string> ratingInfo)
+        {
+            string ratingType = ratingInfo.Item1;
+            int ratingScore = ratingInfo.Item2;
+            string ratingComment = ratingInfo.Item3;
+            if (ratingType == "Ease")
+            {
+                Ease newEaseRating = new Ease
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    EaseScore = ratingScore,
+                    EaseComment = ratingComment
+                };
+                await DatabaseService.AddEaseRating(newEaseRating);
+            }
+            else if (ratingType == "Taste")
+            {
+                Taste newTasteRating = new Taste
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    TasteScore = ratingScore,
+                    TasteComment = ratingComment
+                };
+                await DatabaseService.AddTasteRating(newTasteRating);
+            }
+            else if (ratingType == "Time")
+            {
+                Timing newTimingRating = new Timing
+                {
+                    RecipeId = selectedRecipe.RecipeId,
+                    UserId = loggedInUser.UserId,
+                    Date = DateTime.Now,
+                    TimeScore = ratingScore,
+                    TimeComment = ratingComment,
+                    AmountOfTime = ratingInfo.Item4
+                };
+                await DatabaseService.AddTimingRating(newTimingRating);
+            }
+            diaplayOverallRating();
+            displayRatings();
+        }
+    }
     #endregion
 
     #region Methods
@@ -423,54 +473,4 @@ public partial class ViewRecipePage : ContentPage
     }
     #endregion
 
-    private async void addRatingButton_Clicked(object sender, EventArgs e)
-    {
-        var addRatingPopup = new AddRatingPopup(selectedRecipe.RecipeName);
-        var result = await this.ShowPopupAsync(addRatingPopup);
-        if (result is ValueTuple<string, int, string, string> ratingInfo)
-        {
-            string ratingType = ratingInfo.Item1;
-            int ratingScore = ratingInfo.Item2;
-            string ratingComment = ratingInfo.Item3;
-            if (ratingType == "Ease")
-            {
-                Ease newEaseRating = new Ease
-                {
-                    RecipeId = selectedRecipe.RecipeId,
-                    UserId = loggedInUser.UserId,
-                    Date = DateTime.Now,
-                    EaseScore = ratingScore,
-                    EaseComment = ratingComment
-                };
-                await DatabaseService.AddEaseRating(newEaseRating);
-            }
-            else if (ratingType == "Taste")
-            {
-                Taste newTasteRating = new Taste
-                {
-                    RecipeId = selectedRecipe.RecipeId,
-                    UserId = loggedInUser.UserId,
-                    Date = DateTime.Now,
-                    TasteScore = ratingScore,
-                    TasteComment = ratingComment
-                };
-                await DatabaseService.AddTasteRating(newTasteRating);
-            }
-            else if (ratingType == "Time")
-            {
-                Timing newTimingRating = new Timing
-                {
-                    RecipeId = selectedRecipe.RecipeId,
-                    UserId = loggedInUser.UserId,
-                    Date = DateTime.Now,
-                    TimeScore = ratingScore,
-                    TimeComment = ratingComment,
-                    AmountOfTime = ratingInfo.Item4
-                };
-                await DatabaseService.AddTimingRating(newTimingRating);
-            }
-            diaplayOverallRating();
-            displayRatings();
-        }
-    }
 }
