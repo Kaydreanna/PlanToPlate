@@ -5,7 +5,7 @@ namespace PlanToPlate.Services
 {
     public class FilterRecipesPopup : Popup
     {
-        public FilterRecipesPopup(List<string> deviceOptions, List<string> ingredientOptions)
+        public FilterRecipesPopup(List<string> deviceOptions, List<string> ingredientOptions, string selectedRating, string selectedDevice, string selectedMealType, string selectedIngredient)
         {
             var label = new Label { Text = "Filter Recipes By:" };
             var ratingPicker = new Picker
@@ -16,11 +16,21 @@ namespace PlanToPlate.Services
                     "None", "0-1", "1-2", "2-3", "3-4", "4-5"
                 }
             };
+            if(!string.IsNullOrEmpty(selectedRating))
+            {
+                ratingPicker.SelectedItem = selectedRating;
+            }
+
             var devicePicker = new Picker
             {
                 Title = "Device",
                 ItemsSource = deviceOptions
             };
+            if (!string.IsNullOrEmpty(selectedDevice))
+            {
+                devicePicker.SelectedItem = selectedDevice;
+            }
+
             var mealTypePicker = new Picker
             {
                 Title = "Meal Type",
@@ -29,11 +39,21 @@ namespace PlanToPlate.Services
                     "Breakfast", "Lunch", "Dinner"
                 }
             };
+            if (!string.IsNullOrEmpty(selectedMealType))
+            {
+                mealTypePicker.SelectedItem = selectedMealType;
+            }
+
             var ingredientPicker = new Picker
             {
                 Title = "Ingredient",
                 ItemsSource = ingredientOptions
             };
+            if (!string.IsNullOrEmpty(selectedIngredient))
+            {
+                ingredientPicker.SelectedItem = selectedIngredient;
+            }
+
             var comfirmButton = new Button { Text = "Apply Filters" };
             comfirmButton.Clicked += (s, e) =>
             {

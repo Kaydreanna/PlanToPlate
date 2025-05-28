@@ -11,7 +11,10 @@ public partial class RecipesPage : ContentPage
 {
     public User loggedInUser { get; set; }
     private Dictionary<Recipe, float> currentListOfRecipesAndRatings = new Dictionary<Recipe, float>();
-
+    private string currentRatingFilter = null;
+    private string currentDeviceFilter = null;
+    private string currentMealTypeFilter = null;
+    private string currentIngredientFilter = null;
     public RecipesPage(User user)
 	{
 		InitializeComponent();
@@ -111,7 +114,7 @@ public partial class RecipesPage : ContentPage
             }
         }
 
-        var filterPopup = new FilterRecipesPopup(devices, capitalizedIngredients);
+        var filterPopup = new FilterRecipesPopup(devices, capitalizedIngredients, currentRatingFilter, currentDeviceFilter, currentMealTypeFilter, currentIngredientFilter);
         var result = await this.ShowPopupAsync(filterPopup);
         if(result is ValueTuple<string, string, string, string> filterByInfo)
         {
@@ -121,6 +124,7 @@ public partial class RecipesPage : ContentPage
             string selectedIngredient = filterByInfo.Item4;
             if (selectedRating != null)
             {
+                currentRatingFilter = selectedRating;
                 switch (selectedRating)
                 {
                     case "None":
@@ -136,17 +140,23 @@ public partial class RecipesPage : ContentPage
                     case "4-5":
                         filterByRating(4, 5); break;
                 }
-            }
+            } else { currentRatingFilter = null; }
+
             if (selectedDevice != null)
             {
+                currentDeviceFilter = selectedDevice;
                 currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.CookingDevice == selectedDevice).ToDictionary(i => i.Key, i => i.Value);
-            }
+            } else { currentDeviceFilter = null; }
+
             if (selectedMealType != null)
             {
+                currentMealTypeFilter = selectedMealType;
                 currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.Where(i => i.Key.RecipeType == selectedMealType).ToDictionary(i => i.Key, i => i.Value);
-            }
+            } else { currentMealTypeFilter = null; }
+
             if (selectedIngredient != null)
             {
+                currentIngredientFilter = selectedIngredient;
                 Dictionary<Recipe, float> recipesToAdd = new Dictionary<Recipe, float>();
                 foreach (var (recipe, rating) in currentListOfRecipesAndRatings)
                 {
@@ -160,7 +170,8 @@ public partial class RecipesPage : ContentPage
                     }
                 }
                 currentListOfRecipesAndRatings = recipesToAdd;
-            }
+            } else { currentIngredientFilter = null; }
+
             refreshRecipesTable();
         }
     }
