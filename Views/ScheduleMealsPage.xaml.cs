@@ -136,6 +136,9 @@ public partial class ScheduleMealsPage : ContentPage
             breakfastButton.BindingContext = displayDate;
             breakfastButton.Clicked += async (sender, e) =>
             {
+                var mealsOnDate = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, (DateTime)breakfastButton.BindingContext);
+                ScheduledMeals breakfast = mealsOnDate.Find(m => m.MealType == "Breakfast");
+                var breakfastName = breakfast != null ? await DatabaseService.GetRecipeName(breakfast) : "-";
                 if (breakfast != null)
                 {
                     bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {breakfastName} from {breakfast.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
@@ -143,7 +146,7 @@ public partial class ScheduleMealsPage : ContentPage
                     {
                         await DatabaseService.DeleteScheduleMeal(breakfast);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, breakfast.Date);
-                        displayScheduledMeals(displayedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Breakfast");
                     }
                 }
                 else
@@ -164,7 +167,7 @@ public partial class ScheduleMealsPage : ContentPage
                         };
                         await DatabaseService.ScheduleMeal(scheduledMeal);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)breakfastButton.BindingContext);
-                        displayScheduledMeals(selectedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Breakfast");
                     }
                 }
             };
@@ -185,6 +188,9 @@ public partial class ScheduleMealsPage : ContentPage
             lunchButton.BindingContext = displayDate;
             lunchButton.Clicked += async (sender, e) =>
             {
+                var mealsOnDate = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
+                ScheduledMeals lunch = mealsOnDate.Find(m => m.MealType == "Lunch");
+                var lunchName = lunch != null ? await DatabaseService.GetRecipeName(lunch) : "-";
                 if (lunch != null)
                 {
                     bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {lunchName} from {lunch.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
@@ -192,7 +198,7 @@ public partial class ScheduleMealsPage : ContentPage
                     {
                         await DatabaseService.DeleteScheduleMeal(lunch);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, lunch.Date);
-                        displayScheduledMeals(displayedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Lunch");
                     }
                 }
                 else
@@ -215,7 +221,7 @@ public partial class ScheduleMealsPage : ContentPage
                         };
                         await DatabaseService.ScheduleMeal(scheduledMeal);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
-                        displayScheduledMeals(selectedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Lunch");
                     }
                 }
             };
@@ -236,6 +242,9 @@ public partial class ScheduleMealsPage : ContentPage
             dinnerButton.BindingContext = displayDate;
             dinnerButton.Clicked += async (sender, e) =>
             {
+                var mealsOnDate = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, (DateTime)lunchButton.BindingContext);
+                ScheduledMeals dinner = mealsOnDate.Find(m => m.MealType == "Dinner");
+                var dinnerName = dinner != null ? await DatabaseService.GetRecipeName(dinner) : "-";
                 if (dinner != null)
                 {
                     bool deleteMeal = await DisplayAlert("Delete Meal?", $"Would you like to delete {dinnerName} from {dinner.Date.ToString("MM/dd/yyyy")}?", "Yes", "No");
@@ -243,7 +252,7 @@ public partial class ScheduleMealsPage : ContentPage
                     {
                         await DatabaseService.DeleteScheduleMeal(dinner);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, dinner.Date);
-                        displayScheduledMeals(displayedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Dinner");
                     }
                 }
                 else
@@ -265,7 +274,7 @@ public partial class ScheduleMealsPage : ContentPage
                         };
                         await DatabaseService.ScheduleMeal(scheduledMeal);
                         await DatabaseService.UpdateShoppingLists(loggedInUser.UserId, (DateTime)dinnerButton.BindingContext);
-                        displayScheduledMeals(selectedMonth);
+                        updateMealButton((DateTime)((Button)sender).BindingContext, "Dinner");
                     }
                 }
             };
@@ -314,6 +323,39 @@ public partial class ScheduleMealsPage : ContentPage
         var pickerPopup = new MealPickerPopup(recipeNames);
         string selectedItem = await this.ShowPopupAsync(pickerPopup) as string;
         return selectedItem;
+    }
+
+    private async void updateMealButton(DateTime dayToUpdate, string mealType)
+    {
+        List<ScheduledMeals> mealsOnDate = await DatabaseService.GetScheduledMeals(loggedInUser.UserId, dayToUpdate);
+        ScheduledMeals meal = mealsOnDate.Find(m => m.MealType == mealType);
+        string mealName = meal != null ? await DatabaseService.GetRecipeName(meal) : "-";
+
+        int mealRowOffset = mealType switch
+        {
+            "Breakfast" => 1,
+            "Lunch" => 2,
+            "Dinner" => 3,
+            _ => 0
+        };
+
+        var buttonToUpdate = scheduledMealsGrid.Children
+            .Where(btn => btn is Button 
+            && ((Button)btn).BindingContext is DateTime dt 
+            && dt.Date == dayToUpdate.Date
+            && Grid.GetRow((Button)btn) % 4 == mealRowOffset)
+            .Cast<Button>()
+            .FirstOrDefault();
+
+        if (buttonToUpdate != null)
+        {
+            buttonToUpdate.Text = mealName;
+            buttonToUpdate.TextColor = meal != null ? (Color)Application.Current.Resources["Tertiary"] : Colors.Black;
+        }
+        else
+        {
+            await DisplayAlert("Error", "Unable to update the scheduled meal for the selected date.", "OK");
+        }
     }
     #endregion
 
