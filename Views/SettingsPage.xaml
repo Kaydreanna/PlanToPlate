@@ -1,57 +1,126 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             x:Class="PlanToPlate.Views.SettingsPage"
-             Title="SettingsPage">
+<ContentPage
+    x:Class="PlanToPlate.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    Title="SettingsPage">
     <Grid>
         <ScrollView>
-            <VerticalStackLayout Padding="0, 0, 0, 80">
-                <Label x:Name="changeUsernameLabel" Text="Change Username" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" />
+            <VerticalStackLayout Padding="0,0,0,80">
+                <Label
+                    x:Name="changeUsernameLabel"
+                    BackgroundColor="{StaticResource Primary}"
+                    FontSize="30"
+                    Text="Change Username"
+                    TextColor="{StaticResource PrimaryLightText}" />
                 <Label x:Name="currentUsernameLabel" Text="Enter Current Username:" />
                 <Entry x:Name="currentUsernameEntry" />
                 <Label x:Name="newUsernameLabel" Text="Enter New Username:" />
                 <Entry x:Name="newUsernameEntry" />
                 <Label x:Name="changeUsernamePasswordLabel" Text="Enter Password:" />
                 <Entry x:Name="changeUsernamePasswordEntry" />
-                <Button x:Name="saveChangeUsernameButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="20" HorizontalOptions="Center" Clicked="saveChangeUsernameButton_Clicked"/>
-                
-                <Label x:Name="changePasswordLabel" Text="Change Password" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" />
+                <Button
+                    x:Name="saveChangeUsernameButton"
+                    Margin="20"
+                    Padding="20,0"
+                    BackgroundColor="{StaticResource SecondaryDark}"
+                    Clicked="saveChangeUsernameButton_Clicked"
+                    HorizontalOptions="Center"
+                    Text="Save"
+                    TextColor="{StaticResource Tertiary}" />
+
+                <Label
+                    x:Name="changePasswordLabel"
+                    BackgroundColor="{StaticResource Primary}"
+                    FontSize="30"
+                    Text="Change Password"
+                    TextColor="{StaticResource PrimaryLightText}" />
                 <Label x:Name="currentPasswordLabel" Text="Enter Current Password:" />
                 <Entry x:Name="currentPasswordEntry" />
                 <Label x:Name="newPasswordLabel" Text="Enter New Password:" />
                 <Entry x:Name="newPasswordEntry" />
                 <Label x:Name="confirmPasswordLabel" Text="Confirm Password:" />
                 <Entry x:Name="confirmPasswordEntry" />
-                <Button x:Name="saveChangePasswordButton" Text="Save" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Padding="20, 0" Margin="20" HorizontalOptions="Center" Clicked="saveChangePasswordButton_Clicked"/>
-                
-                <Grid x:Name="logoutGrid" BackgroundColor="{StaticResource Secondary}" Margin="0, 20">
+                <Button
+                    x:Name="saveChangePasswordButton"
+                    Margin="20"
+                    Padding="20,0"
+                    BackgroundColor="{StaticResource SecondaryDark}"
+                    Clicked="saveChangePasswordButton_Clicked"
+                    HorizontalOptions="Center"
+                    Text="Save"
+                    TextColor="{StaticResource Tertiary}" />
+
+                <Grid
+                    x:Name="logoutGrid"
+                    Margin="0,20"
+                    BackgroundColor="{StaticResource Secondary}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ImageButton x:Name="logoutImageButton" Grid.Column="0" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="logoutButton_Clicked">
+                    <ImageButton
+                        x:Name="logoutImageButton"
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        Clicked="logoutButton_Clicked"
+                        HeightRequest="40"
+                        HorizontalOptions="End">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=ArrowRightFromBracket}" Color="{StaticResource IconDark}"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=ArrowRightFromBracket}"
+                                Color="{StaticResource IconDark}" />
                         </ImageButton.Source>
                     </ImageButton>
-                    <Button x:Name="logoutButton" Grid.Column="1" Text="Log Out" TextColor="{StaticResource Tertiary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="logoutButton_Clicked"/>
+                    <Button
+                        x:Name="logoutButton"
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        Clicked="logoutButton_Clicked"
+                        CornerRadius="0"
+                        HorizontalOptions="Start"
+                        Text="Log Out"
+                        TextColor="{StaticResource Tertiary}" />
                 </Grid>
                 <Grid x:Name="deleteAccountGrid" BackgroundColor="{StaticResource Tertiary}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ImageButton x:Name="deleteAccountImageButton" Grid.Column="0" BackgroundColor="Transparent" HeightRequest="40" HorizontalOptions="End" Clicked="deleteAccountButton_Clicked">
+                    <ImageButton
+                        x:Name="deleteAccountImageButton"
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        Clicked="deleteAccountButton_Clicked"
+                        HeightRequest="40"
+                        HorizontalOptions="End">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=TrashCan}" Color="{StaticResource IconLight}"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=TrashCan}"
+                                Color="{StaticResource IconLight}" />
                         </ImageButton.Source>
                     </ImageButton>
-                    <Button x:Name="deleteAccountButton" Grid.Column="1" Text="Delete Account" TextColor="{StaticResource Secondary}" BackgroundColor="Transparent" CornerRadius="0" HorizontalOptions="Start" Clicked="deleteAccountButton_Clicked"/>
+                    <Button
+                        x:Name="deleteAccountButton"
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        Clicked="deleteAccountButton_Clicked"
+                        CornerRadius="0"
+                        HorizontalOptions="Start"
+                        Text="Delete Account"
+                        TextColor="{StaticResource Secondary}" />
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-        <Grid Grid.Row="1" x:Name="navBar" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
+        <Grid
+            x:Name="navBar"
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Primary}"
+            HeightRequest="60"
+            VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -63,36 +132,117 @@
                 <RowDefinition />
                 <RowDefinition Height="20" />
             </Grid.RowDefinitions>
-            <ImageButton x:Name="recipesImageButton" Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource Primary}" Clicked="recipesButton_Clicked">
+            <ImageButton
+                x:Name="recipesImageButton"
+                Grid.Row="0"
+                Grid.Column="0"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="recipesButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=FolderOpen}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesome Icon=FolderOpen}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="recipesButton_Clicked" />
-            <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource Primary}" Clicked="shoppingListButton_Clicked">
+            <Button
+                x:Name="recipesButton"
+                Grid.Row="1"
+                Grid.Column="0"
+                Padding="0,-5,0,0"
+                Clicked="recipesButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Recipes" />
+            <ImageButton
+                x:Name="shoppingListImageButton"
+                Grid.Row="0"
+                Grid.Column="1"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="shoppingListButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=Clipboard}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesome Icon=Clipboard}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="shoppingListButton_Clicked" />
-            <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource Primary}" Clicked="homeButton_Clicked">
+            <Button
+                x:Name="shoppingListButton"
+                Grid.Row="1"
+                Grid.Column="1"
+                Padding="0,-5,0,0"
+                Clicked="shoppingListButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Shopping List" />
+            <ImageButton
+                x:Name="homeImageButton"
+                Grid.Row="0"
+                Grid.Column="2"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="homeButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=House}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=House}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="homeButton_Clicked" />
-            <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked">
+            <Button
+                x:Name="homeButton"
+                Grid.Row="1"
+                Grid.Column="2"
+                Padding="0,-5,0,0"
+                Clicked="homeButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Home" />
+            <ImageButton
+                x:Name="scheduleMealsImageButton"
+                Grid.Row="0"
+                Grid.Column="3"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="scheduleMealsButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=CalendarDays}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=CalendarDays}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="scheduleMealsButton_Clicked" />
-            <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" BackgroundColor="{StaticResource PrimaryDark}" Clicked="settingsButton_Clicked">
+            <Button
+                x:Name="scheduleMealsButton"
+                Grid.Row="1"
+                Grid.Column="3"
+                Padding="0,-5,0,0"
+                Clicked="scheduleMealsButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Schedule Meals" />
+            <ImageButton
+                x:Name="settingsImageButton"
+                Grid.Row="0"
+                Grid.Column="4"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Clicked="settingsButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Gear}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=Gear}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="settingsButton_Clicked" />
+            <Button
+                x:Name="settingsButton"
+                Grid.Row="1"
+                Grid.Column="4"
+                Padding="0,-5,0,0"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Clicked="settingsButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Settings" />
         </Grid>
     </Grid>
 </ContentPage>

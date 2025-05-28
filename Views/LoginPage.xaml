@@ -1,25 +1,92 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PlanToPlate.Views.LoginPage"
-             Title="LoginPage">
+<ContentPage
+    x:Class="PlanToPlate.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="LoginPage">
     <ScrollView>
         <VerticalStackLayout BackgroundColor="{StaticResource Primary}">
-            <Image Source="logo.png" HeightRequest="150" Margin="10"/>
-            <Label x:Name="loginLabel" Text="Log In" FontSize="40" TextColor="{StaticResource PrimaryLightText}" VerticalOptions="Center" HorizontalOptions="Center" />
-            <Label x:Name="usernameLabel" Text="Username:" Margin="10, 0" IsVisible="False"/>
-            <Entry x:Name="usernameEntry" BackgroundColor="White" Margin="10, 0" IsVisible="False"/>
-            <Label x:Name="emailLabel" Text="Email:" Margin="10, 0" IsVisible="False"/>
-            <Entry x:Name="emailEntry" BackgroundColor="White" Margin="10, 0" IsVisible="False"/>
-            <Label x:Name="emailOrUsernameLabel" Text="Email Or Username:" Margin="10, 0"/>
-            <Entry x:Name="emailOrUsernameEntry" BackgroundColor="White" Margin="10, 0"/>
-            <Label x:Name="passwordLabel" Text="Password:" Margin="10, 0"/>
-            <Entry x:Name="passwordEntry" BackgroundColor="White" Margin="10, 0"/>
-            <Label x:Name="confirmPasswordLabel" Text="Confirm Password:" Margin="10, 0" IsVisible="False"/>
-            <Entry x:Name="confirmPasswordEntry" BackgroundColor="White" Margin="10, 0" IsVisible="False"/>
-            <Button x:Name="LoginButton" Text="Login" BackgroundColor="White" TextColor="{StaticResource PrimaryDarkText}" Padding="30, 0" Margin="10" HorizontalOptions="Center" Clicked="LoginButton_Clicked" />
-            <Button x:Name="createAccountButton" Text="Create Account" BackgroundColor="White" TextColor="{StaticResource PrimaryDarkText}" Padding="30, 0" Margin="10" HorizontalOptions="Center" Clicked="createAccountButton_Clicked" IsVisible="False"/>
-            <Button x:Name="createAccountLink" Text="Don't have an account? Create one" BackgroundColor="Transparent" Clicked="createAccountLink_Clicked"/>
+            <Image
+                Margin="10"
+                HeightRequest="150"
+                Source="logo.png" />
+            <Label
+                x:Name="loginLabel"
+                FontSize="40"
+                HorizontalOptions="Center"
+                Text="Log In"
+                TextColor="{StaticResource PrimaryLightText}"
+                VerticalOptions="Center" />
+            <Label
+                x:Name="usernameLabel"
+                Margin="10,0"
+                IsVisible="False"
+                Text="Username:" />
+            <Entry
+                x:Name="usernameEntry"
+                Margin="10,0"
+                BackgroundColor="White"
+                IsVisible="False" />
+            <Label
+                x:Name="emailLabel"
+                Margin="10,0"
+                IsVisible="False"
+                Text="Email:" />
+            <Entry
+                x:Name="emailEntry"
+                Margin="10,0"
+                BackgroundColor="White"
+                IsVisible="False" />
+            <Label
+                x:Name="emailOrUsernameLabel"
+                Margin="10,0"
+                Text="Email Or Username:" />
+            <Entry
+                x:Name="emailOrUsernameEntry"
+                Margin="10,0"
+                BackgroundColor="White" />
+            <Label
+                x:Name="passwordLabel"
+                Margin="10,0"
+                Text="Password:" />
+            <Entry
+                x:Name="passwordEntry"
+                Margin="10,0"
+                BackgroundColor="White" />
+            <Label
+                x:Name="confirmPasswordLabel"
+                Margin="10,0"
+                IsVisible="False"
+                Text="Confirm Password:" />
+            <Entry
+                x:Name="confirmPasswordEntry"
+                Margin="10,0"
+                BackgroundColor="White"
+                IsVisible="False" />
+            <Button
+                x:Name="LoginButton"
+                Margin="10"
+                Padding="30,0"
+                BackgroundColor="White"
+                Clicked="LoginButton_Clicked"
+                HorizontalOptions="Center"
+                Text="Login"
+                TextColor="{StaticResource PrimaryDarkText}" />
+            <Button
+                x:Name="createAccountButton"
+                Margin="10"
+                Padding="30,0"
+                BackgroundColor="White"
+                Clicked="createAccountButton_Clicked"
+                HorizontalOptions="Center"
+                IsVisible="False"
+                Text="Create Account"
+                TextColor="{StaticResource PrimaryDarkText}" />
+            <Button
+                x:Name="createAccountLink"
+                BackgroundColor="Transparent"
+                Clicked="createAccountLink_Clicked"
+                Text="Don't have an account? Create one" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

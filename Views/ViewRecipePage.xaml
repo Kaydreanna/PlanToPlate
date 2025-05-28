@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             x:Class="PlanToPlate.Views.ViewRecipePage"
-             Title="ViewRecipePage">
+<ContentPage
+    x:Class="PlanToPlate.Views.ViewRecipePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    Title="ViewRecipePage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
+            <RowDefinition Height="50" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" VerticalOptions="Center" BackgroundColor="{StaticResource Primary}" Padding="0, 0, 10, 0">
-            <Label x:Name="recipeNameLabel" HorizontalOptions="Center" VerticalOptions="Center" FontSize="40" Text="View Recipe" />
-            <ImageButton x:Name="closeRecipeImageButton" HorizontalOptions="End" VerticalOptions="Center" BackgroundColor="Transparent" Padding="5, 0, 0, 5" Clicked="closeRecipeButton_Clicked">
+        <Grid
+            Grid.Row="0"
+            Padding="0,0,10,0"
+            BackgroundColor="{StaticResource Primary}"
+            VerticalOptions="Center">
+            <Label
+                x:Name="recipeNameLabel"
+                FontSize="40"
+                HorizontalOptions="Center"
+                Text="View Recipe"
+                VerticalOptions="Center" />
+            <ImageButton
+                x:Name="closeRecipeImageButton"
+                Padding="5,0,0,5"
+                BackgroundColor="Transparent"
+                Clicked="closeRecipeButton_Clicked"
+                HorizontalOptions="End"
+                VerticalOptions="Center">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Xmark}" Color="{StaticResource IconDark}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=Xmark}"
+                        Color="{StaticResource IconDark}" />
                 </ImageButton.Source>
             </ImageButton>
         </Grid>
@@ -21,145 +40,289 @@
             <VerticalStackLayout>
                 <Grid x:Name="deviceAndTypeGrid" Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="1" Margin="5, 0">
-                        <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="15"/>
+                    <Border Grid.Column="1" Margin="5,0">
+                        <Label
+                            x:Name="typeLabel"
+                            FontSize="15"
+                            HorizontalOptions="Center"
+                            Text="Type" />
                     </Border>
-                    <Border  Grid.Column="2" Margin="5, 0">
-                        <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="15"/>
+                    <Border Grid.Column="2" Margin="5,0">
+                        <Label
+                            x:Name="deviceLabel"
+                            FontSize="15"
+                            HorizontalOptions="Center"
+                            Text="Device" />
                     </Border>
                 </Grid>
-                <HorizontalStackLayout x:Name="ratingStars" HorizontalOptions="Center" Margin="0, 10">
+                <HorizontalStackLayout
+                    x:Name="ratingStars"
+                    Margin="0,10"
+                    HorizontalOptions="Center">
                     <Image x:Name="star1" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=Star}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                     <Image x:Name="star2" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=Star}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                     <Image x:Name="star3" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=Star}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                     <Image x:Name="star4" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=Star}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                     <Image x:Name="star5" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Star}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=Star}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                     <Image x:Name="halfStar" IsVisible="False">
                         <Image.Source>
-                            <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=StarHalf}" Color="Gold" Size="50"/>
+                            <FontImageSource
+                                FontFamily="FontAwesome"
+                                Glyph="{mi:FontAwesomeSolid Icon=StarHalf}"
+                                Size="50"
+                                Color="Gold" />
                         </Image.Source>
                     </Image>
                 </HorizontalStackLayout>
-                <Grid x:Name="ratingsGrid" Margin="0, 20" IsVisible="False">
+                <Grid
+                    x:Name="ratingsGrid"
+                    Margin="0,20"
+                    IsVisible="False">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    
-                    <Label x:Name="easeBackgroundColor" Grid.Row="0" Background="{StaticResource PrimaryDark}" />
-                    <Label x:Name="easeRatingLabel" Grid.Row="0" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Ease Ratings" Margin="10"/>
-                    
+
+                    <Label
+                        x:Name="easeBackgroundColor"
+                        Grid.Row="0"
+                        Background="{StaticResource PrimaryDark}" />
+                    <Label
+                        x:Name="easeRatingLabel"
+                        Grid.Row="0"
+                        Margin="10"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Ease Ratings"
+                        TextColor="{StaticResource PrimaryLightText}" />
+
                     <Grid x:Name="easeRatingsGrid" Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                     </Grid>
-                    <Label x:Name="noEaseRatingsFoundMessage" Grid.Row="1" HorizontalOptions="Center" Text="No ratings for ease were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
-                    
-                    <Label x:Name="tasteBackgroundColor" Grid.Row="2" Background="{StaticResource PrimaryDark}"/>
-                    <Label x:Name="tasteRatingLabel" Grid.Row="2" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Taste Ratings" Margin="10"/>
-                    
-                    <Grid x:Name="tasteRatingsGrid" Grid.Row="3" Margin="0, 20">
+                    <Label
+                        x:Name="noEaseRatingsFoundMessage"
+                        Grid.Row="1"
+                        Margin="0,15"
+                        HorizontalOptions="Center"
+                        IsVisible="False"
+                        Text="No ratings for ease were recorded. Please add some above." />
+
+                    <Label
+                        x:Name="tasteBackgroundColor"
+                        Grid.Row="2"
+                        Background="{StaticResource PrimaryDark}" />
+                    <Label
+                        x:Name="tasteRatingLabel"
+                        Grid.Row="2"
+                        Margin="10"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Taste Ratings"
+                        TextColor="{StaticResource PrimaryLightText}" />
+
+                    <Grid
+                        x:Name="tasteRatingsGrid"
+                        Grid.Row="3"
+                        Margin="0,20">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="4*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                     </Grid>
-                    <Label x:Name="noTasteRatingsFoundMessage" Grid.Row="3" HorizontalOptions="Center" Text="No ratings for taste were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
-                    
-                    <Label x:Name="timingBackgroundColor" Grid.Row="4" Background="{StaticResource PrimaryDark}"/>
-                    <Label x:Name="timingRatingLabel" Grid.Row="4" HorizontalOptions="Center" FontSize="18" TextColor="{StaticResource PrimaryLightText}" Text="Time Ratings" Margin="10"/>
-                    
+                    <Label
+                        x:Name="noTasteRatingsFoundMessage"
+                        Grid.Row="3"
+                        Margin="0,15"
+                        HorizontalOptions="Center"
+                        IsVisible="False"
+                        Text="No ratings for taste were recorded. Please add some above." />
+
+                    <Label
+                        x:Name="timingBackgroundColor"
+                        Grid.Row="4"
+                        Background="{StaticResource PrimaryDark}" />
+                    <Label
+                        x:Name="timingRatingLabel"
+                        Grid.Row="4"
+                        Margin="10"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Time Ratings"
+                        TextColor="{StaticResource PrimaryLightText}" />
+
                     <Grid x:Name="timingRatingsGrid" Grid.Row="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="3*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                     </Grid>
-                    <Label x:Name="noTimingRatingsFoundMessage" Grid.Row="5" HorizontalOptions="Center" Text="No ratings for time were recorded. Please add some above." Margin="0, 15" IsVisible="False"/>
+                    <Label
+                        x:Name="noTimingRatingsFoundMessage"
+                        Grid.Row="5"
+                        Margin="0,15"
+                        HorizontalOptions="Center"
+                        IsVisible="False"
+                        Text="No ratings for time were recorded. Please add some above." />
                 </Grid>
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 10">
-                    <Button x:Name="addRatingButton" Grid.Row="3" HorizontalOptions="Center" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Add Rating" Margin="5, 0" Clicked="addRatingButton_Clicked"/>
-                    <Button x:Name="viewRatingsButton" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="1" TextColor="{StaticResource Tertiary}" Text="View Ratings" Margin="5, 0" Clicked="viewRatingsButton_Clicked" IsVisible="False"/>
+                <HorizontalStackLayout Margin="0,10" HorizontalOptions="Center">
+                    <Button
+                        x:Name="addRatingButton"
+                        Grid.Row="3"
+                        Margin="5,0"
+                        BackgroundColor="{StaticResource SecondaryDark}"
+                        Clicked="addRatingButton_Clicked"
+                        HorizontalOptions="Center"
+                        Text="Add Rating"
+                        TextColor="{StaticResource Tertiary}" />
+                    <Button
+                        x:Name="viewRatingsButton"
+                        Margin="5,0"
+                        BackgroundColor="Transparent"
+                        BorderColor="Black"
+                        BorderWidth="1"
+                        Clicked="viewRatingsButton_Clicked"
+                        IsVisible="False"
+                        Text="View Ratings"
+                        TextColor="{StaticResource Tertiary}" />
                 </HorizontalStackLayout>
-                <Label x:Name="noRatingsFoundMessage" HorizontalOptions="Center" Text="There are no ratings for this recipe yet. Add some using the button above!" Margin="20" IsVisible="False"/>
-                <Grid x:Name="ingredientsGrid" Margin="0, 15, 0, 0">
+                <Label
+                    x:Name="noRatingsFoundMessage"
+                    Margin="20"
+                    HorizontalOptions="Center"
+                    IsVisible="False"
+                    Text="There are no ratings for this recipe yet. Add some using the button above!" />
+                <Grid x:Name="ingredientsGrid" Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="6*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="6*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ingredientsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Ingredients" FontSize="25" Margin="10, 0"/>
+                    <Label
+                        x:Name="ingredientsLabel"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="10,0"
+                        FontSize="25"
+                        Text="Ingredients" />
                 </Grid>
                 <Grid x:Name="instructionsGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="4*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Label x:Name="instructionsLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Instructions" FontSize="25" Margin="10, 0"/>
+                    <Label
+                        x:Name="instructionsLabel"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="10,0"
+                        FontSize="25"
+                        Text="Instructions" />
                 </Grid>
-                <Button x:Name="scheduleMealButton" HorizontalOptions="Center" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource PrimaryDarkText}" Text="Schedule Meal" Margin="0, 20" Clicked="scheduleMealButton_Clicked"/>
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 30">
-                    <Button x:Name="editRecipeButton" BackgroundColor="{StaticResource SecondaryDark}" TextColor="{StaticResource Tertiary}" Text="Edit Recipe" Margin="20" Clicked="editButton_Clicked"/>
-                    <Button x:Name="deleteRecipeButton" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource SecondaryDark}" Text="Delete Recipe" Margin="20" Clicked="deleteButton_Clicked"/>
+                <Button
+                    x:Name="scheduleMealButton"
+                    Margin="0,20"
+                    BackgroundColor="{StaticResource Secondary}"
+                    Clicked="scheduleMealButton_Clicked"
+                    HorizontalOptions="Center"
+                    Text="Schedule Meal"
+                    TextColor="{StaticResource PrimaryDarkText}" />
+                <HorizontalStackLayout Margin="0,30" HorizontalOptions="Center">
+                    <Button
+                        x:Name="editRecipeButton"
+                        Margin="20"
+                        BackgroundColor="{StaticResource SecondaryDark}"
+                        Clicked="editButton_Clicked"
+                        Text="Edit Recipe"
+                        TextColor="{StaticResource Tertiary}" />
+                    <Button
+                        x:Name="deleteRecipeButton"
+                        Margin="20"
+                        BackgroundColor="{StaticResource Tertiary}"
+                        Clicked="deleteButton_Clicked"
+                        Text="Delete Recipe"
+                        TextColor="{StaticResource SecondaryDark}" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

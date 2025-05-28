@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             x:Class="PlanToPlate.Views.ShoppingListPage"
-             Title="ShoppingListPage">
+<ContentPage
+    x:Class="PlanToPlate.Views.ShoppingListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    Title="ShoppingListPage">
     <Grid>
-        <ScrollView Grid.Row="0" x:Name="mainContent">
-            <VerticalStackLayout Padding="0, 0, 0, 80">
-                <Label x:Name="createShoppingListLabel" Text="Create New Shopping List" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="5, 0, 0, 0" Margin="0, 10, 0, 20"/>
+        <ScrollView x:Name="mainContent" Grid.Row="0">
+            <VerticalStackLayout Padding="0,0,0,80">
+                <Label
+                    x:Name="createShoppingListLabel"
+                    Margin="0,10,0,20"
+                    Padding="5,0,0,0"
+                    BackgroundColor="{StaticResource Primary}"
+                    FontSize="30"
+                    Text="Create New Shopping List"
+                    TextColor="{StaticResource PrimaryLightText}" />
                 <HorizontalStackLayout x:Name="startDateLine" HorizontalOptions="Center">
-                    <Label x:Name="startDateLabel" VerticalOptions="Center" Text="Start Date:" Margin="15, 0"/>
+                    <Label
+                        x:Name="startDateLabel"
+                        Margin="15,0"
+                        Text="Start Date:"
+                        VerticalOptions="Center" />
                     <DatePicker x:Name="startDatePicker" />
                 </HorizontalStackLayout>
-                <HorizontalStackLayout x:Name="endDateLine" HorizontalOptions="Center" Margin="5">
-                    <Label x:Name="endDateLabel" VerticalOptions="Center" Text="End Date:" Margin="15, 0"/>
+                <HorizontalStackLayout
+                    x:Name="endDateLine"
+                    Margin="5"
+                    HorizontalOptions="Center">
+                    <Label
+                        x:Name="endDateLabel"
+                        Margin="15,0"
+                        Text="End Date:"
+                        VerticalOptions="Center" />
                     <DatePicker x:Name="endDatePicker" />
                 </HorizontalStackLayout>
-                <Button x:Name="createShoppingListButton" HorizontalOptions="Center" Text="Create" BorderWidth="1" BorderColor="Black" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="10" Clicked="createShoppingListButton_Clicked"/>
-                
-                <Label x:Name="viewShoppingListsLabel" Text="View Past Shopping List" FontSize="30" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Padding="5, 0" Margin="0, 20"/>
-                <Label x:Name="noShoppingListsFoundLabel" Text="There are no past shopping lists. Please create one above." Margin="10"/>
+                <Button
+                    x:Name="createShoppingListButton"
+                    Margin="10"
+                    BackgroundColor="{StaticResource SecondaryDark}"
+                    BorderColor="Black"
+                    BorderWidth="1"
+                    Clicked="createShoppingListButton_Clicked"
+                    HorizontalOptions="Center"
+                    Text="Create"
+                    TextColor="{StaticResource Tertiary}" />
+
+                <Label
+                    x:Name="viewShoppingListsLabel"
+                    Margin="0,20"
+                    Padding="5,0"
+                    BackgroundColor="{StaticResource Primary}"
+                    FontSize="30"
+                    Text="View Past Shopping List"
+                    TextColor="{StaticResource PrimaryLightText}" />
+                <Label
+                    x:Name="noShoppingListsFoundLabel"
+                    Margin="10"
+                    Text="There are no past shopping lists. Please create one above." />
                 <Grid x:Name="pastShoppingListsGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -29,7 +67,12 @@
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-        <Grid x:Name="navBar" Grid.Row="1" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
+        <Grid
+            x:Name="navBar"
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Primary}"
+            HeightRequest="60"
+            VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -39,38 +82,119 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
-            <ImageButton x:Name="recipesImageButton" Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource Primary}" Clicked="recipesButton_Clicked">
+            <ImageButton
+                x:Name="recipesImageButton"
+                Grid.Row="0"
+                Grid.Column="0"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="recipesButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=FolderOpen}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesome Icon=FolderOpen}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="recipesButton" Grid.Row="1" Grid.Column="0" Text="Recipes" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="recipesButton_Clicked" />
-            <ImageButton x:Name="shoppingListImageButton" Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource PrimaryDark}" Clicked="shoppingListButton_Clicked">
+            <Button
+                x:Name="recipesButton"
+                Grid.Row="1"
+                Grid.Column="0"
+                Padding="0,-5,0,0"
+                Clicked="recipesButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Recipes" />
+            <ImageButton
+                x:Name="shoppingListImageButton"
+                Grid.Row="0"
+                Grid.Column="1"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Clicked="shoppingListButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesome Icon=Clipboard}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesome Icon=Clipboard}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="shoppingListButton" Grid.Row="1" Grid.Column="1" Text="Shopping List" FontSize="10" BackgroundColor="{StaticResource PrimaryDark}" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="shoppingListButton_Clicked" />
-            <ImageButton x:Name="homeImageButton" Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource Primary}" Clicked="homeButton_Clicked">
+            <Button
+                x:Name="shoppingListButton"
+                Grid.Row="1"
+                Grid.Column="1"
+                Padding="0,-5,0,0"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Clicked="shoppingListButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Shopping List" />
+            <ImageButton
+                x:Name="homeImageButton"
+                Grid.Row="0"
+                Grid.Column="2"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="homeButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=House}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=House}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="homeButton" Grid.Row="1" Grid.Column="2" Text="Home" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="homeButton_Clicked" />
-            <ImageButton x:Name="scheduleMealsImageButton" Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Primary}" Clicked="scheduleMealsButton_Clicked">
+            <Button
+                x:Name="homeButton"
+                Grid.Row="1"
+                Grid.Column="2"
+                Padding="0,-5,0,0"
+                Clicked="homeButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Home" />
+            <ImageButton
+                x:Name="scheduleMealsImageButton"
+                Grid.Row="0"
+                Grid.Column="3"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="scheduleMealsButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=CalendarDays}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=CalendarDays}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="scheduleMealsButton" Grid.Row="1" Grid.Column="3" Text="Schedule Meals" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="scheduleMealsButton_Clicked" />
-            <ImageButton x:Name="settingsImageButton" Grid.Row="0" Grid.Column="4" BackgroundColor="{StaticResource Primary}" Clicked="settingsButton_Clicked">
+            <Button
+                x:Name="scheduleMealsButton"
+                Grid.Row="1"
+                Grid.Column="3"
+                Padding="0,-5,0,0"
+                Clicked="scheduleMealsButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Schedule Meals" />
+            <ImageButton
+                x:Name="settingsImageButton"
+                Grid.Row="0"
+                Grid.Column="4"
+                BackgroundColor="{StaticResource Primary}"
+                Clicked="settingsButton_Clicked">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FontAwesome" Glyph="{mi:FontAwesomeSolid Icon=Gear}" Color="{StaticResource IconLight}"/>
+                    <FontImageSource
+                        FontFamily="FontAwesome"
+                        Glyph="{mi:FontAwesomeSolid Icon=Gear}"
+                        Color="{StaticResource IconLight}" />
                 </ImageButton.Source>
             </ImageButton>
-            <Button x:Name="settingsButton" Grid.Row="1" Grid.Column="4" Text="Settings" FontSize="10" CornerRadius="0" Padding="0, -5, 0, 0" Clicked="settingsButton_Clicked" />
+            <Button
+                x:Name="settingsButton"
+                Grid.Row="1"
+                Grid.Column="4"
+                Padding="0,-5,0,0"
+                Clicked="settingsButton_Clicked"
+                CornerRadius="0"
+                FontSize="10"
+                Text="Settings" />
         </Grid>
     </Grid>
 </ContentPage>
