@@ -47,6 +47,13 @@ namespace PlanToPlate.Services
             }
             return true;
         }
+
+        public static async Task<bool> EmailExists(string email)
+        {
+            await Init();
+            var user = await _db.Table<User>().Where(u => u.Email == email).FirstOrDefaultAsync();
+            return user != null;
+        }
         #endregion
 
         #region Recipe Methods

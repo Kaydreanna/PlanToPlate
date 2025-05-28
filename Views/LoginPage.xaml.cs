@@ -51,9 +51,10 @@ public partial class LoginPage : ContentPage
     {
         bool validUsername = await DatabaseService.UniqueUsername(usernameEntry.Text);
         bool validEmail = validateEmail(emailEntry.Text);
-        bool validPassword = validatePassword(passwordEntry.Text, confirmPasswordEntry.Text);
+        List<string> whatsWrongWithThePassword = validatePassword(passwordEntry.Text, confirmPasswordEntry.Text);
+        bool emailExists = await DatabaseService.EmailExists(emailEntry.Text);
 
-        if(!validUsername)
+        if (!validUsername)
         {
             await DisplayAlert("Error", "Username already exists. Please choose a different one.", "OK");
             return;
@@ -61,12 +62,16 @@ public partial class LoginPage : ContentPage
         {
             await DisplayAlert("Error", "Please enter a valid email address.", "OK");
             return;
-        } else if (!validPassword)
+        } else if (whatsWrongWithThePassword != null)
         {
-            await DisplayAlert("Error", $"Please ensure passwords match and have the following:{Environment.NewLine}8 or more characters{Environment.NewLine}One or more upper case letters{Environment.NewLine}One or more lower case letters{Environment.NewLine}At least one symbol", "OK");
+            string errorMessage = string.Join(Environment.NewLine, whatsWrongWithThePassword);
+            await DisplayAlert("Error", $"Please make sure the following problems are resolved:{Environment.NewLine}{errorMessage}", "OK");
             return;
-        }
-        else
+        } else if (emailExists)
+        {
+            await DisplayAlert("Error", "An account with this email already exists. Please log in or use a different email.", "OK");
+            return;
+        } else
         {
             User newUser = await DatabaseService.CreateUserAccount(usernameEntry.Text, emailEntry.Text, passwordEntry.Text);
             await Navigation.PushAsync(new HomePage(newUser));
@@ -128,15 +133,16 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private bool validatePassword(string password, string confirmPassword)
+    private List<string> validatePassword(string password, string confirmPassword)
     {
-        if(password != confirmPassword)
+        List<string> whatsWrongWithThePassword = new List<string>();
+        if (password != confirmPassword)
         {
-            return false;
+            whatsWrongWithThePassword.Add("Passwords do not match");
         }
         if (password.Length < 8)
         {
-            return false;
+            whatsWrongWithThePassword.Add("Password must be at least 8 characters long");
         }
         bool hasUpperChar = false;
         bool hasLowerChar = false;
@@ -153,7 +159,24 @@ public partial class LoginPage : ContentPage
             else
                 hasSymbols = true;
         }
-        return hasUpperChar && hasLowerChar && hasNumber && hasSymbols;
+        if (!hasUpperChar)
+        {
+            whatsWrongWithThePassword.Add("Password must contain at least one upper case letter");
+        }
+        if (!hasLowerChar)
+        {
+            whatsWrongWithThePassword.Add("Password must contain at least one lower case letter");
+        }
+        if (!hasNumber)
+        {
+            whatsWrongWithThePassword.Add("Password must contain at least one number");
+        }
+        if (!hasSymbols)
+        {
+            whatsWrongWithThePassword.Add("Password must contain at least one symbol");
+        }
+
+        return whatsWrongWithThePassword;
     }
     #endregion
 }
