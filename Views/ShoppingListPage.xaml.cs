@@ -199,7 +199,8 @@ public partial class ShoppingListPage : ContentPage
         shoppingListDetailsGrid.RowDefinitions.Add(new RowDefinition());
         int columnNum = 0;
         int rowNum = 0;
-        foreach (var ingredient in shoppingList.IngredientList)
+        var sortedIngredients = shoppingList.IngredientList.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key).ToList();
+        foreach (var ingredient in sortedIngredients)
         {
             if (shoppingList.IngredientList[ingredient.Key] == false)
             {

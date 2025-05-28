@@ -71,9 +71,15 @@ public partial class EditShoppingListPage : ContentPage
         int rowNum = 0;
         int colNum = 0;
         shoppingListIngredientsGrid.RowDefinitions.Add(new RowDefinition());
-        foreach (string ingredient in shoppingList.IngredientList.Keys)
+
+        var sortedIngredients = listOfIngredients.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key).ToList();
+        ingredientButtons.Clear();
+        foreach (var ingredient in sortedIngredients)
         {
-            if(colNum == 3)
+            string ingredientName = ingredient.Key;
+            bool needsBought = ingredient.Value;
+
+            if (colNum == 3)
             {
                 colNum = 0;
                 shoppingListIngredientsGrid.RowDefinitions.Add(new RowDefinition());
@@ -81,7 +87,7 @@ public partial class EditShoppingListPage : ContentPage
             }
             Button ingredientButton = new Button
             {
-                Text = ingredient,
+                Text = ingredientName,
                 TextColor = tertiaryColor,
                 BorderWidth = 1,
                 BorderColor = Colors.Black,
@@ -89,13 +95,13 @@ public partial class EditShoppingListPage : ContentPage
                 LineBreakMode = LineBreakMode.WordWrap,
                 Margin = new Thickness(5)
             };
-            ingredientButton.BindingContext = ingredient;
+            ingredientButton.BindingContext = ingredientName;
             ingredientButton.Clicked += (s, e) => {toggleIngredientButton(ingredientButton.BindingContext.ToString());};
-            ingredientButton.BackgroundColor = listOfIngredients[ingredient] ? secondaryColor : Colors.White;
+            ingredientButton.BackgroundColor = listOfIngredients[ingredientName] ? secondaryColor : Colors.White;
             shoppingListIngredientsGrid.Children.Add(ingredientButton);
             shoppingListIngredientsGrid.SetColumn(ingredientButton, colNum);
             shoppingListIngredientsGrid.SetRow(ingredientButton, rowNum);
-            ingredientButtons.Add(ingredient, ingredientButton);
+            ingredientButtons.Add(ingredientName, ingredientButton);
 
             colNum++;
         }
