@@ -5,51 +5,74 @@
              x:Class="PlanToPlate.Views.RecipesPage"
              Title="RecipesPage">
     <Grid>
-        <ScrollView x:Name="mainContent" Grid.Row="0" Margin="0, 0, 0, 70">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="searchfunction" Grid.Row="0" BackgroundColor="{StaticResource Primary}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Entry x:Name="searchRecipesEntry" Grid.Column="0" BackgroundColor="White" HeightRequest="40" Margin="10, 0, 0, 0"/>
+            <Button x:Name="searchButton" Grid.Column="1" Text="Search" FontSize="20" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="Transparent" Clicked="searchButton_Clicked"/>
+        </Grid>
+        <ScrollView x:Name="mainContent" Grid.Row="1">
             <VerticalStackLayout>
-                <Button x:Name="addRecipeButton" HorizontalOptions="Center" Text="Add New Recipe" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="addRecipeButton_Clicked"/>
-                <Button x:Name="filterByButton" HorizontalOptions="Center" Text="Filters" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 30" Clicked="filterByButton_Clicked"/>
-                <HorizontalStackLayout x:Name="searchfunction" HorizontalOptions="Center" Margin="0, 20">
-                    <Entry x:Name="searchRecipesEntry" WidthRequest="200" Margin="10, 0"/>
-                    <Button x:Name="searchButton" Text="Search" FontSize="20" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Clicked="searchButton_Clicked"/>
-                </HorizontalStackLayout>
-                <Button x:Name="clearButton" Text="Clear" FontSize="18" BorderWidth="1.5" BorderColor="Black" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="5, 0, 0, 0" Clicked="clearButton_Clicked"/>
-                <HorizontalStackLayout x:Name="sortByFunction" HorizontalOptions="Start" Margin="0, 20, 0, 0">
-                    <Label x:Name="sortByLabel" VerticalOptions="Center" Text="Sort by:" Margin="5, 0, 5, 0" FontSize="14"/>
-                    <Picker x:Name="sortByPicker" WidthRequest="100" SelectedIndexChanged="sortByPicker_SelectedIndexChanged"/>
-                </HorizontalStackLayout>
-                <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
-                <Grid x:Name="recipesGridLabels" Margin="5, 5, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
+                <Grid x:Name="filterByAndClear" Margin="0, 10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="filterByButton" Grid.Column="1" HorizontalOptions="Center" Text="Filters" FontSize="18" TextColor="{StaticResource PrimaryLightText}" BackgroundColor="{StaticResource Primary}" Margin="10, 0" Clicked="filterByButton_Clicked"/>
+                    <Button x:Name="clearButton" Grid.Column="2" HorizontalOptions="Center" Text="Clear" FontSize="18" BackgroundColor="{StaticResource Tertiary}" TextColor="{StaticResource PrimaryLightText}" Margin="10, 0" Clicked="clearButton_Clicked"/>
+                </Grid>
+                <Grid x:Name="sortByFunction" Margin="0, 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="sortByLabel" Grid.Column="0" VerticalOptions="Center" Text="Sort by:" FontSize="18" Margin="5, 0, 0, 0"/>
+                    <Picker x:Name="sortByPicker" Grid.Column="1" FontSize="18" BackgroundColor="LightGray" SelectedIndexChanged="sortByPicker_SelectedIndexChanged"/>
+                </Grid>
+                <Label x:Name="noRecipesFoundMessage" HorizontalOptions="Center" Text="No recipes yet!&#x0a;&#x0a;Get started by tapping the 'Add New Recipe' button above to add your first recipe." Margin="20"/>
+                <Grid x:Name="recipesGridLabels" Margin="5, 5, 5, 0" ColumnSpacing="0" RowSpacing="0" IsVisible="False">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="nameLabel" HorizontalOptions="Center" Text="Name" FontSize="16"/>
+                        <Label x:Name="nameLabel" HorizontalOptions="Center" TextColor="{StaticResource PrimaryDarkText}" Text="Name" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="1" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="ratingLabel" HorizontalOptions="Center" Text="Rating" FontSize="16"/>
+                        <Label x:Name="ratingLabel" HorizontalOptions="Center" TextColor="{StaticResource PrimaryDarkText}" Text="Rating" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="2" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="deviceLabel" HorizontalOptions="Center" Text="Device" FontSize="16"/>
+                        <Label x:Name="deviceLabel" HorizontalOptions="Center" TextColor="{StaticResource PrimaryDarkText}" Text="Device" FontSize="16"/>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="3" BackgroundColor="{StaticResource Secondary}" Padding="0, 5" Margin="0">
-                        <Label x:Name="typeLabel" HorizontalOptions="Center" Text="Type" FontSize="16"/>
+                        <Label x:Name="typeLabel" HorizontalOptions="Center" TextColor="{StaticResource PrimaryDarkText}" Text="Type" FontSize="16"/>
                     </Border>
                 </Grid>
                 <Grid x:Name="recipesGridContent" Margin="5, 0, 5, 0">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-        <Grid x:Name="navBar" Grid.Row="1" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
+        <Button x:Name="addRecipeButton" Grid.Row="2" VerticalOptions="End" Text="Add New Recipe" FontSize="18" TextColor="{StaticResource Tertiary}" BackgroundColor="{StaticResource SecondaryDark}" Margin="0, 0, 0, 5" Clicked="addRecipeButton_Clicked"/>
+        <Grid x:Name="navBar" Grid.Row="3" HeightRequest="60" BackgroundColor="{StaticResource Primary}" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

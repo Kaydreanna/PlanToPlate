@@ -23,6 +23,10 @@ public partial class RecipesPage : ContentPage
         base.OnAppearing();
         List<Recipe> recipes = await DatabaseService.GetAllRecipes(loggedInUser.UserId);
         currentListOfRecipesAndRatings = await DatabaseService.GetRecipesAndRatings(recipes);
+        sortByPicker.Items.Add("Name");
+        sortByPicker.Items.Add("Rating");
+        sortByPicker.Items.Add("Device");
+        sortByPicker.Items.Add("Type");
         refreshRecipesTable();
     }
 
@@ -158,6 +162,29 @@ public partial class RecipesPage : ContentPage
                 currentListOfRecipesAndRatings = recipesToAdd;
             }
             refreshRecipesTable();
+        }
+    }
+    private void sortByPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        switch (sortByPicker.SelectedIndex)
+        {
+            case 0:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.RecipeName).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 1:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderByDescending(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 2:
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.CookingDevice).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
+            case 3:
+                List<string> typeOrder = new List<string> { "Breakfast", "Lunch", "Dinner" };
+                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => typeOrder.IndexOf(i.Key.RecipeType)).ToDictionary(i => i.Key, i => i.Value);
+                refreshRecipesTable();
+                break;
         }
     }
     #endregion
@@ -323,28 +350,5 @@ public partial class RecipesPage : ContentPage
     }
     #endregion
 
-    private void sortByPicker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        switch (sortByPicker.SelectedIndex)
-        {
-            case 0:
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.RecipeName).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
-                break;
-            case 1:
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderByDescending(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
-                break;
-            case 2:
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => i.Key.CookingDevice).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
-                break;
-            case 3:
-                List<string> typeOrder = new List<string> { "Breakfast", "Lunch", "Dinner" };
-                currentListOfRecipesAndRatings = currentListOfRecipesAndRatings.OrderBy(i => typeOrder.IndexOf(i.Key.RecipeType)).ToDictionary(i => i.Key, i => i.Value);
-                refreshRecipesTable();
-                break;
-        }
-    }
 
 }
