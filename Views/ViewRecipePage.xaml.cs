@@ -107,8 +107,9 @@ public partial class ViewRecipePage : ContentPage
     #region Methods
     private async void diaplayOverallRating()
     {
-        (float overall, int ease, int taste, int time) = await DatabaseService.GetRatingScores(selectedRecipe.RecipeId);
-        double roundedOverall = Math.Round(overall * 2, MidpointRounding.AwayFromZero) / 2;
+        List<int> ratingScores = await DatabaseService.GetListOfRatingScores(selectedRecipe.RecipeId);
+        float overallRating = Rating.GetAverageRating(ratingScores);
+        double roundedOverall = Math.Round(overallRating * 2, MidpointRounding.AwayFromZero) / 2;
         if(roundedOverall < 0)
         {
             noRatingsFoundMessage.IsVisible = true;

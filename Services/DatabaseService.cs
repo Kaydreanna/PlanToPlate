@@ -132,6 +132,29 @@ namespace PlanToPlate.Services
 
             return (overallRating, totalEaseRating, totalTasteRating, totalTimingRating);
         }
+        public static async Task<List<int>> GetListOfRatingScores(int recipeId)
+        {
+            await Init();
+
+            List<Ease> easeRatings = await _db.Table<Ease>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Taste> tasteRatings = await _db.Table<Taste>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<Timing> timingRatings = await _db.Table<Timing>().Where(i => i.RecipeId == recipeId).ToListAsync();
+            List<int> ratingScores = new List<int>();
+
+            foreach (Ease easeRating in easeRatings)
+            {
+                ratingScores.Add(easeRating.EaseScore);
+            }
+            foreach (Taste tasteRating in tasteRatings)
+            {
+                ratingScores.Add(tasteRating.TasteScore);
+            }
+            foreach (Timing timingRating in timingRatings)
+            {
+                ratingScores.Add(timingRating.TimeScore);
+            }
+            return ratingScores;
+        }
 
         public static async Task<(List<Ease> easeRatings, List<Taste> tasteRatings, List<Timing> timingRatings)> GetRatings(int recipeId)
         {

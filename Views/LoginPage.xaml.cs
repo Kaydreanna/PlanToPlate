@@ -44,8 +44,13 @@ public partial class LoginPage : ContentPage
     private async void createAccountButton_Clicked(object sender, EventArgs e)
     {
         bool validUsername = await DatabaseService.UniqueUsername(usernameEntry.Text);
-        bool validEmail = validateEmail(emailEntry.Text);
-        List<string> whatsWrongWithThePassword = validatePassword(passwordEntry.Text, confirmPasswordEntry.Text);
+        bool validEmail = User.validEmail(emailEntry.Text);
+        bool validPassword = User.validPassword(passwordEntry.Text, confirmPasswordEntry.Text);
+        List<string> whatsWrongWithThePassword = new List<string>();
+        if (!validPassword)
+        {
+            whatsWrongWithThePassword = validatePassword(passwordEntry.Text, confirmPasswordEntry.Text);
+        }
         bool emailExists = await DatabaseService.EmailExists(emailEntry.Text);
 
         if (!validUsername)
@@ -112,20 +117,6 @@ public partial class LoginPage : ContentPage
     #endregion
 
     #region Methods
-    private bool validateEmail(string email)
-    {
-        string trimmedEmail = email.Trim();
-        try
-        {
-            var addr = new System.Net.Mail.MailAddress(trimmedEmail);
-            string domainPart = addr.Host;
-            return addr.Address == trimmedEmail && domainPart.Contains('.') && domainPart.IndexOf('.') != domainPart.Length - 1;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     private List<string> validatePassword(string password, string confirmPassword)
     {
