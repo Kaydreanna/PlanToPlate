@@ -1,8 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
-using System;
-using System.Threading.Tasks;
 
 namespace PlanToPlate.Views;
 

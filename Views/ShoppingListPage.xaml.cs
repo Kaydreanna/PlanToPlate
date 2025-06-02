@@ -1,8 +1,6 @@
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace PlanToPlate.Views;
 

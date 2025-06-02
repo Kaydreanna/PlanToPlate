@@ -28,23 +28,17 @@ public partial class LoginPage : ContentPage
     #region Clicked Events
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
-        User userToLogIn = await DatabaseService.AuthenticateUser("test@email.com", "Test");
-        await Navigation.PushAsync(new HomePage(userToLogIn));
-        Navigation.RemovePage(this);
-
-        //Commented out login function for testing purposes
-
-        //User userToLogIn = await DatabaseService.AuthenticateUser(emailOrUsernameEntry.Text, passwordEntry.Text);
-        //if (userToLogIn == null)
-        //{
-        //    await DisplayAlert("Error", "Invalid email or password", "OK");
-        //    return;
-        //}
-        //else
-        //{
-        //    await Navigation.PushAsync(new HomePage(userToLogIn));
-        //    Navigation.RemovePage(this);
-        //}
+        User userToLogIn = await DatabaseService.AuthenticateUser(emailOrUsernameEntry.Text, passwordEntry.Text);
+        if (userToLogIn == null)
+        {
+            await DisplayAlert("Error", "Invalid email or password", "OK");
+            return;
+        }
+        else
+        {
+            await Navigation.PushAsync(new HomePage(userToLogIn));
+            Navigation.RemovePage(this);
+        }
     }
 
     private async void createAccountButton_Clicked(object sender, EventArgs e)
@@ -62,7 +56,7 @@ public partial class LoginPage : ContentPage
         {
             await DisplayAlert("Error", "Please enter a valid email address.", "OK");
             return;
-        } else if (whatsWrongWithThePassword != null)
+        } else if (whatsWrongWithThePassword.Count != 0)
         {
             string errorMessage = string.Join(Environment.NewLine, whatsWrongWithThePassword);
             await DisplayAlert("Error", $"Please make sure the following problems are resolved:{Environment.NewLine}{errorMessage}", "OK");

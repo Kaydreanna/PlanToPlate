@@ -634,13 +634,6 @@ namespace PlanToPlate.Services
             }
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "recipes.db");
 
-            //Use the folowing if changes are made to a database
-
-            //if (File.Exists(databasePath))
-            //{
-            //    File.Delete(databasePath);
-            //}
-
             _db = new SQLiteAsyncConnection(databasePath);
 
             await _db.CreateTableAsync<ScheduledMeals>();
@@ -655,6 +648,3 @@ namespace PlanToPlate.Services
         }
     }
 }
-
-
-//CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower()); 

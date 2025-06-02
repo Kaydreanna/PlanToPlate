@@ -1,7 +1,5 @@
 using PlanToPlate.Models;
 using PlanToPlate.Services;
-using static SQLite.SQLite3;
-using System;
 
 namespace PlanToPlate.Views;
 

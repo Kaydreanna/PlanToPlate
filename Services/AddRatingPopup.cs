@@ -4,7 +4,7 @@ namespace PlanToPlate.Services
 {
     public class AddRatingPopup : Popup
     {
-        public AddRatingPopup(string recipeName /*Action<string, int> onRatingSelected*/)
+        public AddRatingPopup(string recipeName)
         {
             var label = new Label { Text = $"Rate the recipe: {recipeName}" };
             var typeOfRatingPicker = new Picker

@@ -1,11 +1,7 @@
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Platform;
 using PlanToPlate.Models;
 using PlanToPlate.Services;
 using System.Globalization;
-using System.Linq.Expressions;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace PlanToPlate.Views;
 
