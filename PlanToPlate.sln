@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanToPlate", "PlanToPlate.csproj", "{CB9A7DEC-8FD3-47F7-8C27-308857DA479B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanToPlateUnitTests", "..\PlanToPlateUnitTests\PlanToPlateUnitTests.csproj", "{4593F819-895C-4476-B4A1-05317A95BA4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,14 @@ Global
 		{CB9A7DEC-8FD3-47F7-8C27-308857DA479B}.Release|ARM64.ActiveCfg = Release|ARM64
 		{CB9A7DEC-8FD3-47F7-8C27-308857DA479B}.Release|ARM64.Build.0 = Release|ARM64
 		{CB9A7DEC-8FD3-47F7-8C27-308857DA479B}.Release|ARM64.Deploy.0 = Release|ARM64
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{4593F819-895C-4476-B4A1-05317A95BA4C}.Release|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
