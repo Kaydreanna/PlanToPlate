@@ -1,0 +1,57 @@
+name: Build & Upload MAUI Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers only on version tag pushes (e.g., v1.0.0)
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Set up MAUI workload
+        run: dotnet workload install maui
+
+      - name: Decode and save keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > my-release-key.keystore
+
+      - name: Publish APK
+        run: |
+          dotnet publish ./PlanToPlate.csproj \
+            -c Release \
+            -f net9.0-android \
+            /p:AndroidKeyStore=true \
+            /p:AndroidSigningKeyAlias=$KEY_ALIAS \
+            /p:AndroidSigningKeyPass=$KEY_PASSWORD \
+            /p:AndroidSigningStorePass=$KEYSTORE_PASSWORD \
+            /p:AndroidSigningKeyStore=my-release-key.keystore
+
+      - name: Find generated APK
+        id: find_apk
+        run: |
+          apk_path=$(find . -name "*.apk" | grep Release | head -n 1)
+          echo "APK_PATH=$apk_path" >> $GITHUB_ENV
+
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.APK_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
