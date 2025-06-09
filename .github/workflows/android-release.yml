@@ -48,6 +48,16 @@ jobs:
         run: |
           apk_path=$(find . -name "*.apk" | grep Release | head -n 1)
           echo "APK_PATH=$apk_path" >> $GITHUB_ENV
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v1
