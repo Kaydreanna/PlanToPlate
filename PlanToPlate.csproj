@@ -24,7 +24,7 @@
 
 		<!-- App Identifier -->
 		<ApplicationId>com.plantoplate</ApplicationId>
-		<PackageName>com.plantoplate</PackageName>
+		<!--<PackageName>com.plantoplate</PackageName>-->
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
