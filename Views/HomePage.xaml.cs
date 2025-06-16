@@ -55,7 +55,7 @@ public partial class HomePage : ContentPage
         }
         endDate = startDate.AddDays(6);
         displayedScheduledMeals();
-        editViewOrCreateShoppingListButton();
+        updateEditOrCreateShoppingListButton();
     }
 
     #region Clicked Events  
@@ -64,7 +64,7 @@ public partial class HomePage : ContentPage
         startDate = startDate.AddDays(-7);
         endDate = endDate.AddDays(-7);
         displayedScheduledMeals();
-        editViewOrCreateShoppingListButton();
+        updateEditOrCreateShoppingListButton();
     }
 
     private void futureDatesButton_Clicked(object sender, EventArgs e)
@@ -72,7 +72,7 @@ public partial class HomePage : ContentPage
         startDate = startDate.AddDays(7);
         endDate = endDate.AddDays(7);
         displayedScheduledMeals();
-        editViewOrCreateShoppingListButton();
+        updateEditOrCreateShoppingListButton();
     }
 
     private void breakfastButton_Clicked(object sender, EventArgs e)
@@ -192,7 +192,7 @@ public partial class HomePage : ContentPage
                 Margin = 0,
             };
             breakfastButton.BindingContext = displayDate;
-            breakfastButton.Clicked += async (sender, e) =>
+            breakfastButton.Clicked +=  (sender, e) =>
             {
                 if (breakfast != null)
                 {
@@ -214,7 +214,7 @@ public partial class HomePage : ContentPage
                 Margin = 0,
             };
             lunchButton.BindingContext = displayDate;
-            lunchButton.Clicked += async (sender, e) =>
+            lunchButton.Clicked += (sender, e) =>
             {
                 if (lunch != null)
                 {
@@ -236,7 +236,7 @@ public partial class HomePage : ContentPage
                 Margin = 0,
             };
             dinnerButton.BindingContext = displayDate;
-            dinnerButton.Clicked += async (sender, e) =>
+            dinnerButton.Clicked += (sender, e) =>
             {
                 if (dinner != null)
                 {
@@ -276,21 +276,21 @@ public partial class HomePage : ContentPage
         }
     }
 
-    private async void editViewOrCreateShoppingListButton()
+    private async void updateEditOrCreateShoppingListButton()
     {
         bool shoppingListExists = await existingShoppingList(startDate, endDate);
         if (shoppingListExists)
         {
-            viewOrCreateShoppingListButton.Text = "View Shopping List";
-            viewOrCreateShoppingListButton.Clicked += async (sender, e) =>
+            editOrCreateShoppingListButton.Text = "View Shopping List";
+            editOrCreateShoppingListButton.Clicked += async (sender, e) =>
             {
                 await Navigation.PushAsync(new EditShoppingListPage(shoppingList));
             };
         }
         else
         {
-            viewOrCreateShoppingListButton.Text = "Create Shopping List";
-            viewOrCreateShoppingListButton.Clicked += async (sender, e) =>
+            editOrCreateShoppingListButton.Text = "Create Shopping List";
+            editOrCreateShoppingListButton.Clicked += async (sender, e) =>
             {
                 List<ScheduledMeals> mealsForShoppingList = await DatabaseService.GetScheduledMealsByDate(loggedInUser.UserId, startDate, endDate);
                 if (mealsForShoppingList.Count == 0)

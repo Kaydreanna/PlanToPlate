@@ -116,7 +116,7 @@
                         </ImageButton.Source>
                     </ImageButton>
                     <Button
-                        x:Name="viewOrCreateShoppingListButton"
+                        x:Name="editOrCreateShoppingListButton"
                         Grid.Row="4"
                         Grid.Column="2"
                         Grid.ColumnSpan="3"

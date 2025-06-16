@@ -460,7 +460,10 @@ namespace PlanToPlate.Services
         public static async Task DeleteAccount(User user)
         {
             await Init();
-            await _db.DeleteAsync(user);
+            if (_db != null)
+            {
+                await _db.DeleteAsync(user);
+            }
         }
         #endregion
 

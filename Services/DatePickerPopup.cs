@@ -16,7 +16,7 @@ namespace PlanToPlate.Services
             var errorLabel = new Label { TextColor = Colors.Red, IsVisible = false };
 
             var confirmButton = new Button { Text = "Confirm" };
-            confirmButton.Clicked += async (s, e) =>
+            confirmButton.Clicked += (s, e) =>
             {
                 if (mealTypePicker.SelectedItem == null)
                 {

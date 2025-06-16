@@ -16,8 +16,6 @@ public partial class LoginPage : ContentPage
     {
         base.OnAppearing();
 
-        //await DatabaseService.ClearStartingData();
-
         bool testUser = await DatabaseService.IsThereATestUser();
         if (testUser == false)
         {
